@@ -1,0 +1,65 @@
+# 🔮 Ancient Runes - Ignore the Mundane Files
+
+# Rust build artifacts and target directories
+/target/
+**/*.rs.bk
+*.pdb
+
+# Cargo lock file (we keep it for applications, ignore for libraries)
+# Cargo.lock
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary and backup files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+
+# Log files
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Test artifacts
+/test_output/
+/coverage/
+
+# Documentation build artifacts
+/book/
+/mdbook/
+
+# Local template test files
+/test_templates/
+/temp_templates/
+
+# Secret scrolls (configuration that shouldn't be shared)
+/secrets/
+*.secret
+*.key
+*.pem
+
+# Ancient debugging artifacts
+core
+core.*
+
+# Mystical OS caches
+.cache/
