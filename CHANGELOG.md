@@ -1,4 +1,4 @@
-# 📜 Changelog of Ancient Runes
+# 📜 Changelog of Ancient Runic
 
 All notable changes to this mystical project will be documented in this sacred scroll.
 
@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.0] - 2025-08-17 ⚡
 ### ✨ Added - The Great Awakening
-- **Ancient Runes Engine**: Complete templating system with mystical powers
+- **Ancient Runic Engine**: Complete templating system with mystical powers
 - **Variable Conjuring**: `{{variable}}` - Safely summon variables from the ethereal realm
 - **Raw Power Unleashing**: `{{& html}}` - For when you need dangerous unescaped magic
 - **Conditional Sorcery**: `{{if condition}}...{{/if}}` - Logic that bends to your will

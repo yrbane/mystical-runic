@@ -1,13 +1,13 @@
-//! 🔮 Example: Advanced Spell Casting with Runes
+//! 🔮 Example: Advanced Spell Casting with Runic
 //! 
-//! This example demonstrates the mystical powers of the Runes templating engine
+//! This example demonstrates the mystical powers of the Runic templating engine
 //! by creating a magical character sheet for a fantasy RPG.
 
-use runes::{RuneEngine, RuneScroll, RuneSymbol};
+use runic::{RuneEngine, RuneScroll, RuneSymbol};
 use std::collections::HashMap;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🧙‍♂️ Welcome to the Runes Magic Demonstration!");
+    println!("🧙‍♂️ Welcome to the Runic Magic Demonstration!");
     println!("═══════════════════════════════════════════════\n");
 
     // 🏰 Summon the ancient engine
@@ -94,7 +94,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("{}", html_result);
     
     println!("\n🎉 Magic demonstration complete!");
-    println!("✨ The ancient runes have served you well! ✨");
+    println!("✨ The ancient runic symbols have served you well! ✨");
     
     Ok(())
 }

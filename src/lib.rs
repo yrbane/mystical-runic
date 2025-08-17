@@ -1,8 +1,8 @@
-//! # 🔮 Runes - Ancient Symbols for Modern Web Magic
+//! # 🔮 Runic - Ancient Symbols for Modern Web Magic
 //!
 //! *"In the beginning was the Word, and the Word was `{{mustache}}`..."*
 //! 
-//! Welcome, brave developer, to the mystical realm of **Runes** - where ancient Nordic symbols
+//! Welcome, brave developer, to the mystical realm of **Runic** - where ancient Nordic symbols
 //! meet modern HTML templating in a beautiful dance of curly braces and digital sorcery!
 //!
 //! ## ⚡ The Sacred Incantations
@@ -18,7 +18,7 @@
 //! ## 🧙‍♂️ Example Spell Casting
 //!
 //! ```rust
-//! use runes::{RuneEngine, RuneScroll, RuneSymbol};
+//! use runic::{RuneEngine, RuneScroll, RuneSymbol};
 //!
 //! // Summon the ancient engine from the template realm
 //! let mut engine = RuneEngine::new("sacred_scrolls");
@@ -37,7 +37,7 @@
 //! assert_eq!(result, "Behold! Rust Developer embarks upon Debug Production Issues! 🗡️");
 //! ```
 //!
-//! ## 🌟 Why "Runes"?
+//! ## 🌟 Why "Runic"?
 //!
 //! Because templating is basically ancient magic:
 //! - You write mysterious symbols (`{{}}`) that transform into reality

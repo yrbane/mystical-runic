@@ -1,14 +1,14 @@
-# 🔮 Runes - Ancient Symbols for Modern Web Magic
+# 🔮 Runic - Ancient Symbols for Modern Web Magic
 
 *"With great power comes great responsibility... and curly braces."*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Crates.io](https://img.shields.io/crates/v/runes.svg)](https://crates.io/crates/runes)
-[![Documentation](https://docs.rs/runes/badge.svg)](https://docs.rs/runes)
+[![Crates.io](https://img.shields.io/crates/v/runic.svg)](https://crates.io/crates/runic)
+[![Documentation](https://docs.rs/runic/badge.svg)](https://docs.rs/runic)
 
-## 🧙‍♂️ What is Runes?
+## 🧙‍♂️ What is Runic?
 
-**Runes** is a mystical templating engine that transforms ancient Nordic symbols (okay, just `{{}}`) into beautiful HTML. Born from the sacred fires of Rust and tempered in the forge of TDD, it brings magic to your web applications without the complexity of summoning actual demons.
+**Runic** is a mystical templating engine that transforms ancient Nordic symbols (okay, just `{{}}`) into beautiful HTML. Born from the sacred fires of Rust and tempered in the forge of TDD, it brings magic to your web applications without the complexity of summoning actual demons.
 
 ## ⚡ Sacred Features
 
@@ -25,11 +25,11 @@
 
 ```toml
 [dependencies]
-runes = "0.1.0"
+runic = "0.1.0"
 ```
 
 ```rust
-use runes::{RuneEngine, RuneScroll, RuneSymbol};
+use runic::{RuneEngine, RuneScroll, RuneSymbol};
 
 // Summon the ancient engine
 let mut engine = RuneEngine::new("templates");
@@ -138,7 +138,7 @@ match engine.render("spell.html", &scroll) {
 
 ## 🎭 Philosophy
 
-Runes embraces the ancient developer truth: **templating is basically magic**. 
+Runic embraces the ancient developer truth: **templating is basically magic**. 
 
 - You write mysterious symbols that transform into reality ✨
 - Variables appear and disappear like spirits 👻  
@@ -154,9 +154,9 @@ Runes embraces the ancient developer truth: **templating is basically magic**.
 - **Test Covered**: 22+ tests ensure the magic works
 - **Zero Dependencies**: Pure Rust magic (except for error handling)
 
-## 🌟 Why Choose Runes?
+## 🌟 Why Choose Runic?
 
-Because life's too short for boring template engines. Runes brings:
+Because life's too short for boring template engines. Runic brings:
 
 - **Joy**: Code that makes you smile
 - **Power**: All the features you need

@@ -1,4 +1,4 @@
-use runes::{TemplateEngine, TemplateContext, TemplateValue};
+use runic::{TemplateEngine, TemplateContext, TemplateValue};
 use std::fs;
 
 // Helper function to create test template files
@@ -34,16 +34,16 @@ fn setup_test_templates() -> tempfile::TempDir {
 
 #[test]
 fn test_template_engine_creation() {
-    let engine = TemplateEngine::new("templates");
+    let _engine = TemplateEngine::new("templates");
     // Engine created successfully (no public access to internal fields to test)
 }
 
 #[test]
 fn test_template_context_creation() {
-    let context = TemplateContext::new();
+    let _context = TemplateContext::new();
     // Context created successfully
     
-    let default_context = TemplateContext::default();
+    let _default_context = TemplateContext::default();
     // Default context created successfully
 }
 
