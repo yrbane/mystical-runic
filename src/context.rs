@@ -37,6 +37,11 @@ impl TemplateContext {
         self.set(name, TemplateValue::Number(value));
     }
 
+    /// Get a variable value
+    pub fn get(&self, name: &str) -> Option<&TemplateValue> {
+        self.variables.get(name)
+    }
+
     /// Get a string value
     pub fn get_string(&self, name: &str) -> Option<String> {
         self.variables.get(name).map(|v| match v {
