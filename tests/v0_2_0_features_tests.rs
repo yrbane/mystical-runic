@@ -5,7 +5,7 @@ use mystical_runic::{TemplateEngine, TemplateContext, TemplateValue};
 use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
-use std::time::{Duration, Instant};
+use std::time::Duration;
 
 macro_rules! hashmap {
     ($($key:expr => $value:expr),* $(,)?) => {
@@ -755,4 +755,116 @@ fn debug_streaming_backpressure() {
     
     println!("result.is_err(): {}", is_err);
     println!("result.is_ok(): {}", is_ok);
+}
+
+#[test]
+fn debug_filters_output() {
+    let templates_path = create_temp_dir();
+    
+    let template = r#"
+<h1>{{title|upper}}</h1>
+<p>{{description|lower}}</p>
+<span>{{price|currency}}</span>
+<time>{{date|date:"Y-m-d"}}</time>
+<div>{{content|truncate:50}}</div>
+    "#;
+    fs::write(templates_path.join("filters.html"), template).unwrap();
+    
+    let mut engine = TemplateEngine::new(templates_path.to_str().unwrap());
+    let mut context = TemplateContext::new();
+    context.set_string("title", "hello world");
+    context.set_string("description", "THIS IS A DESCRIPTION");
+    context.set_number("price", 1299);
+    context.set_string("date", "2024-01-15");
+    context.set_string("content", "This is a very long content that should be truncated at some point to avoid display issues");
+    
+    match engine.render("filters.html", &context) {
+        Ok(result) => {
+            println!("\n=== FILTERS OUTPUT ===");
+            println!("{}", result);
+            println!("\n=== CHECKS ===");
+            println!("- Contains '<h1>HELLO WORLD</h1>': {}", result.contains("<h1>HELLO WORLD</h1>"));
+            println!("- Contains '<p>this is a description</p>': {}", result.contains("<p>this is a description</p>"));
+            println!("- Contains '<span>$12.99</span>': {}", result.contains("<span>$12.99</span>"));
+            println!("- Contains '<time>2024-01-15</time>': {}", result.contains("<time>2024-01-15</time>"));
+            println!("- Contains truncate: {}", result.contains("This is a very long content that should be truncat..."));
+        }
+        Err(e) => {
+            println!("ERROR: {:?}", e);
+        }
+    }
+}
+
+#[test]
+fn debug_macros_output() {
+    let templates_path = create_temp_dir();
+    
+    let template = r#"
+{{macro button(text, type="button", class="btn")}}
+<button type="{{type}}" class="{{class}}">{{text}}</button>
+{{/macro}}
+
+{{macro card(title, content)}}
+<div class="card">
+    <h3>{{title}}</h3>
+    <div class="card-body">{{content}}</div>
+</div>
+{{/macro}}
+
+<!-- Usage -->
+{{button("Click me", type="submit", class="btn btn-primary")}}
+{{card("My Card", "This is the card content")}}
+    "#;
+    fs::write(templates_path.join("macros.html"), template).unwrap();
+    
+    let mut engine = TemplateEngine::new(templates_path.to_str().unwrap());
+    let context = TemplateContext::new();
+    
+    match engine.render("macros.html", &context) {
+        Ok(result) => {
+            println!("\n=== MACROS OUTPUT ===");
+            println!("{}", result);
+            println!("\n=== CHECKS ===");
+            println!("- Contains button with submit: {}", result.contains("<button type=\"submit\" class=\"btn btn-primary\">Click me</button>"));
+            println!("- Contains card title: {}", result.contains("<h3>My Card</h3>"));
+            println!("- Contains card content: {}", result.contains("This is the card content"));
+        }
+        Err(e) => {
+            println!("ERROR: {:?}", e);
+        }
+    }
+}
+
+#[test]
+fn debug_i18n_output() {
+    let templates_path = create_temp_dir();
+    
+    let template = r#"
+<h1>{{t "welcome_message"}}</h1>
+<p>{{t "user_greeting" name=user.name}}</p>
+<span>{{t "items_count" count=items|length}}</span>
+    "#;
+    fs::write(templates_path.join("i18n.html"), template).unwrap();
+    
+    let mut engine = TemplateEngine::new(templates_path.to_str().unwrap());
+    let mut context = TemplateContext::new();
+    let mut user = HashMap::new();
+    user.insert("name".to_string(), TemplateValue::String("Alice".to_string()));
+    context.set("user", TemplateValue::Object(user));
+    context.set("items", TemplateValue::Array(vec![
+        TemplateValue::String("item1".to_string()),
+        TemplateValue::String("item2".to_string())
+    ]));
+    
+    match engine.render("i18n.html", &context) {
+        Ok(result) => {
+            println!("\n=== I18N OUTPUT ===");
+            println!("{}", result);
+            println!("\n=== CHECKS ===");
+            println!("- Contains welcome message: {}", result.contains("Welcome"));
+        }
+        Err(e) => {
+            println!("ERROR: {:?}", e);
+        }
+    }
 }

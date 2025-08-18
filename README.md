@@ -12,22 +12,33 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 ## ✨ Features
 
 🔒 **Security First**: XSS-safe by default with comprehensive HTML escaping  
-⚡ **Performance**: Template caching and efficient parsing  
+⚡ **High Performance**: Template caching, bytecode compilation, parallel processing  
 🎯 **Simple API**: Clean, intuitive interface for Rust developers  
-🧪 **Well Tested**: 100% test coverage with extensive security tests  
-📚 **Rich Syntax**: Variables, conditionals, loops, includes, and comments  
-🌐 **Unicode Safe**: Full Unicode support with proper encoding  
+🧪 **Well Tested**: 127+ tests with extensive security and performance tests  
+🏗️ **Template Inheritance**: Advanced layout system with nested inheritance and `{{super}}`  
+🔧 **Powerful Filters**: Built-in filters like `upper`, `lower`, `currency`, `truncate` with chaining support  
+📦 **Reusable Macros**: Define and reuse template components with parameters  
+🌊 **Deep Object Navigation**: Unlimited depth dot notation (e.g., `{{user.profile.stats.level}}`)  
+🌐 **Zero Dependencies**: Pure Rust implementation with no external dependencies  
 
 ## ⚡ The Sacred Incantations
 
+### Core Magic
 - **Whisper Variables**: `{{name}}` - Speak a name and it shall manifest (safely escaped from evil XSS spirits)
 - **Summon Raw Power**: `{{& html}}` - Unleash unescaped HTML with great responsibility and greater danger
 - **Divine Conditionals**: `{{if chosen_one}}...{{/if}}` - The HTML appears only for the worthy
 - **Mystical Loops**: `{{for spell in grimoire}}...{{/for}}` - Repeat incantations until magic happens
 - **Ancient Includes**: `{{include "scrolls/wisdom.html"}}` - Import wisdom from other sacred texts
 - **Silent Whispers**: `{{! This is but a comment, invisible to mortals }}` - Notes for future wizards
-- **Object Divination**: `{{user.power_level}}` - Peer into the properties of mystical entities
 - **Deep Path Traversal**: `{{user.profile.stats.level}}` - Navigate through nested object realms with unlimited depth
+
+### Advanced Sorcery (v0.2.0)
+- **Sacred Inheritance**: `{{extends "base.html"}}` - Inherit the power of ancestral templates
+- **Mystical Blocks**: `{{block content}}...{{/block}}` - Define regions of power in your layouts
+- **Ancestral Wisdom**: `{{super}}` - Channel the content of parent templates
+- **Transformation Filters**: `{{name|upper|truncate:10}}` - Transform values with ancient filters
+- **Reusable Spells (Macros)**: `{{macro spell(power)}}...{{/macro}}` - Create reusable incantations
+- **Spell Invocation**: `{{spell("lightning")}}` - Call upon your defined macros
 
 ## 🚀 Quick Start
 
@@ -35,7 +46,7 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 
 ```toml
 [dependencies]
-mystical-runic = "0.1.3"
+mystical-runic = "0.2.0"
 ```
 
 ### Basic Usage
@@ -173,6 +184,105 @@ let template = r#"
 
 let result = engine.render_string(template, &scroll).unwrap();
 println!("{}", result);
+```
+
+## 🏰 Template Inheritance (v0.2.0)
+
+Create sophisticated layouts with template inheritance:
+
+```html
+<!-- base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{block title}}My Site{{/block}}</title>
+</head>
+<body>
+    <header>{{block header}}Default Header{{/block}}</header>
+    <main>{{block content}}{{/block}}</main>
+    <footer>{{block footer}}© 2024 My Site{{/block}}</footer>
+</body>
+</html>
+```
+
+```html
+<!-- admin.html -->
+{{extends "base.html"}}
+
+{{block title}}Admin Panel - {{block page_title}}{{/block}}{{/block}}
+
+{{block content}}
+<div class="admin-layout">
+    <nav>{{block sidebar}}Default Sidebar{{/block}}</nav>
+    <main>{{block admin_content}}{{/block}}</main>
+</div>
+{{/block}}
+```
+
+```html
+<!-- admin_users.html -->
+{{extends "admin.html"}}
+
+{{block page_title}}User Management{{/block}}
+
+{{block admin_content}}
+<h1>Users</h1>
+{{for user in users}}
+    <div class="user-card">{{user.name}} - {{user.role}}</div>
+{{/for}}
+{{/block}}
+```
+
+## 🔧 Powerful Filters (v0.2.0)
+
+Transform your data with built-in filters:
+
+```html
+<h1>{{title|upper}}</h1>                    <!-- HELLO WORLD -->
+<p>{{description|lower}}</p>                <!-- hello world -->
+<span>${{price|currency}}</span>            <!-- $12.99 -->
+<div>{{content|truncate:50}}</div>          <!-- Truncated text... -->
+<time>{{date|date:"Y-m-d"}}</time>          <!-- 2024-01-15 -->
+
+<!-- Chain multiple filters -->
+<p>{{name|lower|capitalize}}</p>            <!-- John Doe -->
+<span>{{text|strip|truncate:20|upper}}</span>   <!-- TRIMMED TEXT... -->
+```
+
+## 📦 Reusable Macros (v0.2.0)
+
+Create reusable template components:
+
+```html
+<!-- Define macros -->
+{{macro button(text, type="button", class="btn")}}
+<button type="{{type}}" class="{{class}}">{{text}}</button>
+{{/macro}}
+
+{{macro card(title, content, class="card")}}
+<div class="{{class}}">
+    <h3 class="card-title">{{title}}</h3>
+    <div class="card-body">{{content}}</div>
+</div>
+{{/macro}}
+
+{{macro user_card(user)}}
+<div class="user-card">
+    <h4>{{user.name}}</h4>
+    <p>{{user.email}}</p>
+    {{if user.active}}
+        <span class="status active">Online</span>
+    {{/if}}
+</div>
+{{/macro}}
+
+<!-- Use macros -->
+{{button("Save", type="submit", class="btn btn-primary")}}
+{{card("Welcome", "This is a welcome message", class="card highlight")}}
+
+{{for user in users}}
+    {{user_card(user)}}
+{{/for}}
 ```
 
 ## 📖 Template Syntax Guide
@@ -411,7 +521,25 @@ Mystical-Runic follows strict **Test-Driven Development** practices. When contri
 
 ## 📜 Changelog
 
-### v0.1.1 (Latest Release)
+### v0.2.0 (Latest Release) - The Advanced Sorcery Edition
+
+- 🏰 **Template Inheritance**: Advanced layout system with nested inheritance support
+- 🔧 **Powerful Filters**: Built-in filters (`upper`, `lower`, `currency`, `truncate`, `date`) with chaining
+- 📦 **Reusable Macros**: Define and invoke template components with parameters
+- 🌊 **Enhanced Deep Navigation**: Unlimited depth dot notation (`{{game.player.stats.level}}`)
+- ⚡ **Performance Boost**: Bytecode compilation, parallel processing, memory mapping
+- 🧪 **127+ Tests**: Comprehensive test coverage including v0.2.0 features
+- 🔧 **Bug Fixes**: Fixed nested layout inheritance and function call error handling
+- 🌐 **Zero Dependencies**: Pure Rust implementation
+
+### v0.1.4 (Stability Release)
+
+- 🔧 Fixed nested layout inheritance block replacement boundary calculation
+- 🛡️ Enhanced loop error handling for unsupported function calls
+- 🔄 Maintained backward compatibility for missing variables in loops
+- ✅ All 127 tests passing with comprehensive coverage
+
+### v0.1.1 (Security & Testing Release)
 
 - 🛡️ Comprehensive security testing suite
 - 🧪 85+ tests with 100% coverage following TDD methodology
