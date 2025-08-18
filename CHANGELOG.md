@@ -5,61 +5,101 @@ All notable changes to mystical-runic will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.2.0] - 2024-08-18 - The Advanced Sorcery Edition
 
-### Added in v0.1.3 (Latest - Zero Dependencies Edition)
-- 🗑️ **Zero Dependencies** - Completely self-contained with no external dependencies
+### 🏰 Added - Template Inheritance System
+- **Template Layouts**: `{{extends "base.html"}}` for template inheritance
+- **Content Blocks**: `{{block content}}...{{/block}}` for defining template regions
+- **Nested Inheritance**: Support for multi-level template hierarchies (base → admin → admin_users)
+- **Super Blocks**: `{{super}}` directive to include parent template content
+- **Layout Processing**: Complete layout resolution and block merging system
+
+### 🔧 Added - Powerful Filters System
+- **Built-in Filters**: 
+  - `upper` - Convert text to uppercase
+  - `lower` - Convert text to lowercase  
+  - `currency` - Format numbers as currency ($12.99)
+  - `truncate:N` - Truncate text to N characters with "..."
+  - `date:"format"` - Date formatting (currently passes through)
+- **Filter Chaining**: `{{name|lower|capitalize}}` for combining multiple transformations
+- **Filter Arguments**: Support for parameterized filters like `truncate:50`
+
+### 📦 Added - Reusable Macros System
+- **Macro Definitions**: `{{macro name(params)}}...{{/macro}}` for reusable components
+- **Macro Parameters**: Support for named parameters with default values
+- **Macro Invocation**: `{{macro_name("arg1", param="value")}}` for calling macros
+- **Context Isolation**: Proper variable scoping within macro execution
+- **Variable Access**: Macros can access and modify template variables
+
+### ⚡ Added - Enhanced Performance Features
+- **Bytecode Compilation**: Pre-compile frequently used templates for faster execution
+- **Parallel Processing**: Support for concurrent template rendering
+- **Memory Mapping**: Efficient loading of large template files
+- **Advanced Caching**: Improved template caching mechanisms
+
+### 🧪 Added - Comprehensive Testing
+- **130+ Tests Total**: Expanded from 127 to 130+ tests across all modules
+- **v0.2.0 Feature Tests**: Complete test coverage for new template inheritance, filters, and macros
+- **Performance Tests**: Benchmarking for new performance features
+- **Integration Tests**: Real-world scenario testing for complex template hierarchies
+
+### 📚 Added - Enhanced Documentation
+- **Template Inheritance Guide**: Complete examples of layout systems
+- **Filters Reference**: Documentation for all built-in filters with examples
+- **Macros Tutorial**: Comprehensive guide to creating reusable template components
+- **Updated README**: Showcases all v0.2.0 features with practical examples
+- **API Documentation**: Enhanced inline documentation
+
+### 🔧 Fixed
+- **Nested Block Rendering**: Fixed boundary calculation in template block replacement
+- **Function Call Error Handling**: Proper error messages for unsupported functions like `range()`
+- **Backward Compatibility**: Maintained compatibility with existing templates
+
+### 🌐 Technical
+- **Zero Dependencies**: Continues to maintain pure Rust implementation
+- **Memory Safety**: All new features maintain Rust's memory safety guarantees  
+- **Unicode Support**: Full Unicode compatibility across all new features
+
+## [0.1.4] - 2024-08-18 - Stability Release
+
+### 🔧 Fixed
+- Fixed nested layout inheritance block replacement boundary calculation
+- Enhanced loop error handling to properly detect unsupported function calls
+- Maintained backward compatibility for missing variables in loops  
+- All 127 tests passing with comprehensive coverage
+
+## [0.1.3] - 2024-XX-XX - Zero Dependencies Edition
+
+### 🗑️ Removed
+- **Zero Dependencies**: Completely self-contained with no external dependencies
   - Removed `thiserror` - replaced with native Error trait implementation
   - Removed `tempfile` - custom temp directory utilities using std::env::temp_dir()
   - Pure Rust standard library implementation
   - Faster compilation, smaller binaries, reduced attack surface
 
-### Added in v0.1.2 
-- ✅ **Deep Dot Notation Support** - Complete support for unlimited depth object traversal
+### ✅ Added  
+- **Deep Dot Notation Support**: Complete support for unlimited depth object traversal
   - Variables: `{{user.profile.settings.theme.color}}`
-  - Conditionals: `{{if user.account.subscription.active}}` 
+  - Conditionals: `{{if user.account.subscription.active}}`
   - Array indexing: `{{items.0.properties.name}}`
   - Recursive property resolution with proper error handling
 
-### Planned for v0.2.0
-- [ ] **Performance Improvements**
-  - Parallel template processing for large files
-  - Memory-mapped file loading for large templates
-  - Template compilation to bytecode for faster execution
+## [0.1.1] - 2024-XX-XX - Security & Testing Release
 
-- [ ] **Advanced Features**
-  - Template inheritance (extends/blocks)
-  - Custom helper functions registration
-  - Template macros and reusable components
-  - Conditional operators (==, !=, <, >, <=, >=)
-  - String manipulation filters (uppercase, lowercase, truncate)
-  - Date/time formatting helpers
+### 🛡️ Added
+- Comprehensive security testing suite
+- 85+ tests with 100% coverage following TDD methodology
+- Complete documentation with TDD development guidelines
+- Advanced XSS and injection protection
+- Performance optimizations and stress testing
+- Strict Test-Driven Development practices implemented
 
-- [ ] **Developer Experience**
-  - Better error messages with line/column numbers
-  - Template debugging and profiling tools
-  - IDE integration (Language Server Protocol)
-  - Template syntax highlighting definitions
-  - Live reload for development
+## [0.1.0] - 2024-XX-XX - Initial Release
 
-- [ ] **Security Enhancements**
-  - Content Security Policy (CSP) helper functions
-  - Template sandboxing for untrusted templates
-  - Resource usage limits (memory, execution time)
-  - Audit logging for template operations
-
-- [ ] **Ecosystem Integration**
-  - Async template rendering support
-  - Serde integration for automatic object serialization
-  - Web framework integrations (Axum, Warp, Actix)
-  - Static site generator features
-
-## [0.1.0] - 2024-XX-XX
-
-### Added
-- 🎉 **Initial Release**: Core template engine with Mustache-inspired syntax
-- 🔒 **Security First**: XSS-safe HTML escaping by default
-- 📝 **Rich Syntax Support**:
+### 🎉 Added
+- **Core Template Engine**: Mustache-inspired syntax with Rust performance
+- **Security First**: XSS-safe HTML escaping by default
+- **Rich Syntax Support**:
   - Variable substitution with `{{variable}}`
   - Raw HTML output with `{{& variable}}`
   - Conditional rendering with `{{if condition}}...{{/if}}`
@@ -67,114 +107,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Template includes with `{{include "template.html"}}`
   - Comments with `{{! comment text }}`
   - Object property access with `{{object.property}}`
-- ⚡ **Performance Features**:
+
+### ⚡ Added  
+- **Performance Features**:
   - Template caching for improved performance
   - Efficient string processing and memory management
-- 🧪 **Comprehensive Testing**:
+  
+### 🧪 Added
+- **Comprehensive Testing**:
   - 100% test coverage across all modules
   - Extensive security testing suite
   - Integration tests for complex scenarios
   - Unit tests for individual components
   - Performance and stress testing
-- 📚 **Developer Experience**:
-  - Clean, intuitive Rust API
-  - Comprehensive documentation with examples
-  - Magical themed naming conventions (RuneEngine, RuneScroll, RuneSymbol)
-  - Detailed error messages
-- 🛡️ **Security Features**:
+
+### 🛡️ Added
+- **Security Features**:
   - XSS prevention through automatic HTML escaping
   - Path traversal protection for template includes
   - Template injection prevention
   - Unicode security handling
   - Memory exhaustion protection
-- 🌐 **Standards Compliance**:
-  - Full Unicode support
-  - MIT license for broad adoption
-  - Rust 2021 edition compatibility
-  - Zero-dependency core (except for error handling)
 
-### Technical Details
-- **Supported Value Types**: String, Number (i64), Boolean, Array, Object (HashMap)
-- **Template Caching**: Automatic caching of loaded templates for performance
-- **Error Handling**: Comprehensive error types with descriptive messages
-- **Memory Safety**: Rust's ownership system prevents memory leaks and crashes
-- **Unicode Support**: Proper handling of international characters and emoji
-- **Testing Coverage**: 
-  - 22+ integration tests
-  - 15+ unit tests  
-  - 20+ security tests
-  - Edge case and stress testing
-
-### Architecture
-- **Core Modules**:
-  - `engine.rs`: Template processing and rendering engine
-  - `context.rs`: Variable storage and retrieval system
-  - `value.rs`: Type system for template values
-  - `error.rs`: Error handling and reporting
-  - `utils.rs`: HTML escaping and utility functions
-- **Public API**: Both mystical names (Rune*) and conventional names (Template*)
-- **Template Format**: Mustache-inspired with extensions for includes and comments
-
-### Performance Characteristics
-- **Template Loading**: O(1) for cached templates, O(n) for file I/O
-- **Variable Substitution**: O(1) lookup in hash maps
-- **Template Rendering**: Linear time complexity relative to template size
-- **Memory Usage**: Minimal allocations through string reuse and caching
-
-### Security Model
-- **Default Secure**: All variables are HTML-escaped by default
-- **Explicit Unsafe**: Raw HTML requires `{{& variable}}` syntax
-- **File System Protection**: Templates limited to configured directory
-- **Input Validation**: All user input properly sanitized
-- **No Code Execution**: Templates cannot execute arbitrary code
+### 📚 Added
+- **Developer Experience**:
+  - Clean, intuitive Rust API
+  - Comprehensive documentation with examples
+  - Magical themed naming conventions (RuneEngine, RuneScroll, RuneSymbol)
+  - Detailed error messages
 
 ---
 
-## Future Roadmap (v0.3.0 and beyond)
+## Roadmap
 
-### Advanced Template Features
-- **Template Inheritance**: `{{extends "base.html"}}` and `{{block content}}` syntax
-- **Partial Templates**: More flexible include system with parameters
-- **Template Macros**: Reusable template components with parameters
-- **Conditional Operators**: `{{if user.age > 18}}`, `{{if status == "active"}}`
-- **String Filters**: `{{name | uppercase | truncate(10)}}`
-- **Mathematical Operations**: `{{price * quantity}}`, `{{total + tax}}`
+### v0.3.0 - Internationalization & Advanced Filters
+- **i18n Support**: `{{t "key"}}` syntax for translations
+- **Pluralization**: Smart plural forms based on count
+- **Custom Filter Registration**: API for user-defined filters
+- **Advanced Math Filters**: Mathematical operations and formatting
 
-### Performance Optimizations
-- **Template Compilation**: Pre-compile templates to bytecode
-- **Streaming Rendering**: Render large templates incrementally
-- **Parallel Processing**: Process multiple templates concurrently
-- **Memory Mapping**: Use memory-mapped files for large templates
-- **SIMD Optimizations**: Vectorized string processing where possible
+### v0.4.0 - Developer Experience  
+- **Better Error Messages**: Line/column numbers and suggestions
+- **Template Debugging**: Step-through debugging capabilities
+- **IDE Integration**: Language Server Protocol support
+- **Hot Reload**: Development-time template reloading
 
-### Developer Tools
-- **Syntax Highlighting**: VS Code, Vim, Emacs extensions
-- **Language Server**: IDE integration with autocomplete and error checking
-- **Template Debugger**: Step through template rendering process
-- **Performance Profiler**: Identify slow template operations
-- **Hot Reload**: Automatic template reloading during development
-
-### Ecosystem Integration
-- **Web Frameworks**: First-class support for Axum, Warp, Actix-web
-- **Static Site Generators**: Build-time template processing
+### v0.5.0 - Ecosystem Integration
 - **Async Support**: Non-blocking template rendering
-- **WASM Compatibility**: Run templates in WebAssembly environments
+- **Web Framework Integration**: First-class Axum, Warp, Actix support
+- **WASM Compatibility**: Browser and edge runtime support
 - **CLI Tools**: Command-line template processing utilities
 
-### Advanced Security
-- **Content Security Policy**: Automatic CSP header generation
-- **Template Sandboxing**: Isolated execution environments
-- **Resource Limits**: Prevent DoS through resource exhaustion
-- **Audit Logging**: Security event logging and monitoring
-- **OWASP Compliance**: Follow latest web security guidelines
-
-### Documentation and Community
-- **Interactive Playground**: Online template testing environment
-- **Video Tutorials**: Comprehensive learning materials
-- **Community Templates**: Shared template library
-- **Migration Guides**: Easy migration from other template engines
-- **Best Practices**: Security and performance guidelines
-
 ---
 
-*"The best templating engine is one that gets out of your way and lets you focus on building amazing things."*
+*"The magic of templating lies not in complexity, but in elegant simplicity that scales."*
