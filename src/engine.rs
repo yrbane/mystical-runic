@@ -4,15 +4,22 @@ use crate::error::{TemplateError, TemplateResult};
 use crate::context::TemplateContext;
 use crate::value::TemplateValue;
 use crate::utils::html_escape;
+use crate::bytecode::{CompiledTemplate, TemplateCompiler, BytecodeExecutor};
 use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
+use std::sync::Arc;
+use std::thread;
 
 /// Template engine for rendering HTML templates
 #[derive(Debug, Clone)]
 pub struct TemplateEngine {
     template_dir: String,
     cache: HashMap<String, String>,
+    bytecode_cache_enabled: bool,
+    bytecode_cache: HashMap<String, CompiledTemplate>,
+    compiler: TemplateCompiler,
+    executor: BytecodeExecutor,
 }
 
 impl TemplateEngine {
@@ -21,6 +28,10 @@ impl TemplateEngine {
         Self {
             template_dir: template_dir.to_string(),
             cache: HashMap::new(),
+            bytecode_cache_enabled: false,
+            bytecode_cache: HashMap::new(),
+            compiler: TemplateCompiler::new(),
+            executor: BytecodeExecutor::new(),
         }
     }
 
@@ -331,5 +342,144 @@ impl TemplateEngine {
         } else {
             Ok(String::new())
         }
+    }
+    
+    // Performance features for TDD
+    
+    /// Render multiple templates in parallel
+    pub fn render_parallel(&mut self, template_names: &[String], context: &TemplateContext) -> TemplateResult<Vec<String>> {
+        let context = Arc::new(context.clone());
+        let template_dir = Arc::new(self.template_dir.clone());
+        
+        let handles: Vec<_> = template_names.iter().map(|name| {
+            let name = name.clone();
+            let context = Arc::clone(&context);
+            let template_dir = Arc::clone(&template_dir);
+            
+            thread::spawn(move || {
+                let mut engine = TemplateEngine::new(&template_dir);
+                engine.render(&name, &context)
+            })
+        }).collect();
+        
+        let mut results = Vec::new();
+        for handle in handles {
+            let result = handle.join().map_err(|_| TemplateError::Render("Thread panic".to_string()))??;
+            results.push(result);
+        }
+        
+        Ok(results)
+    }
+    
+    /// Load template using memory mapping (minimal implementation)
+    /// In production, this would use memmap2 crate for true memory mapping
+    pub fn load_template_mmap(&mut self, name: &str) -> TemplateResult<String> {
+        // Check cache first for memory efficiency
+        if let Some(cached) = self.cache.get(name) {
+            return Ok(cached.clone());
+        }
+
+        let path = Path::new(&self.template_dir).join(name);
+        let content = fs::read_to_string(&path)
+            .map_err(|e| TemplateError::Template(format!("Failed to mmap template '{}': {}", name, e)))?;
+
+        // In a real implementation with memmap2:
+        // let file = File::open(&path)?;
+        // let mmap = unsafe { MmapOptions::new().map(&file)? };
+        // let content = std::str::from_utf8(&mmap)?;
+        
+        self.cache.insert(name.to_string(), content.clone());
+        Ok(content)
+    }
+    
+    /// Compile template to bytecode
+    pub fn compile_to_bytecode(&mut self, template_name: &str) -> TemplateResult<CompiledTemplate> {
+        if self.bytecode_cache_enabled {
+            if let Some(cached) = self.bytecode_cache.get(template_name) {
+                return Ok(cached.clone());
+            }
+        }
+        
+        let template_content = self.load_template(template_name)?;
+        let instructions = self.compiler.compile(&template_content)?;
+        let compiled = CompiledTemplate::new(template_name.to_string(), instructions);
+        
+        if self.bytecode_cache_enabled {
+            self.bytecode_cache.insert(template_name.to_string(), compiled.clone());
+        }
+        
+        Ok(compiled)
+    }
+    
+    /// Compile template to bytecode without caching
+    pub fn compile_to_bytecode_uncached(&mut self, template_name: &str) -> TemplateResult<CompiledTemplate> {
+        let template_content = self.load_template(template_name)?;
+        let instructions = self.compiler.compile(&template_content)?;
+        Ok(CompiledTemplate::new(template_name.to_string(), instructions))
+    }
+    
+    /// Render compiled template
+    pub fn render_compiled(&self, compiled_template: &CompiledTemplate, context: &TemplateContext) -> TemplateResult<String> {
+        self.executor.execute(&compiled_template.instructions, context)
+    }
+    
+    /// Check if template is cached in bytecode cache
+    pub fn is_bytecode_cached(&self, template_name: &str) -> bool {
+        self.bytecode_cache.contains_key(template_name)
+    }
+    
+    /// Enable or disable bytecode caching
+    pub fn enable_bytecode_cache(&mut self, enabled: bool) {
+        self.bytecode_cache_enabled = enabled;
+        if !enabled {
+            self.bytecode_cache.clear();
+        }
+    }
+    
+    /// Compile multiple templates in parallel
+    pub fn compile_templates_parallel(&mut self, template_names: &[String]) -> TemplateResult<Vec<CompiledTemplate>> {
+        let template_dir = Arc::new(self.template_dir.clone());
+        
+        let handles: Vec<_> = template_names.iter().map(|name| {
+            let name = name.clone();
+            let template_dir = Arc::clone(&template_dir);
+            
+            thread::spawn(move || {
+                let mut engine = TemplateEngine::new(&template_dir);
+                engine.compile_to_bytecode(&name)
+            })
+        }).collect();
+        
+        let mut results = Vec::new();
+        for handle in handles {
+            let result = handle.join().map_err(|_| TemplateError::Render("Thread panic".to_string()))??;
+            results.push(result);
+        }
+        
+        Ok(results)
+    }
+    
+    /// Render multiple compiled templates in parallel
+    pub fn render_compiled_parallel(&self, compiled_templates: &[CompiledTemplate], context: &TemplateContext) -> TemplateResult<Vec<String>> {
+        let context = Arc::new(context.clone());
+        let executor = Arc::new(self.executor.clone());
+        
+        let handles: Vec<_> = compiled_templates.iter().map(|template| {
+            let template = template.clone();
+            let context = Arc::clone(&context);
+            let executor: Arc<BytecodeExecutor> = Arc::clone(&executor);
+            
+            thread::spawn(move || {
+                executor.execute(&template.instructions, &context)
+            })
+        }).collect();
+        
+        let mut results = Vec::new();
+        for handle in handles {
+            let result = handle.join().map_err(|_| TemplateError::Render("Thread panic".to_string()))??;
+            results.push(result);
+        }
+        
+        Ok(results)
     }
 }

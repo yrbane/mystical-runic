@@ -55,6 +55,7 @@ mod engine;
 mod context;
 mod value;
 mod utils;
+mod bytecode;
 
 // Ancient names for backwards compatibility with mundane mortals
 pub use error::{TemplateError, TemplateResult};
