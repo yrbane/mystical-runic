@@ -27,6 +27,7 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 - **Ancient Includes**: `{{include "scrolls/wisdom.html"}}` - Import wisdom from other sacred texts
 - **Silent Whispers**: `{{! This is but a comment, invisible to mortals }}` - Notes for future wizards
 - **Object Divination**: `{{user.power_level}}` - Peer into the properties of mystical entities
+- **Deep Path Traversal**: `{{user.profile.stats.level}}` - Navigate through nested object realms with unlimited depth
 
 ## 🚀 Quick Start
 
@@ -115,6 +116,65 @@ fn create_spell(name: &str, damage: i64, icon: &str) -> RuneSymbol {
 }
 ```
 
+### Deep Dot Notation Example
+
+```rust
+use mystical_runic::{RuneEngine, RuneScroll, RuneSymbol};
+use std::collections::HashMap;
+
+let mut engine = RuneEngine::new(".");
+let mut scroll = RuneScroll::new();
+
+// Create deeply nested game data structure
+let mut stats = HashMap::new();
+stats.insert("level".to_string(), RuneSymbol::Number(42));
+stats.insert("health".to_string(), RuneSymbol::Number(100));
+stats.insert("mana".to_string(), RuneSymbol::Number(75));
+
+let mut equipment = HashMap::new();
+equipment.insert("weapon".to_string(), RuneSymbol::String("Mystical Sword".to_string()));
+equipment.insert("armor".to_string(), RuneSymbol::String("Dragon Scale".to_string()));
+
+let mut character = HashMap::new();
+character.insert("name".to_string(), RuneSymbol::String("Aragorn".to_string()));
+character.insert("class".to_string(), RuneSymbol::String("Ranger".to_string()));
+character.insert("stats".to_string(), RuneSymbol::Object(stats));
+character.insert("equipment".to_string(), RuneSymbol::Object(equipment));
+
+let mut game_data = HashMap::new();
+game_data.insert("character".to_string(), RuneSymbol::Object(character));
+
+scroll.set("game", RuneSymbol::Object(game_data));
+
+// Use deep dot notation to access nested values
+let template = r#"
+🎮 GAME CHARACTER SHEET 🎮
+
+👤 Name: {{game.character.name}}
+🎭 Class: {{game.character.class}}
+
+📊 STATS:
+❤️ Health: {{game.character.stats.health}}
+💙 Mana: {{game.character.stats.mana}}
+⭐ Level: {{game.character.stats.level}}
+
+⚔️ EQUIPMENT:
+{{if game.character.equipment.weapon}}
+🗡️ Weapon: {{game.character.equipment.weapon}}
+{{/if}}
+{{if game.character.equipment.armor}}
+🛡️ Armor: {{game.character.equipment.armor}}
+{{/if}}
+
+{{if game.character.stats.level}}
+🏆 Status: {{if game.character.stats.health}}Combat Ready{{/if}}
+{{/if}}
+"#;
+
+let result = engine.render_string(template, &scroll).unwrap();
+println!("{}", result);
+```
+
 ## 📖 Template Syntax Guide
 
 ### Variables
@@ -128,6 +188,10 @@ fn create_spell(name: &str, damage: i64, icon: &str) -> RuneSymbol {
 
 <!-- Object properties -->
 <span>{{user.name}} ({{user.email}})</span>
+
+<!-- Deep nested properties -->
+<div>Level: {{player.character.stats.level}}</div>
+<p>{{config.database.connection.host}}:{{config.database.connection.port}}</p>
 ```
 
 ### Conditionals
@@ -141,6 +205,15 @@ fn create_spell(name: &str, damage: i64, icon: &str) -> RuneSymbol {
   <ul class="item-list">
     <!-- items exist -->
   </ul>
+{{/if}}
+
+<!-- Deep conditionals -->
+{{if user.settings.notifications.email.enabled}}
+  <p>Email notifications are on</p>
+{{/if}}
+
+{{if config.features.advanced.enabled}}
+  <div class="advanced-features">Advanced mode active</div>
 {{/if}}
 ```
 

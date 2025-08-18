@@ -312,7 +312,6 @@ fn test_conditionals_with_objects() {
 }
 
 #[test]
-#[ignore] // TODO: Nested property conditionals not yet implemented  
 fn test_conditionals_with_nested_properties() {
     let mut engine = TemplateEngine::new("templates");
     let mut context = TemplateContext::new();
@@ -570,9 +569,9 @@ fn test_multi_level_dot_notation() {
     
     context.set("user", TemplateValue::Object(user_obj));
     
-    // Test that multi-level dot notation returns empty (current behavior)
+    // Test that multi-level dot notation now works with deep support
     let result = engine.render_string("{{user.address.street.name}} {{user.address.street.number}}", &context).unwrap();
-    assert_eq!(result, " "); // Current implementation doesn't support 3+ level nesting
+    assert_eq!(result, "Main St 123"); // Deep dot notation now supported
     
     // Test that 2-level nesting works
     let result2 = engine.render_string("{{user.name}} {{user.address}}", &context).unwrap();
@@ -1303,9 +1302,9 @@ fn test_three_plus_level_dot_notation() {
     
     context.set("level1", TemplateValue::Object(level1));
     
-    // Test 3+ level dot notation (should return empty with current implementation)
+    // Test 3+ level dot notation (now supported with deep implementation)
     let result = engine.render_string("{{level1.level2.level3.deep_value}}", &context).unwrap();
-    assert_eq!(result, ""); // Current implementation doesn't support 3+ levels
+    assert_eq!(result, "found"); // Deep dot notation now supported
     
     // Test with even more levels
     let result = engine.render_string("{{a.b.c.d.e.f.g}}", &context).unwrap();
@@ -1341,7 +1340,6 @@ fn test_property_access_on_array_and_object_values() {
 }
 
 #[test]
-#[ignore] // TODO: Dot notation in conditionals not yet implemented
 fn test_conditionals_with_dot_notation() {
     let mut engine = TemplateEngine::new("templates");
     let mut context = TemplateContext::new();
@@ -1368,6 +1366,64 @@ fn test_conditionals_with_dot_notation() {
     assert_eq!(result, "");
     
     let result = engine.render_string("{{if user.nonexistent}}Should not show{{/if}}", &context).unwrap();
+    assert_eq!(result, "");
+}
+
+#[test]
+fn test_deep_dot_notation_comprehensive() {
+    let mut engine = TemplateEngine::new("templates");
+    let mut context = TemplateContext::new();
+    
+    // Create a deeply nested structure
+    let mut level3 = std::collections::HashMap::new();
+    level3.insert("value".to_string(), TemplateValue::String("deep_value".to_string()));
+    level3.insert("number".to_string(), TemplateValue::Number(42));
+    level3.insert("flag".to_string(), TemplateValue::Bool(true));
+    level3.insert("empty".to_string(), TemplateValue::String("".to_string()));
+    
+    let mut level2 = std::collections::HashMap::new();
+    level2.insert("nested".to_string(), TemplateValue::Object(level3));
+    level2.insert("array".to_string(), TemplateValue::Array(vec![
+        TemplateValue::String("first".to_string()),
+        TemplateValue::Number(100),
+        TemplateValue::Bool(false),
+    ]));
+    
+    let mut level1 = std::collections::HashMap::new();
+    level1.insert("deep".to_string(), TemplateValue::Object(level2));
+    
+    context.set("root", TemplateValue::Object(level1));
+    
+    // Test deep variable access
+    let result = engine.render_string("{{root.deep.nested.value}}", &context).unwrap();
+    assert_eq!(result, "deep_value");
+    
+    let result = engine.render_string("{{root.deep.nested.number}}", &context).unwrap();
+    assert_eq!(result, "42");
+    
+    // Test deep conditionals
+    let result = engine.render_string("{{if root.deep.nested.flag}}Flag is true{{/if}}", &context).unwrap();
+    assert_eq!(result, "Flag is true");
+    
+    let result = engine.render_string("{{if root.deep.nested.empty}}Should not show{{/if}}", &context).unwrap();
+    assert_eq!(result, "");
+    
+    // Test array access with deep dot notation
+    let result = engine.render_string("{{root.deep.array.0}}", &context).unwrap();
+    assert_eq!(result, "first");
+    
+    let result = engine.render_string("{{root.deep.array.1}}", &context).unwrap();
+    assert_eq!(result, "100");
+    
+    // Test conditional with array access
+    let result = engine.render_string("{{if root.deep.array.2}}Boolean in array{{/if}}", &context).unwrap();
+    assert_eq!(result, ""); // false should not show
+    
+    // Test nonexistent deep paths
+    let result = engine.render_string("{{root.deep.nonexistent.value}}", &context).unwrap();
+    assert_eq!(result, "");
+    
+    let result = engine.render_string("{{if root.deep.nonexistent.value}}Should not show{{/if}}", &context).unwrap();
     assert_eq!(result, "");
 }
 

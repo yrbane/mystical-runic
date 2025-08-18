@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added in v0.1.2 
+- ✅ **Deep Dot Notation Support** - Complete support for unlimited depth object traversal
+  - Variables: `{{user.profile.settings.theme.color}}`
+  - Conditionals: `{{if user.account.subscription.active}}` 
+  - Array indexing: `{{items.0.properties.name}}`
+  - Recursive property resolution with proper error handling
+
 ### Planned for v0.2.0
 - [ ] **Performance Improvements**
-  - Multi-level dot notation support (3+ levels)
   - Parallel template processing for large files
   - Memory-mapped file loading for large templates
   - Template compilation to bytecode for faster execution

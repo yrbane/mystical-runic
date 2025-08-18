@@ -185,28 +185,57 @@ impl TemplateEngine {
         Ok(result)
     }
 
-    /// Get variable value with support for dot notation (object.property)
+    /// Get variable value with support for deep dot notation (object.property.nested.value)
     fn get_variable_value(&self, var_name: &str, context: &TemplateContext) -> String {
         if var_name.contains('.') {
             let parts: Vec<&str> = var_name.split('.').collect();
-            if parts.len() == 2 {
-                let object_name = parts[0];
-                let property_name = parts[1];
-                
-                if let Some(TemplateValue::Object(obj)) = context.variables.get(object_name) {
-                    if let Some(value) = obj.get(property_name) {
-                        return match value {
-                            TemplateValue::String(s) => s.clone(),
-                            TemplateValue::Bool(b) => b.to_string(),
-                            TemplateValue::Number(n) => n.to_string(),
-                            _ => String::new(),
-                        };
-                    }
-                }
+            if let Some(root_value) = context.variables.get(parts[0]) {
+                return self.traverse_nested_value(root_value, &parts[1..]);
             }
             String::new()
         } else {
             context.get_string(var_name).unwrap_or_default()
+        }
+    }
+
+    /// Recursively traverse nested object properties
+    fn traverse_nested_value(&self, current_value: &TemplateValue, remaining_parts: &[&str]) -> String {
+        if remaining_parts.is_empty() {
+            // We've reached the end of the path, convert the value to string
+            return match current_value {
+                TemplateValue::String(s) => s.clone(),
+                TemplateValue::Bool(b) => b.to_string(),
+                TemplateValue::Number(n) => n.to_string(),
+                TemplateValue::Array(_) => String::new(), // Arrays render as empty string when accessed directly
+                TemplateValue::Object(_) => String::new(), // Objects render as empty string when accessed directly
+            };
+        }
+
+        // We still have more parts to traverse
+        let current_part = remaining_parts[0];
+        let next_parts = &remaining_parts[1..];
+
+        match current_value {
+            TemplateValue::Object(obj) => {
+                if let Some(next_value) = obj.get(current_part) {
+                    self.traverse_nested_value(next_value, next_parts)
+                } else {
+                    String::new() // Property not found
+                }
+            }
+            TemplateValue::Array(arr) => {
+                // Support array indexing with numeric strings (optional enhancement)
+                if let Ok(index) = current_part.parse::<usize>() {
+                    if let Some(element) = arr.get(index) {
+                        self.traverse_nested_value(element, next_parts)
+                    } else {
+                        String::new() // Index out of bounds
+                    }
+                } else {
+                    String::new() // Invalid array index
+                }
+            }
+            _ => String::new(), // Can't traverse further on non-object/non-array values
         }
     }
 
@@ -227,17 +256,61 @@ impl TemplateEngine {
 
     /// Evaluate a condition
     fn evaluate_condition(&self, condition: &str, context: &TemplateContext) -> bool {
-        // Simple condition evaluation - can be extended
-        if let Some(value) = context.variables.get(condition) {
-            match value {
-                TemplateValue::Bool(b) => *b,
-                TemplateValue::String(s) => !s.is_empty(),
-                TemplateValue::Number(n) => *n != 0,
-                TemplateValue::Array(a) => !a.is_empty(),
-                TemplateValue::Object(o) => !o.is_empty(),
+        // Support both simple variables and deep dot notation in conditionals
+        if condition.contains('.') {
+            let parts: Vec<&str> = condition.split('.').collect();
+            if let Some(root_value) = context.variables.get(parts[0]) {
+                return self.evaluate_nested_condition(root_value, &parts[1..]);
             }
+            false
+        } else if let Some(value) = context.variables.get(condition) {
+            self.is_truthy(value)
         } else {
             false
+        }
+    }
+
+    /// Evaluate condition for nested properties
+    fn evaluate_nested_condition(&self, current_value: &TemplateValue, remaining_parts: &[&str]) -> bool {
+        if remaining_parts.is_empty() {
+            return self.is_truthy(current_value);
+        }
+
+        let current_part = remaining_parts[0];
+        let next_parts = &remaining_parts[1..];
+
+        match current_value {
+            TemplateValue::Object(obj) => {
+                if let Some(next_value) = obj.get(current_part) {
+                    self.evaluate_nested_condition(next_value, next_parts)
+                } else {
+                    false // Property not found
+                }
+            }
+            TemplateValue::Array(arr) => {
+                // Support array indexing in conditionals too
+                if let Ok(index) = current_part.parse::<usize>() {
+                    if let Some(element) = arr.get(index) {
+                        self.evaluate_nested_condition(element, next_parts)
+                    } else {
+                        false // Index out of bounds
+                    }
+                } else {
+                    false // Invalid array index
+                }
+            }
+            _ => false, // Can't traverse further
+        }
+    }
+
+    /// Check if a value is truthy
+    fn is_truthy(&self, value: &TemplateValue) -> bool {
+        match value {
+            TemplateValue::Bool(b) => *b,
+            TemplateValue::String(s) => !s.is_empty(),
+            TemplateValue::Number(n) => *n != 0,
+            TemplateValue::Array(a) => !a.is_empty(),
+            TemplateValue::Object(o) => !o.is_empty(),
         }
     }
 
