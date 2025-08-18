@@ -2,6 +2,19 @@
 
 use mystical_runic::*;
 use std::collections::HashMap;
+use std::path::PathBuf;
+
+// Utility to create temporary directories for testing
+fn create_temp_dir() -> PathBuf {
+    let mut temp_path = std::env::temp_dir();
+    let timestamp = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_nanos();
+    temp_path.push(format!("mystical_runic_test_{}_{}", std::process::id(), timestamp));
+    let _ = std::fs::create_dir_all(&temp_path);
+    temp_path
+}
 
 // Tests for utility functions
 mod utils_tests {
@@ -246,14 +259,13 @@ mod engine_tests {
 
     #[test]
     fn test_engine_render_string_vs_render_file() {
-        let temp_dir = tempfile::tempdir().unwrap();
-        let template_path = temp_dir.path();
+        let templates_path = create_temp_dir();
         
         // Create a test template file
         let template_content = "Hello {{name}}!";
-        fs::write(template_path.join("test.html"), template_content).unwrap();
+        fs::write(templates_path.join("test.html"), template_content).unwrap();
         
-        let mut engine = TemplateEngine::new(template_path.to_str().unwrap());
+        let mut engine = TemplateEngine::new(templates_path.to_str().unwrap());
         let mut context = TemplateContext::new();
         context.set_string("name", "World");
         
@@ -270,13 +282,12 @@ mod engine_tests {
 
     #[test]
     fn test_engine_caching_behavior() {
-        let temp_dir = tempfile::tempdir().unwrap();
-        let template_path = temp_dir.path();
+        let templates_path = create_temp_dir();
         
         // Create initial template
-        fs::write(template_path.join("cached.html"), "Version 1: {{var}}").unwrap();
+        fs::write(templates_path.join("cached.html"), "Version 1: {{var}}").unwrap();
         
-        let mut engine = TemplateEngine::new(template_path.to_str().unwrap());
+        let mut engine = TemplateEngine::new(templates_path.to_str().unwrap());
         let mut context = TemplateContext::new();
         context.set_string("var", "test");
         
@@ -285,7 +296,7 @@ mod engine_tests {
         assert_eq!(result1, "Version 1: test");
         
         // Modify the file (in real scenario, caching might prevent seeing changes)
-        fs::write(template_path.join("cached.html"), "Version 2: {{var}}").unwrap();
+        fs::write(templates_path.join("cached.html"), "Version 2: {{var}}").unwrap();
         
         // Second load (behavior depends on caching implementation)
         let result2 = engine.render("cached.html", &context).unwrap();

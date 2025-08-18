@@ -4,6 +4,19 @@
 use mystical_runic::*;
 use std::collections::HashMap;
 use std::fs;
+use std::path::PathBuf;
+
+// Utility to create temporary directories for testing
+fn create_temp_dir() -> PathBuf {
+    let mut temp_path = std::env::temp_dir();
+    let timestamp = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_nanos();
+    temp_path.push(format!("mystical_runic_test_{}_{}", std::process::id(), timestamp));
+    let _ = std::fs::create_dir_all(&temp_path);
+    temp_path
+}
 
 #[test]
 fn test_xss_prevention_comprehensive() {
@@ -71,8 +84,7 @@ fn test_injection_attacks_prevention() {
 #[test] 
 #[ignore] // TODO: Path traversal protection not yet implemented
 fn test_path_traversal_prevention() {
-    let temp_dir = tempfile::tempdir().unwrap();
-    let templates_path = temp_dir.path();
+    let templates_path = create_temp_dir();
     
     // Create a template in a subdirectory
     let sub_dir = templates_path.join("safe");
@@ -80,7 +92,7 @@ fn test_path_traversal_prevention() {
     fs::write(sub_dir.join("template.html"), "Safe content").unwrap();
     
     // Create a file outside the templates directory
-    let outside_file = temp_dir.path().parent().unwrap().join("secret.txt");
+    let outside_file = &templates_path.parent().unwrap().join("secret.txt");
     fs::write(&outside_file, "Secret content").unwrap();
     
     let mut engine = TemplateEngine::new(templates_path.to_str().unwrap());
@@ -196,8 +208,7 @@ fn test_unicode_security_issues() {
 #[test]
 #[ignore] // TODO: Sophisticated file access control not yet implemented
 fn test_information_disclosure_prevention() {
-    let temp_dir = tempfile::tempdir().unwrap();
-    let templates_path = temp_dir.path();
+    let templates_path = create_temp_dir();
     
     // Create some files that shouldn't be accessible
     fs::write(templates_path.join(".env"), "SECRET_KEY=super_secret").unwrap();

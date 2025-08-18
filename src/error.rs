@@ -1,21 +1,40 @@
 //! Error types for the template engine
 
-use thiserror::Error;
+use std::fmt;
 
 /// Template engine error type
-#[derive(Error, Debug)]
+#[derive(Debug)]
 pub enum TemplateError {
-    #[error("IO error: {0}")]
-    Io(#[from] std::io::Error),
-    
-    #[error("Template error: {0}")]
+    Io(std::io::Error),
     Template(String),
-    
-    #[error("Parse error: {0}")]
     Parse(String),
-    
-    #[error("Runtime error: {0}")]
     Runtime(String),
+}
+
+impl fmt::Display for TemplateError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            TemplateError::Io(err) => write!(f, "IO error: {}", err),
+            TemplateError::Template(msg) => write!(f, "Template error: {}", msg),
+            TemplateError::Parse(msg) => write!(f, "Parse error: {}", msg),
+            TemplateError::Runtime(msg) => write!(f, "Runtime error: {}", msg),
+        }
+    }
+}
+
+impl std::error::Error for TemplateError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            TemplateError::Io(err) => Some(err),
+            _ => None,
+        }
+    }
+}
+
+impl From<std::io::Error> for TemplateError {
+    fn from(err: std::io::Error) -> Self {
+        TemplateError::Io(err)
+    }
 }
 
 /// Template engine result type

@@ -10,7 +10,5 @@ keywords = ["template", "html", "web", "runic", "magic"]
 categories = ["template-engine", "web-programming"]
 
 [dependencies]
-thiserror = "1.0"
 
 [dev-dependencies]
-tempfile = "3.8"

@@ -1,10 +1,26 @@
 use mystical_runic::{TemplateEngine, TemplateContext, TemplateValue};
 use std::fs;
+use std::path::PathBuf;
+
+// Utility to create temporary directories for testing
+fn create_temp_dir() -> PathBuf {
+    let mut temp_path = std::env::temp_dir();
+    let timestamp = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_nanos();
+    temp_path.push(format!("mystical_runic_test_{}_{}", std::process::id(), timestamp));
+    let _ = std::fs::create_dir_all(&temp_path);
+    temp_path
+}
+
+fn cleanup_temp_dir(path: &PathBuf) {
+    let _ = std::fs::remove_dir_all(path);
+}
 
 // Helper function to create test template files
-fn setup_test_templates() -> tempfile::TempDir {
-    let temp_dir = tempfile::tempdir().unwrap();
-    let templates_path = temp_dir.path();
+fn setup_test_templates() -> PathBuf {
+    let templates_path = create_temp_dir();
     
     // Create a simple test template
     fs::write(
@@ -29,7 +45,7 @@ fn setup_test_templates() -> tempfile::TempDir {
         "<ul>{{for item in items}}<li>{{item.name}}: {{item.value}}</li>{{/for}}</ul>"
     ).unwrap();
     
-    temp_dir
+    templates_path
 }
 
 #[test]
@@ -756,8 +772,8 @@ fn test_comments_with_whitespace() {
 
 #[test]
 fn test_template_loading_and_caching() {
-    let temp_dir = setup_test_templates();
-    let mut engine = TemplateEngine::new(temp_dir.path().to_str().unwrap());
+    let templates_path = setup_test_templates();
+    let mut engine = TemplateEngine::new(templates_path.to_str().unwrap());
     
     // First load
     let template1 = engine.load_template("test.html").unwrap();
@@ -770,8 +786,8 @@ fn test_template_loading_and_caching() {
 
 #[test]
 fn test_template_rendering_from_file() {
-    let temp_dir = setup_test_templates();
-    let mut engine = TemplateEngine::new(temp_dir.path().to_str().unwrap());
+    let templates_path = setup_test_templates();
+    let mut engine = TemplateEngine::new(templates_path.to_str().unwrap());
     let mut context = TemplateContext::new();
     context.set_string("title", "Test Title");
     context.set_string("content", "Test Content");
@@ -782,8 +798,8 @@ fn test_template_rendering_from_file() {
 
 #[test]
 fn test_includes() {
-    let temp_dir = setup_test_templates();
-    let mut engine = TemplateEngine::new(temp_dir.path().to_str().unwrap());
+    let templates_path = setup_test_templates();
+    let mut engine = TemplateEngine::new(templates_path.to_str().unwrap());
     let mut context = TemplateContext::new();
     context.set_string("app_name", "My App");
     context.set_string("body", "Welcome!");
@@ -796,8 +812,7 @@ fn test_includes() {
 
 #[test]
 fn test_circular_includes_detection() {
-    let temp_dir = tempfile::tempdir().unwrap();
-    let templates_path = temp_dir.path();
+    let templates_path = create_temp_dir();
     
     // Create a simple non-circular include to test include functionality
     fs::write(
@@ -815,13 +830,14 @@ fn test_circular_includes_detection() {
     
     let result = engine.render("main.html", &context).unwrap();
     assert_eq!(result, "Before Simple content After");
+    
+    cleanup_temp_dir(&templates_path);
 }
 
 #[test]
 #[ignore] // TODO: Include chaining produces extra content
 fn test_nested_includes() {
-    let temp_dir = tempfile::tempdir().unwrap();
-    let templates_path = temp_dir.path();
+    let templates_path = create_temp_dir();
     
     // Create nested includes (but not circular)
     fs::write(
@@ -848,8 +864,7 @@ fn test_nested_includes() {
 
 #[test]
 fn test_deep_include_chain() {
-    let temp_dir = tempfile::tempdir().unwrap();
-    let templates_path = temp_dir.path();
+    let templates_path = create_temp_dir();
     
     // Create a deep chain: level1 -> level2 -> level3 -> level4 -> level5
     for i in 1..=5 {
@@ -869,12 +884,13 @@ fn test_deep_include_chain() {
     
     let result = engine.render("level1.html", &context).unwrap();
     assert_eq!(result, "Level 1 Level 2 Level 3 Level 4 Level 5");
+    
+    cleanup_temp_dir(&templates_path);
 }
 
 #[test]
 fn test_include_nonexistent_file() {
-    let temp_dir = tempfile::tempdir().unwrap();
-    let templates_path = temp_dir.path();
+    let templates_path = create_temp_dir();
     
     fs::write(
         templates_path.join("main.html"),
@@ -1239,8 +1255,7 @@ fn test_stress_parsing_edge_cases() {
 
 #[test]
 fn test_template_caching_behavior() {
-    let temp_dir = tempfile::tempdir().unwrap();
-    let templates_path = temp_dir.path();
+    let templates_path = create_temp_dir();
     
     // Create a template file
     fs::write(
@@ -1485,8 +1500,8 @@ fn test_file_io_error_scenarios() {
     assert!(result.is_err());
     
     // Test with permission denied scenario (simulate by using a file as directory)
-    let temp_dir = tempfile::tempdir().unwrap();
-    let file_path = temp_dir.path().join("not_a_directory.txt");
+    let templates_path = create_temp_dir();
+    let file_path = &templates_path.join("not_a_directory.txt");
     fs::write(&file_path, "content").unwrap();
     
     let mut engine2 = TemplateEngine::new(file_path.to_str().unwrap());
@@ -1550,8 +1565,7 @@ fn test_memory_stress_large_templates() {
 #[test]
 #[ignore] // TODO: Complex nested includes with conditionals need work
 fn test_complex_nested_scenarios() {
-    let temp_dir = tempfile::tempdir().unwrap();
-    let templates_path = temp_dir.path();
+    let templates_path = create_temp_dir();
     
     // Create complex nested template with includes, loops, and conditionals
     fs::write(
