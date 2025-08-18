@@ -2,7 +2,7 @@
 name = "mystical-runic"
 version = "0.1.1"
 edition = "2021"
-authors = ["Chat Team"]
+authors = ["yrbane <yrbane@nethttp.net>"]
 description = "🔮 Ancient symbols for modern web magic - A mystical templating engine that weaves HTML from runic incantations"
 license = "MIT"
 repository = "https://github.com/yrbane/mystical-runic.git"
