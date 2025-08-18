@@ -35,7 +35,7 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 
 ```toml
 [dependencies]
-mystical-runic = "0.1.1"
+mystical-runic = "0.1.3"
 ```
 
 ### Basic Usage

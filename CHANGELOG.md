@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added in v0.1.3 (Latest - Zero Dependencies Edition)
+- 🗑️ **Zero Dependencies** - Completely self-contained with no external dependencies
+  - Removed `thiserror` - replaced with native Error trait implementation
+  - Removed `tempfile` - custom temp directory utilities using std::env::temp_dir()
+  - Pure Rust standard library implementation
+  - Faster compilation, smaller binaries, reduced attack surface
+
 ### Added in v0.1.2 
 - ✅ **Deep Dot Notation Support** - Complete support for unlimited depth object traversal
   - Variables: `{{user.profile.settings.theme.color}}`
