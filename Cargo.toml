@@ -5,7 +5,7 @@ edition = "2021"
 authors = ["Chat Team"]
 description = "🔮 Ancient symbols for modern web magic - A mystical templating engine that weaves HTML from runic incantations"
 license = "MIT"
-repository = "https://github.com/yrbane/runic"
+repository = "https://github.com/yrbane/mystical-runic.git"
 keywords = ["template", "html", "web", "runic", "magic"]
 categories = ["template-engine", "web-programming"]
 

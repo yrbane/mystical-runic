@@ -3,7 +3,7 @@
 //! This example demonstrates the mystical powers of the Runic templating engine
 //! by creating a magical character sheet for a fantasy RPG.
 
-use runic::{RuneEngine, RuneScroll, RuneSymbol};
+use mystical_runic::{RuneEngine, RuneScroll, RuneSymbol};
 use std::collections::HashMap;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

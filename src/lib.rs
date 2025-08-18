@@ -18,7 +18,7 @@
 //! ## 🧙‍♂️ Example Spell Casting
 //!
 //! ```rust
-//! use runic::{RuneEngine, RuneScroll, RuneSymbol};
+//! use mystical_runic::{RuneEngine, RuneScroll, RuneSymbol};
 //!
 //! // Summon the ancient engine from the template realm
 //! let mut engine = RuneEngine::new("sacred_scrolls");
