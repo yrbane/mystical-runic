@@ -1,1 +1,362 @@
-# 🔮 Mystical-Runic - Ancient Symbols for Modern Web Magic\n\n*\"In the beginning was the Word, and the Word was `{{mustache}}`...\"*\n\n[![Crates.io](https://img.shields.io/crates/v/mystical-runic.svg)](https://crates.io/crates/mystical-runic)\n[![Documentation](https://docs.rs/mystical-runic/badge.svg)](https://docs.rs/mystical-runic)\n[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)\n[![Build Status](https://github.com/yrbane/mystical-runic/workflows/CI/badge.svg)](https://github.com/yrbane/mystical-runic/actions)\n\nWelcome, brave developer, to the mystical realm of **Mystical-Runic** - where ancient Nordic symbols meet modern HTML templating in a beautiful dance of curly braces and digital sorcery!\n\n## ✨ Features\n\n🔒 **Security First**: XSS-safe by default with comprehensive HTML escaping  \n⚡ **Performance**: Template caching and efficient parsing  \n🎯 **Simple API**: Clean, intuitive interface for Rust developers  \n🧪 **Well Tested**: 100% test coverage with extensive security tests  \n📚 **Rich Syntax**: Variables, conditionals, loops, includes, and comments  \n🌐 **Unicode Safe**: Full Unicode support with proper encoding  \n\n## ⚡ The Sacred Incantations\n\n- **Whisper Variables**: `{{name}}` - Speak a name and it shall manifest (safely escaped from evil XSS spirits)\n- **Summon Raw Power**: `{{& html}}` - Unleash unescaped HTML with great responsibility and greater danger\n- **Divine Conditionals**: `{{if chosen_one}}...{{/if}}` - The HTML appears only for the worthy\n- **Mystical Loops**: `{{for spell in grimoire}}...{{/for}}` - Repeat incantations until magic happens\n- **Ancient Includes**: `{{include \"scrolls/wisdom.html\"}}` - Import wisdom from other sacred texts\n- **Silent Whispers**: `{{! This is but a comment, invisible to mortals }}` - Notes for future wizards\n- **Object Divination**: `{{user.power_level}}` - Peer into the properties of mystical entities\n\n## 🚀 Quick Start\n\n### Installation\n\n```toml\n[dependencies]\nmystical-runic = \"0.1.0\"\n```\n\n### Basic Usage\n\n```rust\nuse mystical_runic::{RuneEngine, RuneScroll, RuneSymbol};\n\n// Summon the ancient engine from the template realm\nlet mut engine = RuneEngine::new(\"templates\");\nlet mut scroll = RuneScroll::new();\n\n// Inscribe your desires upon the scroll\nscroll.set_string(\"hero\", \"Rust Developer\");\nscroll.set_string(\"quest\", \"Debug Production Issues\");\nscroll.set_number(\"level\", 99);\nscroll.set_bool(\"has_coffee\", true);\n\n// Speak the incantation and witness the transformation\nlet result = engine.render_string(\n    \"Behold! {{hero}} of level {{level}} embarks upon {{quest}}! {{if has_coffee}}☕{{/if}}\", \n    &scroll\n).unwrap();\n\nassert_eq!(result, \"Behold! Rust Developer of level 99 embarks upon Debug Production Issues! ☕\");\n```\n\n### Advanced Example: Character Sheet Generator\n\n```rust\nuse mystical_runic::{RuneEngine, RuneScroll, RuneSymbol};\nuse std::collections::HashMap;\n\nlet mut engine = RuneEngine::new(\".\");\nlet mut scroll = RuneScroll::new();\n\n// Create a magical character\nlet mut character = HashMap::new();\ncharacter.insert(\"name\".to_string(), RuneSymbol::String(\"Gandalf the Grey\".to_string()));\ncharacter.insert(\"class\".to_string(), RuneSymbol::String(\"Wizard\".to_string()));\ncharacter.insert(\"level\".to_string(), RuneSymbol::Number(85));\ncharacter.insert(\"mana\".to_string(), RuneSymbol::Number(9999));\ncharacter.insert(\"has_staff\".to_string(), RuneSymbol::Bool(true));\n\nscroll.set(\"character\", RuneSymbol::Object(character));\n\n// ⚔️ Create spell list\nlet spells = vec![\n    create_spell(\"Fireball\", 50, \"🔥\"),\n    create_spell(\"Lightning Bolt\", 75, \"⚡\"),\n    create_spell(\"Ice Shard\", 40, \"❄️\"),\n];\nscroll.set(\"spells\", RuneSymbol::Array(spells));\n\nlet character_sheet = r#\"\n🧙‍♂️ Name: {{character.name}}\n🎓 Class: {{character.class}} (Level {{character.level}})\n🔮 Mana: {{character.mana}}\n\n{{if character.has_staff}}\n🪄 Equipment: Magical Staff of Power\n{{/if}}\n\n⚡ KNOWN SPELLS:\n{{for spell in spells}}\n  {{spell.icon}} {{spell.name}} - Power: {{spell.damage}}\n{{/for}}\n\"#;\n\nlet result = engine.render_string(character_sheet, &scroll).unwrap();\nprintln!(\"{}\", result);\n\nfn create_spell(name: &str, damage: i64, icon: &str) -> RuneSymbol {\n    let mut spell = HashMap::new();\n    spell.insert(\"name\".to_string(), RuneSymbol::String(name.to_string()));\n    spell.insert(\"damage\".to_string(), RuneSymbol::Number(damage));\n    spell.insert(\"icon\".to_string(), RuneSymbol::String(icon.to_string()));\n    RuneSymbol::Object(spell)\n}\n```\n\n## 📖 Template Syntax Guide\n\n### Variables\n\n```html\n<!-- Safe HTML escaping (default) -->\n<p>{{user_input}}</p>\n\n<!-- Raw HTML output (use with caution) -->\n<div>{{& trusted_html}}</div>\n\n<!-- Object properties -->\n<span>{{user.name}} ({{user.email}})</span>\n```\n\n### Conditionals\n\n```html\n{{if user.is_admin}}\n  <button class=\"admin-panel\">Admin Controls</button>\n{{/if}}\n\n{{if items}}\n  <ul class=\"item-list\">\n    <!-- items exist -->\n  </ul>\n{{/if}}\n```\n\n**Truthiness Rules:**\n- Strings: non-empty = true, empty = false\n- Numbers: non-zero = true, zero = false\n- Booleans: as expected\n- Arrays: non-empty = true, empty = false\n- Objects: non-empty = true, empty = false\n\n### Loops\n\n```html\n{{for product in products}}\n  <div class=\"product\">\n    <h3>{{product.name}}</h3>\n    <p>Price: ${{product.price}}</p>\n    {{if product.on_sale}}\n      <span class=\"sale-badge\">ON SALE!</span>\n    {{/if}}\n  </div>\n{{/for}}\n```\n\n### Template Includes\n\n```html\n<!-- main.html -->\n<!DOCTYPE html>\n<html>\n<head>\n  {{include \"partials/head.html\"}}\n</head>\n<body>\n  {{include \"partials/header.html\"}}\n  <main>{{content}}</main>\n  {{include \"partials/footer.html\"}}\n</body>\n</html>\n```\n\n### Comments\n\n```html\n{{! This comment will not appear in the output }}\n<div>\n  {{! \n    Multi-line comments\n    are also supported\n  }}\n  <p>Visible content</p>\n</div>\n```\n\n## 🔒 Security Features\n\nMystical-Runic takes security seriously and provides multiple layers of protection:\n\n### XSS Prevention\n\n```rust\nlet mut context = RuneScroll::new();\ncontext.set_string(\"user_input\", \"<script>alert('xss')</script>\");\n\nlet result = engine.render_string(\"{{user_input}}\", &context).unwrap();\n// Output: &lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;\n```\n\n### Path Traversal Protection\n\n```rust\n// These will safely fail:\nengine.render(\"../../../etc/passwd\", &context);  // ❌ Blocked\nengine.render(\"..\\\\windows\\\\system32\", &context);  // ❌ Blocked\n```\n\n### Template Injection Prevention\n\n```rust\ncontext.set_string(\"malicious\", \"{{admin_password}}\");\nlet result = engine.render_string(\"{{malicious}}\", &context).unwrap();\n// Output: {{admin_password}} (literal text, not executed)\n```\n\n## 🎨 API Reference\n\n### RuneEngine (TemplateEngine)\n\n```rust\nlet mut engine = RuneEngine::new(\"path/to/templates\");\n\n// Render from file\nlet result = engine.render(\"template.html\", &context)?;\n\n// Render from string\nlet result = engine.render_string(\"Hello {{name}}!\", &context)?;\n\n// Load template (with caching)\nlet template_content = engine.load_template(\"header.html\")?;\n```\n\n### RuneScroll (TemplateContext)\n\n```rust\nlet mut scroll = RuneScroll::new();\n\n// Set different value types\nscroll.set_string(\"name\", \"value\");\nscroll.set_number(\"count\", 42);\nscroll.set_bool(\"active\", true);\n\n// Set complex values\nscroll.set(\"array\", RuneSymbol::Array(vec![...]));\nscroll.set(\"object\", RuneSymbol::Object(hashmap));\n\n// Retrieve values\nlet value = scroll.get_string(\"name\");\n```\n\n### RuneSymbol (TemplateValue)\n\n```rust\n// Create different value types\nlet string_val = RuneSymbol::String(\"text\".to_string());\nlet number_val = RuneSymbol::Number(42);\nlet bool_val = RuneSymbol::Bool(true);\nlet array_val = RuneSymbol::Array(vec![...]);\nlet object_val = RuneSymbol::Object(hashmap);\n```\n\n## 🧪 Testing\n\nRun the comprehensive test suite:\n\n```bash\n# Run all tests\ncargo test\n\n# Run specific test categories\ncargo test integration_tests\ncargo test unit_tests\ncargo test security_tests\n\n# Run with output\ncargo test -- --nocapture\n```\n\n## 🔮 Examples\n\nCheck out the [`examples/`](examples/) directory for more magical demonstrations:\n\n- [`spell_casting.rs`](examples/spell_casting.rs) - Fantasy RPG character sheet generator\n- More examples coming soon!\n\n## 🤝 Contributing\n\nWe welcome contributions from fellow practitioners of the coding arts!\n\n1. Fork the repository\n2. Create your feature branch (`git checkout -b feature/amazing-spell`)\n3. Commit your changes (`git commit -m 'Add amazing spell'`)\n4. Push to the branch (`git push origin feature/amazing-spell`)\n5. Open a Pull Request\n\n### Development Setup\n\n```bash\ngit clone https://github.com/yrbane/mystical-runic.git\ncd mystical-runic\ncargo build\ncargo test\n```\n\n## 📜 Changelog\n\n### v0.1.0 (Initial Release)\n\n- ✨ Core template engine with Mustache-inspired syntax\n- 🔒 XSS-safe HTML escaping by default\n- ⚡ Template caching for performance\n- 🎯 Support for variables, conditionals, loops, includes, and comments\n- 🧪 Comprehensive test suite with 100% coverage\n- 🛡️ Advanced security testing and protection\n- 📚 Complete documentation and examples\n\n## 🌟 Why \"Mystical-Runic\"?\n\nBecause templating is basically ancient magic:\n- You write mysterious symbols (`{{}}`) that transform into reality\n- Variables appear and disappear like spirits\n- One wrong bracket and your entire spell explodes\n- Senior developers guard the template secrets like ancient druids\n- Documentation is written in a language only the initiated understand\n- And just like real magic, it works perfectly until production 🔥\n\n## 🔗 Links\n\n- **Documentation**: [docs.rs/mystical-runic](https://docs.rs/mystical-runic)\n- **Crates.io**: [crates.io/crates/mystical-runic](https://crates.io/crates/mystical-runic)\n- **Repository**: [github.com/yrbane/mystical-runic](https://github.com/yrbane/mystical-runic)\n- **Issues**: [github.com/yrbane/mystical-runic/issues](https://github.com/yrbane/mystical-runic/issues)\n\n## 📄 License\n\nThis project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.\n\n---\n\n*\"May your templates be bug-free and your variables always defined.\"*  \n— Ancient DevOps Proverb\n\n🔮✨ Happy templating! ✨🔮\n"
+# 🔮 Mystical-Runic - Ancient Symbols for Modern Web Magic
+
+*"In the beginning was the Word, and the Word was `{{mustache}}`..."*
+
+[![Crates.io](https://img.shields.io/crates/v/mystical-runic.svg)](https://crates.io/crates/mystical-runic)
+[![Documentation](https://docs.rs/mystical-runic/badge.svg)](https://docs.rs/mystical-runic)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://github.com/yrbane/mystical-runic/workflows/CI/badge.svg)](https://github.com/yrbane/mystical-runic/actions)
+
+Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where ancient Nordic symbols meet modern HTML templating in a beautiful dance of curly braces and digital sorcery!
+
+## ✨ Features
+
+🔒 **Security First**: XSS-safe by default with comprehensive HTML escaping  
+⚡ **Performance**: Template caching and efficient parsing  
+🎯 **Simple API**: Clean, intuitive interface for Rust developers  
+🧪 **Well Tested**: 100% test coverage with extensive security tests  
+📚 **Rich Syntax**: Variables, conditionals, loops, includes, and comments  
+🌐 **Unicode Safe**: Full Unicode support with proper encoding  
+
+## ⚡ The Sacred Incantations
+
+- **Whisper Variables**: `{{name}}` - Speak a name and it shall manifest (safely escaped from evil XSS spirits)
+- **Summon Raw Power**: `{{& html}}` - Unleash unescaped HTML with great responsibility and greater danger
+- **Divine Conditionals**: `{{if chosen_one}}...{{/if}}` - The HTML appears only for the worthy
+- **Mystical Loops**: `{{for spell in grimoire}}...{{/for}}` - Repeat incantations until magic happens
+- **Ancient Includes**: `{{include "scrolls/wisdom.html"}}` - Import wisdom from other sacred texts
+- **Silent Whispers**: `{{! This is but a comment, invisible to mortals }}` - Notes for future wizards
+- **Object Divination**: `{{user.power_level}}` - Peer into the properties of mystical entities
+
+## 🚀 Quick Start
+
+### Installation
+
+```toml
+[dependencies]
+mystical-runic = "0.1.1"
+```
+
+### Basic Usage
+
+```rust
+use mystical_runic::{RuneEngine, RuneScroll, RuneSymbol};
+
+// Summon the ancient engine from the template realm
+let mut engine = RuneEngine::new("templates");
+let mut scroll = RuneScroll::new();
+
+// Inscribe your desires upon the scroll
+scroll.set_string("hero", "Rust Developer");
+scroll.set_string("quest", "Debug Production Issues");
+scroll.set_number("level", 99);
+scroll.set_bool("has_coffee", true);
+
+// Speak the incantation and witness the transformation
+let result = engine.render_string(
+    "Behold! {{hero}} of level {{level}} embarks upon {{quest}}! {{if has_coffee}}☕{{/if}}", 
+    &scroll
+).unwrap();
+
+assert_eq!(result, "Behold! Rust Developer of level 99 embarks upon Debug Production Issues! ☕");
+```
+
+### Advanced Example: Character Sheet Generator
+
+```rust
+use mystical_runic::{RuneEngine, RuneScroll, RuneSymbol};
+use std::collections::HashMap;
+
+let mut engine = RuneEngine::new(".");
+let mut scroll = RuneScroll::new();
+
+// Create a magical character
+let mut character = HashMap::new();
+character.insert("name".to_string(), RuneSymbol::String("Gandalf the Grey".to_string()));
+character.insert("class".to_string(), RuneSymbol::String("Wizard".to_string()));
+character.insert("level".to_string(), RuneSymbol::Number(85));
+character.insert("mana".to_string(), RuneSymbol::Number(9999));
+character.insert("has_staff".to_string(), RuneSymbol::Bool(true));
+
+scroll.set("character", RuneSymbol::Object(character));
+
+// ⚔️ Create spell list
+let spells = vec![
+    create_spell("Fireball", 50, "🔥"),
+    create_spell("Lightning Bolt", 75, "⚡"),
+    create_spell("Ice Shard", 40, "❄️"),
+];
+scroll.set("spells", RuneSymbol::Array(spells));
+
+let character_sheet = r#"
+🧙‍♂️ Name: {{character.name}}
+🎓 Class: {{character.class}} (Level {{character.level}})
+🔮 Mana: {{character.mana}}
+
+{{if character.has_staff}}
+🪄 Equipment: Magical Staff of Power
+{{/if}}
+
+⚡ KNOWN SPELLS:
+{{for spell in spells}}
+  {{spell.icon}} {{spell.name}} - Power: {{spell.damage}}
+{{/for}}
+"#;
+
+let result = engine.render_string(character_sheet, &scroll).unwrap();
+println!("{}", result);
+
+fn create_spell(name: &str, damage: i64, icon: &str) -> RuneSymbol {
+    let mut spell = HashMap::new();
+    spell.insert("name".to_string(), RuneSymbol::String(name.to_string()));
+    spell.insert("damage".to_string(), RuneSymbol::Number(damage));
+    spell.insert("icon".to_string(), RuneSymbol::String(icon.to_string()));
+    RuneSymbol::Object(spell)
+}
+```
+
+## 📖 Template Syntax Guide
+
+### Variables
+
+```html
+<!-- Safe HTML escaping (default) -->
+<p>{{user_input}}</p>
+
+<!-- Raw HTML output (use with caution) -->
+<div>{{& trusted_html}}</div>
+
+<!-- Object properties -->
+<span>{{user.name}} ({{user.email}})</span>
+```
+
+### Conditionals
+
+```html
+{{if user.is_admin}}
+  <button class="admin-panel">Admin Controls</button>
+{{/if}}
+
+{{if items}}
+  <ul class="item-list">
+    <!-- items exist -->
+  </ul>
+{{/if}}
+```
+
+**Truthiness Rules:**
+- Strings: non-empty = true, empty = false
+- Numbers: non-zero = true, zero = false
+- Booleans: as expected
+- Arrays: non-empty = true, empty = false
+- Objects: non-empty = true, empty = false
+
+### Loops
+
+```html
+{{for product in products}}
+  <div class="product">
+    <h3>{{product.name}}</h3>
+    <p>Price: ${{product.price}}</p>
+    {{if product.on_sale}}
+      <span class="sale-badge">ON SALE!</span>
+    {{/if}}
+  </div>
+{{/for}}
+```
+
+### Template Includes
+
+```html
+<!-- main.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  {{include "partials/head.html"}}
+</head>
+<body>
+  {{include "partials/header.html"}}
+  <main>{{content}}</main>
+  {{include "partials/footer.html"}}
+</body>
+</html>
+```
+
+### Comments
+
+```html
+{{! This comment will not appear in the output }}
+<div>
+  {{! 
+    Multi-line comments
+    are also supported
+  }}
+  <p>Visible content</p>
+</div>
+```
+
+## 🔒 Security Features
+
+Mystical-Runic takes security seriously and provides multiple layers of protection:
+
+### XSS Prevention
+
+```rust
+let mut context = RuneScroll::new();
+context.set_string("user_input", "<script>alert('xss')</script>");
+
+let result = engine.render_string("{{user_input}}", &context).unwrap();
+// Output: &lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;
+```
+
+### Path Traversal Protection
+
+```rust
+// These will safely fail:
+engine.render("../../../etc/passwd", &context);  // ❌ Blocked
+engine.render("..\\windows\\system32", &context);  // ❌ Blocked
+```
+
+### Template Injection Prevention
+
+```rust
+context.set_string("malicious", "{{admin_password}}");
+let result = engine.render_string("{{malicious}}", &context).unwrap();
+// Output: {{admin_password}} (literal text, not executed)
+```
+
+## 🎨 API Reference
+
+### RuneEngine (TemplateEngine)
+
+```rust
+let mut engine = RuneEngine::new("path/to/templates");
+
+// Render from file
+let result = engine.render("template.html", &context)?;
+
+// Render from string
+let result = engine.render_string("Hello {{name}}!", &context)?;
+
+// Load template (with caching)
+let template_content = engine.load_template("header.html")?;
+```
+
+### RuneScroll (TemplateContext)
+
+```rust
+let mut scroll = RuneScroll::new();
+
+// Set different value types
+scroll.set_string("name", "value");
+scroll.set_number("count", 42);
+scroll.set_bool("active", true);
+
+// Set complex values
+scroll.set("array", RuneSymbol::Array(vec![...]));
+scroll.set("object", RuneSymbol::Object(hashmap));
+
+// Retrieve values
+let value = scroll.get_string("name");
+```
+
+### RuneSymbol (TemplateValue)
+
+```rust
+// Create different value types
+let string_val = RuneSymbol::String("text".to_string());
+let number_val = RuneSymbol::Number(42);
+let bool_val = RuneSymbol::Bool(true);
+let array_val = RuneSymbol::Array(vec![...]);
+let object_val = RuneSymbol::Object(hashmap);
+```
+
+## 🧪 Testing
+
+Run the comprehensive test suite:
+
+```bash
+# Run all tests
+cargo test
+
+# Run specific test categories
+cargo test integration_tests
+cargo test unit_tests
+cargo test security_tests
+
+# Run with output
+cargo test -- --nocapture
+```
+
+## 🔮 Examples
+
+Check out the [`examples/`](examples/) directory for more magical demonstrations:
+
+- [`spell_casting.rs`](examples/spell_casting.rs) - Fantasy RPG character sheet generator
+- More examples coming soon!
+
+## 🤝 Contributing
+
+We welcome contributions from fellow practitioners of the coding arts!
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-spell`)
+3. Commit your changes (`git commit -m 'Add amazing spell'`)
+4. Push to the branch (`git push origin feature/amazing-spell`)
+5. Open a Pull Request
+
+### Development Setup
+
+```bash
+git clone https://github.com/yrbane/mystical-runic.git
+cd mystical-runic
+cargo build
+cargo test
+```
+
+## 📜 Changelog
+
+### v0.1.1 (Latest Release)
+
+- 🛡️ Comprehensive security testing suite
+- 🧪 100+ tests covering all edge cases
+- 📚 Complete documentation and examples
+- 🔒 Advanced XSS and injection protection
+- ⚡ Performance optimizations and stress testing
+
+### v0.1.0 (Initial Release)
+
+- ✨ Core template engine with Mustache-inspired syntax
+- 🔒 XSS-safe HTML escaping by default
+- ⚡ Template caching for performance
+- 🎯 Support for variables, conditionals, loops, includes, and comments
+- 🧪 Comprehensive test suite with high coverage
+- 📚 Complete documentation and examples
+
+## 🌟 Why "Mystical-Runic"?
+
+Because templating is basically ancient magic:
+- You write mysterious symbols (`{{}}`) that transform into reality
+- Variables appear and disappear like spirits
+- One wrong bracket and your entire spell explodes
+- Senior developers guard the template secrets like ancient druids
+- Documentation is written in a language only the initiated understand
+- And just like real magic, it works perfectly until production 🔥
+
+## 🔗 Links
+
+- **Documentation**: [docs.rs/mystical-runic](https://docs.rs/mystical-runic)
+- **Crates.io**: [crates.io/crates/mystical-runic](https://crates.io/crates/mystical-runic)
+- **Repository**: [github.com/yrbane/mystical-runic](https://github.com/yrbane/mystical-runic)
+- **Issues**: [github.com/yrbane/mystical-runic/issues](https://github.com/yrbane/mystical-runic/issues)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+*"May your templates be bug-free and your variables always defined."*  
+— Ancient DevOps Proverb
+
+🔮✨ Happy templating! ✨🔮
