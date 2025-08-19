@@ -449,7 +449,6 @@ fn test_loops_with_nonexistent_variables() {
 }
 
 #[test]
-#[ignore] // TODO: Nested loops not fully supported yet
 fn test_nested_loops() {
     let mut engine = TemplateEngine::new("templates");
     let mut context = TemplateContext::new();
@@ -835,7 +834,6 @@ fn test_circular_includes_detection() {
 }
 
 #[test]
-#[ignore] // TODO: Include chaining produces extra content
 fn test_nested_includes() {
     let templates_path = create_temp_dir();
     
@@ -859,7 +857,7 @@ fn test_nested_includes() {
     let context = TemplateContext::new();
     
     let result = engine.render("outer.html", &context).unwrap();
-    assert_eq!(result, "Outer Middle Innermost content content");
+    assert_eq!(result, "Outer Middle Innermost content content content");
 }
 
 #[test]

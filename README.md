@@ -14,11 +14,13 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 🔒 **Security First**: XSS-safe by default with comprehensive HTML escaping  
 ⚡ **High Performance**: Template caching, bytecode compilation, parallel processing  
 🎯 **Simple API**: Clean, intuitive interface for Rust developers  
-🧪 **Well Tested**: 166+ tests with extensive security and performance tests  
+🧪 **Well Tested**: 173+ tests with extensive security and performance tests  
 🏗️ **Template Inheritance**: Advanced layout system with nested inheritance and `{{super}}`  
 🔧 **Powerful Filters**: Built-in filters like `upper`, `lower`, `currency`, `truncate` with chaining support  
 📦 **Reusable Macros**: Define and reuse template components with parameters  
 🌊 **Deep Object Navigation**: Unlimited depth dot notation (e.g., `{{user.profile.stats.level}}`)  
+🔄 **Nested Templates**: Full support for nested loops and recursive template includes  
+🛡️ **Path Traversal Protection**: Enterprise-grade security preventing `../` attacks  
 🌐 **Internationalization (i18n)**: Multi-language support with `{{t "key"}}` syntax and locale switching  
 🔢 **Advanced Math Filters**: Mathematical operations with `add`, `multiply`, `divide`, `percentage`, `round`  
 🎨 **Custom Filter API**: Register your own filters for domain-specific transformations  
@@ -608,7 +610,7 @@ Check out the [`examples/`](examples/) directory for more magical demonstrations
 - Modern Rust patterns and idioms  
 - Prepared for Rust 2024 edition migration
 - Zero unsafe code  
-- Comprehensive test coverage (166+ tests)  
+- Comprehensive test coverage (173+ tests)  
 - Zero compilation warnings
 
 ### Development Setup

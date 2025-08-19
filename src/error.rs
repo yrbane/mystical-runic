@@ -10,6 +10,7 @@ pub enum TemplateError {
     Parse(String),
     Runtime(String),
     Render(String),
+    Security(String),
 }
 
 impl fmt::Display for TemplateError {
@@ -20,6 +21,7 @@ impl fmt::Display for TemplateError {
             TemplateError::Parse(msg) => write!(f, "Parse error: {}", msg),
             TemplateError::Runtime(msg) => write!(f, "Runtime error: {}", msg),
             TemplateError::Render(msg) => write!(f, "Render error: {}", msg),
+            TemplateError::Security(msg) => write!(f, "Security error: {}", msg),
         }
     }
 }

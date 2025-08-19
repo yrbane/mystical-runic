@@ -110,6 +110,9 @@ impl TemplateEngine {
             return Ok(cached.clone());
         }
 
+        // Validate template path to prevent path traversal attacks
+        self.validate_template_path(name)?;
+
         let path = Path::new(&self.template_dir).join(name);
         let content = fs::read_to_string(&path)
             .map_err(|e| TemplateError::Template(format!("Failed to read template '{}': {}", name, e)))?;
@@ -194,7 +197,7 @@ impl TemplateEngine {
         Ok(result)
     }
 
-    /// Process include directives
+    /// Process include directives recursively
     fn process_includes(&mut self, template: &str) -> TemplateResult<String> {
         let mut result = template.to_string();
         
@@ -206,7 +209,11 @@ impl TemplateEngine {
             let include_name = directive.trim().trim_matches('"').trim_matches('\'');
             
             let included_content = self.load_template(include_name)?;
-            result.replace_range(start..start + end + 2, &included_content);
+            
+            // Process includes recursively within the included template
+            let processed_included_content = self.process_includes(&included_content)?;
+            
+            result.replace_range(start..start + end + 2, &processed_included_content);
         }
         
         Ok(result)
@@ -256,8 +263,9 @@ impl TemplateEngine {
             let array_var = parts[1].trim();
             
             let block_start = for_start + for_end + 2;
-            let block_end = result[block_start..].find("{{/for}}")
-                .ok_or_else(|| TemplateError::Parse("Missing {{/for}} directive".to_string()))?;
+            
+            // Find matching {{/for}} using stack-based parsing to handle nested loops
+            let block_end = self.find_matching_for_end(&result[block_start..])?;
             
             let block_content = &result[block_start..block_start + block_end];
             
@@ -1345,6 +1353,9 @@ impl TemplateEngine {
                 // Process macro calls within the loop context (so they have access to loop variables)
                 let mut processed_block = self.process_macro_calls_with_context(block, &loop_context)?;
                 
+                // Process nested loops within the loop context (IMPORTANT for nested loops support)
+                processed_block = self.process_loops(&processed_block, &loop_context)?;
+                
                 // Process conditionals within the loop context
                 processed_block = self.process_conditionals(&processed_block, &loop_context)?;
                 
@@ -1363,6 +1374,82 @@ impl TemplateEngine {
             // For regular variables (missing or non-array), maintain backward compatibility by returning empty string
             Ok(String::new())
         }
+    }
+    
+    /// Validate template path to prevent path traversal attacks
+    fn validate_template_path(&self, name: &str) -> TemplateResult<()> {
+        // Check for obvious path traversal patterns
+        if name.contains("..") {
+            return Err(TemplateError::Security("Path traversal attempt detected".to_string()));
+        }
+        
+        // Check for absolute paths
+        if name.starts_with('/') || name.starts_with('\\') {
+            return Err(TemplateError::Security("Absolute path not allowed".to_string()));
+        }
+        
+        // Check for Windows drive letters
+        if name.len() >= 3 && name.chars().nth(1) == Some(':') {
+            return Err(TemplateError::Security("Drive letter path not allowed".to_string()));
+        }
+        
+        // Resolve the path and check if it stays within the template directory
+        let template_dir = Path::new(&self.template_dir).canonicalize()
+            .map_err(|_| TemplateError::Security("Invalid template directory".to_string()))?;
+        
+        let requested_path = template_dir.join(name).canonicalize();
+        
+        match requested_path {
+            Ok(resolved_path) => {
+                if !resolved_path.starts_with(&template_dir) {
+                    return Err(TemplateError::Security("Path traversal attempt detected".to_string()));
+                }
+                Ok(())
+            }
+            Err(_) => {
+                // Path doesn't exist or can't be resolved - this is OK for now, 
+                // the actual file read will handle the error appropriately
+                Ok(())
+            }
+        }
+    }
+    
+    /// Find the matching {{/for}} for nested loops using stack-based parsing
+    fn find_matching_for_end(&self, content: &str) -> TemplateResult<usize> {
+        let mut depth = 1; // We start at depth 1 since we're already inside a {{for}}
+        let mut pos = 0;
+        
+        while pos < content.len() && depth > 0 {
+            if let Some(for_pos) = content[pos..].find("{{for ") {
+                let actual_for_pos = pos + for_pos;
+                
+                // Check for {{/for}} before this {{for}}
+                if let Some(end_for_pos) = content[pos..pos + for_pos].find("{{/for}}") {
+                    let actual_end_for_pos = pos + end_for_pos;
+                    depth -= 1;
+                    if depth == 0 {
+                        return Ok(actual_end_for_pos);
+                    }
+                    pos = actual_end_for_pos + 8; // Move past {{/for}}
+                    continue;
+                }
+                
+                // Found a nested {{for}}, increase depth
+                depth += 1;
+                pos = actual_for_pos + 6; // Move past {{for 
+            } else if let Some(end_for_pos) = content[pos..].find("{{/for}}") {
+                let actual_end_for_pos = pos + end_for_pos;
+                depth -= 1;
+                if depth == 0 {
+                    return Ok(actual_end_for_pos);
+                }
+                pos = actual_end_for_pos + 8; // Move past {{/for}}
+            } else {
+                break; // No more {{for}} or {{/for}} found
+            }
+        }
+        
+        Err(TemplateError::Parse("Missing {{/for}} directive".to_string()))
     }
     
     
@@ -1400,6 +1487,9 @@ impl TemplateEngine {
         if let Some(cached) = self.cache.get(name) {
             return Ok(cached.clone());
         }
+
+        // Validate template path to prevent path traversal attacks
+        self.validate_template_path(name)?;
 
         let path = Path::new(&self.template_dir).join(name);
         let content = fs::read_to_string(&path)

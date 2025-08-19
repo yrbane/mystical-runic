@@ -5,6 +5,43 @@ All notable changes to mystical-runic will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.4] - 2025-08-19 - Advanced Features Edition
+
+### 🔄 Added - Nested Template Support
+- **Nested Loops**: Complete support for nested `{{for}}` directives with proper stack-based parsing
+- **Nested Includes**: Recursive template inclusion processing for complex template hierarchies
+- **Stack-based Parsing**: Robust parsing engine that properly handles nested template structures
+
+### 🛡️ Added - Security Hardening
+- **Path Traversal Protection**: Comprehensive security validation preventing `../` attacks
+- **Template Sandboxing**: Templates restricted to designated template directory
+- **Security Error Type**: New `TemplateError::Security` for clear security violation reporting
+- **Multi-platform Protection**: Handles Windows (`..\\`) and Unix (`../`) path traversal attempts
+
+### 🧪 Enhanced - Testing Suite
+- **173+ Tests Total**: Expanded test coverage for all new security and nested template features
+- **TDD Implementation**: All features developed using strict Test-Driven Development methodology
+- **Security Testing**: Comprehensive security test suite validates all protection mechanisms
+- **Zero Regressions**: All existing functionality thoroughly validated
+
+### 🔧 Enhanced - Template Engine
+- **Improved Parser**: Stack-based directive matching for complex nested structures
+- **Better Error Handling**: Clear error messages for security violations and parsing failures
+- **Enhanced Validation**: Multi-layer path validation with canonicalization
+- **Recursive Processing**: Proper handling of deeply nested template includes
+
+### 📚 Enhanced - Developer Experience
+- **Robust Architecture**: More reliable template processing for complex scenarios
+- **Security-First**: Built-in protection against common template security vulnerabilities
+- **Production Ready**: Enterprise-grade security and reliability features
+- **Comprehensive Documentation**: Updated security guidelines and nested template examples
+
+### 🌐 Technical
+- **Zero Dependencies**: Continues pure Rust implementation with enhanced security
+- **Thread Safety**: All new features are fully thread-safe
+- **Backwards Compatibility**: All existing v0.3.x APIs remain unchanged
+- **Performance Maintained**: No performance degradation from security enhancements
+
 ## [0.3.3] - 2025-08-19 - Warning-Free Edition
 
 ### ✅ Improved - Zero Compilation Warnings

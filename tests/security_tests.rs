@@ -81,8 +81,7 @@ fn test_injection_attacks_prevention() {
     }
 }
 
-#[test] 
-#[ignore] // TODO: Path traversal protection not yet implemented
+#[test]
 fn test_path_traversal_prevention() {
     let templates_path = create_temp_dir();
     
