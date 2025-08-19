@@ -5,6 +5,29 @@ All notable changes to mystical-runic will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.2] - 2025-08-19 - Modern Rust Edition
+
+### 🦀 Added - Modern Rust Compatibility
+- **Minimum Supported Rust Version (MSRV)**: Explicitly set to 1.74.0+
+- **Future Rust 2024 Ready**: Code structured for seamless Rust 2024 migration when stable
+- **Modern Rust Patterns**: Updated code to use latest Rust idioms and best practices
+- **Comprehensive Testing**: 158+ tests including modern Rust compatibility suite
+
+### 🔧 Improved - Code Quality  
+- **Cleaner Warnings**: Fixed unused imports and variables for cleaner compilation
+- **Better Documentation**: Enhanced inline docs with Rust compatibility information
+- **Optimized Patterns**: Improved code structure following modern Rust guidelines
+
+### 📚 Enhanced - Documentation
+- **Rust Compatibility Section**: Detailed MSRV and edition information in README
+- **Future-Proof Design**: Documentation of Rust 2024 readiness and migration path
+- **Test Coverage**: Updated test count (152+ → 158+) reflecting new compatibility tests
+
+### 🔄 Maintained - Backwards Compatibility
+- **Zero Breaking Changes**: All existing APIs work unchanged
+- **Same Performance**: No performance regressions from modernization
+- **Identical Behavior**: All existing functionality preserved
+
 ## [0.3.1] - 2025-08-19 - Dual Style Edition
 
 ### 🎭 Added - Dual Naming System

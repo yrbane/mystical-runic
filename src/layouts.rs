@@ -1,7 +1,6 @@
 //! Template layouts and inheritance system for v0.2.0
 
 use crate::error::{TemplateError, TemplateResult};
-use crate::context::TemplateContext;
 use std::collections::HashMap;
 
 /// Block definition for template inheritance

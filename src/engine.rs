@@ -1111,7 +1111,7 @@ impl TemplateEngine {
     fn uses_html_producing_filter(&self, var_expression: &str) -> bool {
         let html_filters = ["markdown", "highlight"];
         
-        if let Some(filter_part) = var_expression.split('|').nth(1) {
+        if let Some(_filter_part) = var_expression.split('|').nth(1) {
             let filters: Vec<&str> = var_expression.split('|').skip(1).collect();
             for filter_expr in filters {
                 let filter_name = filter_expr.split(':').next().unwrap_or("").trim();

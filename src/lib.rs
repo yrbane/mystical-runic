@@ -2,6 +2,9 @@
 //!
 //! *"In the beginning was the Word, and the Word was `{{mustache}}`..."*
 //! 
+//! **Rust Compatibility**: This crate requires Rust 1.74.0+ and targets Rust 2021 edition
+//! with future Rust 2024 readiness.
+//! 
 //! Welcome, brave developer, to the mystical realm of **Runic** - where ancient Nordic symbols
 //! meet modern HTML templating in a beautiful dance of curly braces and digital sorcery!
 //!

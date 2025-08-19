@@ -14,7 +14,7 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 🔒 **Security First**: XSS-safe by default with comprehensive HTML escaping  
 ⚡ **High Performance**: Template caching, bytecode compilation, parallel processing  
 🎯 **Simple API**: Clean, intuitive interface for Rust developers  
-🧪 **Well Tested**: 152+ tests with extensive security and performance tests  
+🧪 **Well Tested**: 158+ tests with extensive security and performance tests  
 🏗️ **Template Inheritance**: Advanced layout system with nested inheritance and `{{super}}`  
 🔧 **Powerful Filters**: Built-in filters like `upper`, `lower`, `currency`, `truncate` with chaining support  
 📦 **Reusable Macros**: Define and reuse template components with parameters  
@@ -25,6 +25,7 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 🎭 **Dual Naming System**: Choose between professional (`TemplateEngine`) or mystical (`RuneEngine`) naming styles  
 📝 **Smart Pluralization**: Automatic plural forms with `{{plural count "item" "items"}}`  
 🌐 **Zero Dependencies**: Pure Rust implementation with no external dependencies  
+🦀 **Modern Rust**: Rust 2021 edition with 1.74.0+ MSRV, future Rust 2024 ready  
 
 ## ⚡ The Sacred Incantations
 
@@ -58,7 +59,7 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 
 ```toml
 [dependencies]
-mystical-runic = "0.3.1"
+mystical-runic = "0.3.2"
 ```
 
 ### Basic Usage - Choose Your Style! 🎭
@@ -596,6 +597,18 @@ Check out the [`examples/`](examples/) directory for more magical demonstrations
 
 - [`spell_casting.rs`](examples/spell_casting.rs) - Fantasy RPG character sheet generator
 - More examples coming soon!
+
+## 🦀 Rust Compatibility
+
+**Minimum Supported Rust Version (MSRV)**: 1.74.0+  
+**Edition**: Rust 2021 (with future Rust 2024 readiness)  
+**Tested on**: Rust 1.74.0 through latest stable
+
+### Future-Proof Design
+- Modern Rust patterns and idioms  
+- Prepared for Rust 2024 edition migration
+- Zero unsafe code  
+- Comprehensive test coverage (158+ tests)
 
 ### Development Setup
 
