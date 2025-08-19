@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue d'ensemble API - Mystical-Runic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Highlight.js for Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e2e8f0; /* Light text */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .sidebar {
+            background-color: #2d3748; /* Darker sidebar */
+            border-right: 1px solid #4a5568; /* Subtle border */
+        }
+        .nav-link {
+            color: #a0aec0; /* Lighter grey for links */
+            display: flex;
+            align-items: center;
+        }
+        .nav-link:hover {
+            color: #cbd5e0; /* Even lighter on hover */
+            background-color: #4a5568; /* Slightly lighter background on hover */
+        }
+        .nav-link i {
+            margin-right: 0.75rem; /* Space between icon and text */
+            width: 1.25rem; /* Fixed width for icons */
+            text-align: center;
+        }
+        h1, h2, h3, h4 {
+            color: #63b3ed; /* Blue headings */
+            font-weight: 700; /* Bold headings */
+        }
+        h1 {
+            font-size: 2.5rem; /* Larger H1 */
+        }
+        h2 {
+            font-size: 2rem; /* Larger H2 */
+        }
+        h3 {
+            font-size: 1.75rem; /* Larger H3 */
+        }
+        code {
+            background-color: #2d3748;
+            color: #f6e05e; /* Yellow for code */
+            padding: 0.2em 0.4em;
+            border-radius: 0.25rem;
+        }
+        pre {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 1em;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem; /* More space below code blocks */
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        /* Specific styles for highlight.js */
+        .hljs {
+            background: #2d3748 !important; /* Ensure background matches pre */
+            color: #e2e8f0 !important; /* Ensure text color matches pre */
+        }
+    </style>
+</head>
+<body class="flex">
+    <!-- Sidebar -->
+    <aside class="sidebar w-64 p-6 h-screen overflow-y-auto shadow-lg flex-shrink-0">
+        <h2 class="text-2xl font-bold mb-6 text-white"><i class="fas fa-hat-wizard"></i> Mystical-Runic</h2>
+        <nav>
+            <ul>
+                <li class="mb-2"><a href="../index.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-home"></i> Accueil</a></li>
+                <li class="mb-2"><a href="../installation.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-download"></i> Installation</a></li>
+                <li class="mb-2">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2"><i class="fas fa-lightbulb"></i> Concepts Clés</h3>
+                    <ul>
+                        <li class="mb-1 ml-4"><a href="../concepts/overview.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-eye"></i> Vue d'ensemble</a></li>
+                        <li class="mb-1 ml-4"><a href="../concepts/templating_syntax.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-code"></i> Syntaxe de Templating</a></li>
+                        <li class="mb-1 ml-4"><a href="../concepts/data_structures.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-database"></i> Structures de Données</a></li>
+                        <li class="mb-1 ml-4"><a href="../concepts/security_performance.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-shield-alt"></i> Sécurité & Performance</a></li>
+                        <li class="mb-1 ml-4"><a href="../concepts/filters_helpers.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-filter"></i> Filtres & Helpers</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2"><i class="fas fa-book"></i> Référence API</h3>
+                    <ul>
+                        <li class="mb-1 ml-4"><a href="overview.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-sitemap"></i> Vue d'ensemble API</a></li>
+                        <li class="mb-1 ml-4"><a href="functions/template_engine.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-cogs"></i> TemplateEngine</a></li>
+                        <li class="mb-1 ml-4"><a href="functions/template_context.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-box"></i> TemplateContext</a></li>
+                        <li class="mb-1 ml-4"><a href="functions/template_value.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-cube"></i> TemplateValue</a></li>
+                        <li class="mb-1 ml-4"><a href="functions/template_error.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-exclamation-triangle"></i> TemplateError</a></li>
+                        <li class="mb-1 ml-4"><a href="functions/filter_function.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-magic"></i> FilterFunction</a></li>
+                        <li class="mb-1 ml-4"><a href="functions/helper_function.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-hat-wizard"></i> HelperFunction</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2"><a href="../examples.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-file-code"></i> Exemples</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10 overflow-y-auto">
+        <div class="container mx-auto">
+            <h1 class="text-4xl font-extrabold mb-6">Référence de l'API de Mystical-Runic</h1>
+            <p class="text-lg mb-4 leading-relaxed">Cette section fournit une documentation détaillée des traits, structures, énumérations et fonctions publiques exposées par la bibliothèque <strong>Mystical-Runic</strong>. Elle est conçue pour être une référence complète pour les développeurs souhaitant intégrer et étendre les capacités de templating dans leurs applications Rust.</p>
+
+            <h2 class="text-3xl font-bold mb-4">Principaux Composants de l'API</h2>
+            <p class="mb-4 leading-relaxed">Les composants suivants constituent le cœur de l'API de Mystical-Runic, vous permettant d'interagir avec le moteur de template, de gérer les données et de gérer les erreurs :</p>
+            <ul class="list-disc pl-5 text-lg mb-4 space-y-2">
+                <li class="mb-2">
+                    <a href="functions/template_engine.html" class="text-blue-400 hover:underline"><i class="fas fa-cogs"></i> <code>TemplateEngine</code></a> (alias <code>RuneEngine</code>) : Le moteur principal pour charger, compiler et rendre les templates. C'est votre point d'entrée pour toutes les opérations de templating.
+                </li>
+                <li class="mb-2">
+                    <a href="functions/template_context.html" class="text-blue-400 hover:underline"><i class="fas fa-box"></i> <code>TemplateContext</code></a> (alias <code>RuneScroll</code>) : Le conteneur de données passé aux templates. Il organise les données sous une forme hiérarchique accessible par le moteur de rendu.
+                </li>
+                <li class="mb-2">
+                    <a href="functions/template_value.html" class="text-blue-400 hover:underline"><i class="fas fa-cube"></i> <code>TemplateValue</code></a> (alias <code>RuneSymbol</code>) : Représente les différents types de valeurs de données (chaînes, nombres, booléens, tableaux, objets) dans le contexte du template. C'est l'abstraction des données pour le moteur.
+                </li>
+                <li class="mb-2">
+                    <a href="functions/template_error.html" class="text-blue-400 hover:underline"><i class="fas fa-exclamation-triangle"></i> <code>TemplateError</code></a> (alias <code>RuneError</code>) : Le type d'erreur standard retourné par les opérations de templating. Il fournit des informations détaillées sur les problèmes rencontrés.
+                </li>
+                <li class="mb-2">
+                    <a href="functions/filter_function.html" class="text-blue-400 hover:underline"><i class="fas fa-magic"></i> <code>FilterFunction</code></a> (alias <code>MysticFilter</code>) : Un type de fonction pour définir des filtres personnalisés, permettant de transformer les données directement dans les templates.
+                </li>
+                <li class="mb-2">
+                    <a href="functions/helper_function.html" class="text-blue-400 hover:underline"><i class="fas fa-hat-wizard"></i> <code>HelperFunction</code></a> (alias <code>AncientHelper</code>) : Un type de fonction pour définir des helpers personnalisés, offrant des capacités d'extension plus complexes pour les templates.
+                </li>
+            </ul>
+
+            <h2 class="text-3xl font-bold mb-4">Autres Exportations Publiques</h2>
+            <p class="mb-4 leading-relaxed">La bibliothèque exporte également d'autres types et fonctions pour des cas d'utilisation avancés, qui sont souvent activés via des <a href="../installation.html#fonctionnalites-optionnelles" class="text-blue-400 hover:underline">fonctionnalités optionnelles</a> de Cargo :</p>
+            <ul class="list-disc pl-5 text-lg space-y-2">
+                <li><i class="fas fa-bug text-gray-400"></i> <code>DebugInfo</code>, <code>DebugRenderResult</code>, <code>ExecutionStep</code>, <code>PerformanceMetrics</code> (alias <code>RuneTrace</code>, <code>RuneDivination</code>, <code>RuneStep</code>, <code>RuneMetrics</code>) : Types liés au débogage et à l'analyse des performances du rendu des templates.</li>
+                <li><i class="fas fa-language text-gray-400"></i> <code>LspParseResult</code>, <code>TemplateBlock</code>, <code>CompletionItem</code>, <code>SyntaxToken</code>, <code>Diagnostic</code>, <code>HoverInfo</code>, <code>DefinitionInfo</code> (alias <code>RunicLore</code>, <code>RunicBlock</code>, etc.) : Types pour l'intégration avec les serveurs de langage (LSP) pour une meilleure expérience de développement dans les IDE.</li>
+                <li><i class="fas fa-sync-alt text-gray-400"></i> <code>AsyncTemplateEngine</code> (alias <code>AsyncRuneEngine</code>) : Le moteur de template asynchrone, disponible si la fonctionnalité <code>async</code> est activée.</li>
+                <li><i class="fas fa-globe text-gray-400"></i> Intégrations spécifiques aux frameworks web (par exemple, <code>AxumTemplateEngine</code>, <code>WarpTemplateEngine</code>, <code>ActixTemplateEngine</code>) : Disponibles si la fonctionnalité <code>web-frameworks</code> est activée, elles fournissent des adaptateurs pour une intégration facile avec ces frameworks.</li>
+                <li><i class="fas fa-code-branch text-gray-400"></i> Types liés à WASM (par exemple, <code>WasmTemplateEngine</code>, <code>WasmRuneEngine</code>) : Pour la compilation et l'utilisation de Mystical-Runic dans des environnements WebAssembly, si la fonctionnalité <code>wasm</code> est activée.</li>
+            </ul>
+        </div>
+    </main>
+    <!-- Highlight.js Initialization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

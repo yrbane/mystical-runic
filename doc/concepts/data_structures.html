@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TemplateValue - Mystical-Runic API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Highlight.js for Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e2e8f0; /* Light text */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .sidebar {
+            background-color: #2d3748; /* Darker sidebar */
+            border-right: 1px solid #4a5568; /* Subtle border */
+        }
+        .nav-link {
+            color: #a0aec0; /* Lighter grey for links */
+            display: flex;
+            align-items: center;
+        }
+        .nav-link:hover {
+            color: #cbd5e0; /* Even lighter on hover */
+            background-color: #4a5568; /* Slightly lighter background on hover */
+        }
+        .nav-link i {
+            margin-right: 0.75rem; /* Space between icon and text */
+            width: 1.25rem; /* Fixed width for icons */
+            text-align: center;
+        }
+        h1, h2, h3, h4 {
+            color: #63b3ed; /* Blue headings */
+            font-weight: 700; /* Bold headings */
+        }
+        h1 {
+            font-size: 2.5rem; /* Larger H1 */
+        }
+        h2 {
+            font-size: 2rem; /* Larger H2 */
+        }
+        h3 {
+            font-size: 1.75rem; /* Larger H3 */
+        }
+        code {
+            background-color: #2d3748;
+            color: #f6e05e; /* Yellow for code */
+            padding: 0.2em 0.4em;
+            border-radius: 0.25rem;
+        }
+        pre {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 1em;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem; /* More space below code blocks */
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        /* Specific styles for highlight.js */
+        .hljs {
+            background: #2d3748 !important; /* Ensure background matches pre */
+            color: #e2e8f0 !important; /* Ensure text color matches pre */
+        }
+    </style>
+</head>
+<body class="flex">
+    <!-- Sidebar -->
+    <aside class="sidebar w-64 p-6 h-screen overflow-y-auto shadow-lg flex-shrink-0">
+        <h2 class="text-2xl font-bold mb-6 text-white"><i class="fas fa-hat-wizard"></i> Mystical-Runic</h2>
+        <nav>
+            <ul>
+                <li class="mb-2"><a href="../../index.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-home"></i> Accueil</a></li>
+                <li class="mb-2"><a href="../../installation.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-download"></i> Installation</a></li>
+                <li class="mb-2">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2"><i class="fas fa-lightbulb"></i> Concepts Clés</h3>
+                    <ul>
+                        <li class="mb-1 ml-4"><a href="../../concepts/overview.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-eye"></i> Vue d'ensemble</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/templating_syntax.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-code"></i> Syntaxe de Templating</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/data_structures.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-database"></i> Structures de Données</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/security_performance.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-shield-alt"></i> Sécurité & Performance</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/filters_helpers.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-filter"></i> Filtres & Helpers</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2"><i class="fas fa-book"></i> Référence API</h3>
+                    <ul>
+                        <li class="mb-1 ml-4"><a href="../overview.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-sitemap"></i> Vue d'ensemble API</a></li>
+                        <li class="mb-1 ml-4"><a href="template_engine.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-cogs"></i> TemplateEngine</a></li>
+                        <li class="mb-1 ml-4"><a href="template_context.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-box"></i> TemplateContext</a></li>
+                        <li class="mb-1 ml-4"><a href="template_value.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-cube"></i> TemplateValue</a></li>
+                        <li class="mb-1 ml-4"><a href="template_error.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-exclamation-triangle"></i> TemplateError</a></li>
+                        <li class="mb-1 ml-4"><a href="filter_function.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-magic"></i> FilterFunction</a></li>
+                        <li class="mb-1 ml-4"><a href="helper_function.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-hat-wizard"></i> HelperFunction</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2"><a href="../../examples.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-file-code"></i> Exemples</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10 overflow-y-auto">
+        <div class="container mx-auto">
+            <h1 class="text-4xl font-extrabold mb-6">Enum <code>TemplateValue</code> (alias <code>RuneSymbol</code>)</h1>
+            <p class="text-lg mb-4 leading-relaxed"><code>TemplateValue</code> est une énumération fondamentale dans Mystical-Runic. Elle représente les différents types de données que le moteur de template peut comprendre et manipuler. C'est la manière dont les données Rust natives (ou JSON) sont converties en un format utilisable par le moteur de rendu, assurant une compatibilité et une flexibilité maximales.</p>
+
+            <h2 class="text-3xl font-bold mb-4">Définition</h2>
+            <pre><code class="language-rust">
+pub enum TemplateValue {
+    String(String),
+    Number(i64),
+    Bool(bool),
+    Array(Vec&lt;TemplateValue&gt;),
+    Object(HashMap&lt;String, TemplateValue&gt;),
+    // ... d'autres variantes peuvent exister pour des types spécifiques
+}
+</code></pre>
+
+            <h2 class="text-3xl font-bold mb-4">Variantes</h2>
+            <p class="mb-4 leading-relaxed">Chaque variante de <code>TemplateValue</code> correspond à un type de donnée spécifique, permettant de représenter des structures de données complexes :</p>
+            <ul class="list-disc pl-5 text-lg mb-4 space-y-2">
+                <li><i class="fas fa-font text-gray-400"></i> <code>String(String)</code> : Représente une valeur textuelle.</li>
+                <li><i class="fas fa-hashtag text-gray-400"></i> <code>Number(i64)</code> : Représente un nombre entier de 64 bits. Les nombres flottants sont généralement convertis en <code>i64</code>, ce qui peut entraîner une perte de précision si la partie décimale est critique.</li>
+                <li><i class="fas fa-toggle-on text-gray-400"></i> <code>Bool(bool)</code> : Représente une valeur booléenne (vrai/faux).</li>
+                <li><i class="fas fa-list text-gray-400"></i> <code>Array(Vec&lt;TemplateValue&gt;)</code> : Représente une liste ordonnée de <code>TemplateValue</code>s, similaire à un tableau JSON.</li>
+                <li><i class="fas fa-object-group text-gray-400"></i> <code>Object(HashMap&lt;String, TemplateValue&gt;)</code> : Représente une collection de paires clé-valeur, où les clés sont des <code>String</code>s et les valeurs sont des <code>TemplateValue</code>s, similaire à un objet JSON.</li>
+            </ul>
+
+            <h2 class="text-3xl font-bold mb-4">Création de <code>TemplateValue</code></h2>
+            <p class="mb-4 leading-relaxed">Vous pouvez créer des instances de <code>TemplateValue</code> directement en utilisant leurs variantes. C'est utile lorsque vous construisez manuellement des structures de données complexes.</p>
+            <pre><code class="language-rust">
+use mystical_runic::TemplateValue;
+use std::collections::HashMap;
+
+let my_string = TemplateValue::String("Hello, Runic!".to_string());
+let my_number = TemplateValue::Number(42);
+let my_bool = TemplateValue::Bool(true);
+
+let my_array = TemplateValue::Array(vec![
+    TemplateValue::String("item1".to_string()),
+    TemplateValue::Number(100),
+    TemplateValue::Bool(false),
+]);
+
+let mut my_object_map = HashMap::new();
+my_object_map.insert("product_name".to_string(), TemplateValue::String("Magic Wand".to_string()));
+my_object_map.insert("price".to_string(), TemplateValue::Number(999));
+let my_object = TemplateValue::Object(my_object_map);
+</code></pre>
+
+            <h2 class="text-3xl font-bold mb-4">Conversion depuis les Types Rust Natiifs (<code>From</code> Trait)</h2>
+            <p class="mb-4 leading-relaxed">Mystical-Runic fournit des implémentations du trait <code>From</code> pour faciliter la conversion de types Rust natifs courants en <code>TemplateValue</code>. Cela rend l'ajout de données au contexte plus ergonomique et réduit le code boilerplate.</p>
+            <pre><code class="language-rust">
+use mystical_runic::TemplateValue;
+
+let from_str: TemplateValue = "Hello, Runic!".into(); // &str -> TemplateValue::String
+let from_string: TemplateValue = String::from("Another string").into(); // String -> TemplateValue::String
+let from_i64: TemplateValue = 123i64.into(); // i64 -> TemplateValue::Number
+let from_i32: TemplateValue = 42i32.into(); // i32 -> TemplateValue::Number (convertit en i64)
+let from_bool: TemplateValue = true.into(); // bool -> TemplateValue::Bool
+
+// Pour Vec<T> et HashMap<String, T>, vous pouvez utiliser des itérateurs et des collecteurs
+// pour construire les TemplateValue::Array et TemplateValue::Object plus facilement.
+let numbers = vec![1, 2, 3];
+let template_numbers: TemplateValue = numbers.into_iter().map(|n| n.into()).collect::&lt;Vec&lt;TemplateValue&gt;&gt;().into();
+// template_numbers est maintenant TemplateValue::Array([TemplateValue::Number(1), ...])
+
+let mut data_map = std::collections::HashMap::new();
+data_map.insert("key1".to_string(), "value1".to_string());
+data_map.insert("key2".to_string(), "value2".to_string());
+let template_object: TemplateValue = data_map.into_iter().map(|(k, v)| (k, v.into())).collect::&lt;HashMap&lt;String, TemplateValue&gt;&gt;().into();
+// template_object est maintenant TemplateValue::Object({"key1": TemplateValue::String("value1"), ...})
+</code></pre>
+
+            <h3 class="text-2xl font-bold mb-3">Intégration avec <code>serde_json::Value</code></h3>
+            <p class="mb-4 leading-relaxed">Si vous travaillez avec des données JSON (par exemple, lues depuis un fichier ou une API REST), Mystical-Runic est conçu pour s'intégrer facilement avec <code>serde_json::Value</code>. Bien que la conversion directe ne soit pas toujours une méthode unique exposée par la bibliothèque elle-même, le concept est de mapper les types JSON aux variantes de <code>TemplateValue</code>. Vous pouvez implémenter votre propre logique de conversion ou utiliser des utilitaires si la bibliothèque les fournit.</p>
+            <pre><code class="language-rust">
+use mystical_runic::{TemplateContext, TemplateValue};
+use serde_json::json;
+use std::collections::HashMap;
+
+// Exemple de données JSON
+let json_data = json!({
+    "product": {
+        "name": "Laptop",
+        "price": 1200,
+        "features": ["fast", "light"]
+    },
+    "is_available": true
+});
+
+// Pour convertir un serde_json::Value en TemplateValue (et ensuite en TemplateContext),
+// vous devrez généralement itérer sur l'objet JSON et convertir chaque valeur.
+// Voici une approche conceptuelle (simplifiée pour l'illustration) :
+
+fn convert_json_value_to_template_value(json_val: serde_json::Value) -> TemplateValue {
+    match json_val {
+        serde_json::Value::String(s) => TemplateValue::String(s),
+        serde_json::Value::Number(n) => TemplateValue::Number(n.as_i64().unwrap_or(0)),
+        serde_json::Value::Bool(b) => TemplateValue::Bool(b),
+        serde_json::Value::Array(arr) => TemplateValue::Array(
+            arr.into_iter().map(convert_json_value_to_template_value).collect()
+        ),
+        serde_json::Value::Object(obj) => TemplateValue::Object(
+            obj.into_iter().map(|(k, v)| (k, convert_json_value_to_template_value(v))).collect()
+        ),
+        serde_json::Value::Null => TemplateValue::String("".to_string()), // Ou une autre représentation pour null
+    }
+}
+
+let template_value_from_json = convert_json_value_to_template_value(json_data);
+
+// Vous pouvez ensuite l'ajouter à un TemplateContext si c'est un objet de niveau supérieur
+let mut context = TemplateContext::new();
+if let TemplateValue::Object(obj_map) = template_value_from_json {
+    for (key, value) in obj_map {
+        context.set(&key, value);
+    }
+}
+
+// Le contexte est maintenant prêt à être utilisé avec le TemplateEngine
+</code></pre>
+        </div>
+    </main>
+    <!-- Highlight.js Initialization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

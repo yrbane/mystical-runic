@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilterFunction - Mystical-Runic API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Highlight.js for Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e2e8f0; /* Light text */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .sidebar {
+            background-color: #2d3748; /* Darker sidebar */
+            border-right: 1px solid #4a5568; /* Subtle border */
+        }
+        .nav-link {
+            color: #a0aec0; /* Lighter grey for links */
+            display: flex;
+            align-items: center;
+        }
+        .nav-link:hover {
+            color: #cbd5e0; /* Even lighter on hover */
+            background-color: #4a5568; /* Slightly lighter background on hover */
+        }
+        .nav-link i {
+            margin-right: 0.75rem; /* Space between icon and text */
+            width: 1.25rem; /* Fixed width for icons */
+            text-align: center;
+        }
+        h1, h2, h3, h4 {
+            color: #63b3ed; /* Blue headings */
+            font-weight: 700; /* Bold headings */
+        }
+        h1 {
+            font-size: 2.5rem; /* Larger H1 */
+        }
+        h2 {
+            font-size: 2rem; /* Larger H2 */
+        }
+        h3 {
+            font-size: 1.75rem; /* Larger H3 */
+        }
+        code {
+            background-color: #2d3748;
+            color: #f6e05e; /* Yellow for code */
+            padding: 0.2em 0.4em;
+            border-radius: 0.25rem;
+        }
+        pre {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 1em;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem; /* More space below code blocks */
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        /* Specific styles for highlight.js */
+        .hljs {
+            background: #2d3748 !important; /* Ensure background matches pre */
+            color: #e2e8f0 !important; /* Ensure text color matches pre */
+        }
+    </style>
+</head>
+<body class="flex">
+    <!-- Sidebar -->
+    <aside class="sidebar w-64 p-6 h-screen overflow-y-auto shadow-lg flex-shrink-0">
+        <h2 class="text-2xl font-bold mb-6 text-white"><i class="fas fa-hat-wizard"></i> Mystical-Runic</h2>
+        <nav>
+            <ul>
+                <li class="mb-2"><a href="../../index.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-home"></i> Accueil</a></li>
+                <li class="mb-2"><a href="../../installation.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-download"></i> Installation</a></li>
+                <li class="mb-2">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2"><i class="fas fa-lightbulb"></i> Concepts Clés</h3>
+                    <ul>
+                        <li class="mb-1 ml-4"><a href="../../concepts/overview.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-eye"></i> Vue d'ensemble</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/templating_syntax.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-code"></i> Syntaxe de Templating</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/data_structures.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-database"></i> Structures de Données</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/security_performance.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-shield-alt"></i> Sécurité & Performance</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/filters_helpers.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-filter"></i> Filtres & Helpers</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2"><i class="fas fa-book"></i> Référence API</h3>
+                    <ul>
+                        <li class="mb-1 ml-4"><a href="../overview.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-sitemap"></i> Vue d'ensemble API</a></li>
+                        <li class="mb-1 ml-4"><a href="template_engine.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-cogs"></i> TemplateEngine</a></li>
+                        <li class="mb-1 ml-4"><a href="template_context.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-box"></i> TemplateContext</a></li>
+                        <li class="mb-1 ml-4"><a href="template_value.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-cube"></i> TemplateValue</a></li>
+                        <li class="mb-1 ml-4"><a href="template_error.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-exclamation-triangle"></i> TemplateError</a></li>
+                        <li class="mb-1 ml-4"><a href="filter_function.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-magic"></i> FilterFunction</a></li>
+                        <li class="mb-1 ml-4"><a href="helper_function.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-hat-wizard"></i> HelperFunction</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2"><a href="../../examples.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-file-code"></i> Exemples</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10 overflow-y-auto">
+        <div class="container mx-auto">
+            <h1 class="text-4xl font-extrabold mb-6">Type <code>FilterFunction</code> (alias <code>MysticFilter</code>)</h1>
+            <p class="text-lg mb-4 leading-relaxed"><code>FilterFunction</code> est un type de fonction qui vous permet de définir des filtres personnalisés pour transformer les valeurs directement dans vos templates Mystical-Runic. Ces filtres sont appliqués en utilisant la syntaxe <code>{{ variable | mon_filtre }}</code> ou <code>{{ variable | mon_filtre(arg1, arg2) }}</code> si le filtre accepte des arguments. Ils sont un moyen puissant d'étendre les capacités de transformation de données du moteur.</p>
+
+            <h2 class="text-3xl font-bold mb-4">Définition</h2>
+            <pre><code class="language-rust">
+pub type FilterFunction = Box&lt;dyn Fn(&TemplateValue, Vec&lt;TemplateValue&gt;) -> TemplateResult&lt;TemplateValue&gt; + Send + Sync&gt;;
+</code></pre>
+            <p class="mb-4 leading-relaxed">C'est un alias de type pour une closure (fonction anonyme) qui doit implémenter les traits <code>Fn</code>, <code>Send</code> et <code>Sync</code>. Elle prend en entrée :</p>
+            <ul class="list-disc pl-5 text-lg mb-4 space-y-1">
+                <li><code>value: &TemplateValue</code> : La valeur à filtrer.</li>
+                <li><code>args: Vec&lt;TemplateValue&gt;</code> : Une liste d'arguments passés au filtre depuis le template.</li>
+            </ul>
+            <p class="mb-4 leading-relaxed">Elle retourne un <code>TemplateResult&lt;TemplateValue&gt;</code>, qui est soit la valeur filtrée, soit une <code>TemplateError</code> en cas de problème (par exemple, type d'argument incorrect).</p>
+
+            <h2 class="text-3xl font-bold mb-4">Création et Enregistrement d'un Filtre Personnalisé</h2>
+            <p class="mb-4 leading-relaxed">Pour créer et utiliser un filtre personnalisé, vous devez définir une fonction ou une closure qui correspond à la signature de <code>FilterFunction</code>, puis l'enregistrer auprès de votre instance de <code>TemplateEngine</code> en utilisant la méthode <code>register_filter</code>.</p>
+
+            <h3 class="text-2xl font-bold mb-3">Exemple : Filtre <code>capitalize</code></h3>
+            <p class="mb-2 leading-relaxed">Ce filtre convertit la première lettre d'une chaîne en majuscule. Il illustre comment accéder à la valeur et la transformer.</p>
+            <pre><code class="language-rust">
+use mystical_runic::{TemplateEngine, TemplateContext, TemplateValue, TemplateResult, FilterFunction};
+
+// Définition du filtre personnalisé
+fn capitalize_filter(value: &TemplateValue, _args: Vec&lt;TemplateValue&gt;) -> TemplateResult&lt;TemplateValue&gt; {
+    if let TemplateValue::String(s) = value {
+        if let Some(first_char) = s.chars().next() {
+            let capitalized = first_char.to_uppercase().to_string() + &s[first_char.len_utf8()..];
+            Ok(TemplateValue::String(capitalized))
+        } else {
+            Ok(TemplateValue::String("".to_string())) // Chaîne vide reste vide
+        }
+    } else {
+        // Retourne une erreur si le filtre est appliqué à un type non supporté
+        Err(mystical_runic::TemplateError::RuntimeError("Filtre 'capitalize' attend une chaîne.".to_string()))
+    }
+}
+
+fn main() -> TemplateResult&lt;()&gt; {
+    let mut engine = TemplateEngine::new("templates");
+    let mut context = TemplateContext::new();
+
+    // Enregistrement du filtre avec le nom "capitalize"
+    engine.register_filter("capitalize", Box::new(capitalize_filter));
+
+    context.set("name", TemplateValue::String("alice".to_string()));
+
+    let template = "Hello {{ name | capitalize }}!";
+    let rendered = engine.render_string(template, &context)?;
+
+    println!("{{}}", rendered); // Affiche: Hello Alice!
+
+    Ok(())
+}
+</code></pre>
+        </div>
+    </main>
+    <!-- Highlight.js Initialization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

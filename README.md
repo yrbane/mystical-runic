@@ -9,35 +9,57 @@
 
 **Mystical-Runic** is a high-performance templating engine that combines the simplicity of Mustache syntax with powerful enterprise features. Built for production use with zero external dependencies, comprehensive security, and exceptional performance.
 
+## 📚 Documentation
+
+| Type | Description | Lien |
+|------|-------------|------|
+| 🦀 **API Reference** | Complete technical documentation | [docs.rs/mystical-runic](https://docs.rs/mystical-runic) |
+| 🇫🇷 **Guide Utilisateur** | Documentation française avec tutoriels | [Documentation HTML](doc/README.md) |
+| 📖 **Quick Start** | `cargo doc --open --all-features` | Documentation locale |
+| 🎯 **Examples** | Real-world demos and usage examples | [examples/](examples/) |
+
+> **💡 Tip**: Start with the [French user guide](doc/README.md) for tutorials and examples, then use the API reference for technical details.
+
 ## ✨ Features
 
-🔒 **Security First**: XSS-safe by default with comprehensive HTML escaping  
-⚡ **High Performance**: Template caching, bytecode compilation, parallel processing  
-🎯 **Simple API**: Clean, intuitive interface for Rust developers  
-🧪 **Well Tested**: 204+ tests with comprehensive coverage following strict TDD methodology  
-🏗️ **Template Inheritance**: Advanced layout system with nested inheritance and `{{super}}`  
-🔧 **Powerful Filters**: Built-in filters like `upper`, `lower`, `currency`, `truncate` with chaining support  
-📦 **Reusable Macros**: Define and reuse template components with parameters  
-🌊 **Deep Object Navigation**: Unlimited depth dot notation (e.g., `{{user.profile.stats.level}}`)  
-🔄 **Nested Templates**: Full support for nested loops and recursive template includes  
-🛡️ **Path Traversal Protection**: Enterprise-grade security preventing `../` attacks  
-🌐 **Internationalization (i18n)**: Multi-language support with `{{t "key"}}` syntax and locale switching  
-🔢 **Advanced Math Filters**: Mathematical operations with `add`, `multiply`, `divide`, `percentage`, `round`  
-🎨 **Custom Filter API**: Register your own filters for domain-specific transformations  
-🎭 **Dual Naming System**: Choose between conventional (`TemplateEngine`) or mystical (`RuneEngine`) naming styles  
-📝 **Smart Pluralization**: Automatic plural forms with `{{plural count "item" "items"}}`  
-🔍 **Enhanced Error Messages**: Line/column numbers with helpful suggestions and context (v0.4.0)  
-🐛 **Template Debugging**: Step-through debugging with variable tracking and execution insights (v0.4.0)  
-🔥 **Hot Reload**: Development-time template reloading for faster iteration cycles (v0.4.0)  
-💻 **IDE Integration**: Full Language Server Protocol support with auto-completion, syntax highlighting, error squiggles (v0.4.1)  
-🚀 **Async Support**: Non-blocking template rendering for high-performance web applications (v0.5.0)  
-🌐 **Web Framework Integration**: First-class support for Axum, Warp, and Actix-web (v0.5.0)  
-🕸️ **WASM Ready**: Browser-compatible template rendering with JavaScript bindings  
-🛠️ **CLI Tools**: Command-line template processing with watching and batch operations  
-📈 **Performance Monitoring**: Advanced metrics collection and optimization (v0.5.1)  
-🔒 **Enterprise Security**: Threat classification and audit logging (v0.5.1)  
-📦 **Zero Dependencies**: Pure Rust implementation with no external dependencies  
-🦀 **Modern Rust**: Rust 2021 edition with 1.74.0+ MSRV, future Rust 2024 ready  
+### 🎯 Core Template Engine
+- **🎭 Dual API Style**: Choose between conventional (`TemplateEngine`) or mystical (`RuneEngine`) naming
+- **🎯 Simple API**: Clean, intuitive interface for Rust developers  
+- **🌊 Deep Object Navigation**: Unlimited depth dot notation (e.g., `{{user.profile.stats.level}}`)
+- **🔄 Nested Templates**: Full support for nested loops and recursive template includes  
+- **🏗️ Template Inheritance**: Advanced layout system with nested inheritance and `{{super}}`
+- **📦 Reusable Macros**: Define and reuse template components with parameters
+
+### 🔧 Filters & Transformations
+- **🔧 Powerful Filters**: Built-in filters like `upper`, `lower`, `currency`, `truncate` with chaining support
+- **🔢 Advanced Math Filters**: Mathematical operations with `add`, `multiply`, `divide`, `percentage`, `round`
+- **🎨 Custom Filter API**: Register your own filters for domain-specific transformations
+- **🌐 Internationalization (i18n)**: Multi-language support with `{{t "key"}}` syntax and locale switching
+- **📝 Smart Pluralization**: Automatic plural forms with `{{plural count "item" "items"}}`
+
+### 🔒 Security & Quality
+- **🔒 Security First**: XSS-safe by default with comprehensive HTML escaping  
+- **🛡️ Path Traversal Protection**: Enterprise-grade security preventing `../` attacks  
+- **🔒 Enterprise Security**: Threat classification and audit logging *(v0.5.1)*
+- **🧪 Well Tested**: 204+ tests with comprehensive coverage following strict TDD methodology
+- **📦 Zero Dependencies**: Pure Rust implementation with no external dependencies
+
+### ⚡ Performance & Monitoring
+- **⚡ High Performance**: Template caching, bytecode compilation, parallel processing  
+- **📈 Performance Monitoring**: Advanced metrics collection and optimization *(v0.5.1)*
+- **🦀 Modern Rust**: Rust 2021 edition with 1.74.0+ MSRV, future Rust 2024 ready
+
+### 🛠️ Developer Experience
+- **🔍 Enhanced Error Messages**: Line/column numbers with helpful suggestions and context *(v0.4.0)*  
+- **🐛 Template Debugging**: Step-through debugging with variable tracking and execution insights *(v0.4.0)*  
+- **🔥 Hot Reload**: Development-time template reloading for faster iteration cycles *(v0.4.0)*  
+- **💻 IDE Integration**: Full Language Server Protocol support with auto-completion, syntax highlighting, error squiggles *(v0.4.1)*
+
+### 🌐 Ecosystem Integration *(v0.5.0+)*
+- **🚀 Async Support**: Non-blocking template rendering for high-performance web applications
+- **🌐 Web Framework Integration**: First-class support for Axum, Warp, and Actix-web
+- **🕸️ WASM Ready**: Browser-compatible template rendering with JavaScript bindings  
+- **🛠️ CLI Tools**: Command-line template processing with watching and batch operations  
 
 ## 📝 Template Syntax
 
@@ -109,46 +131,51 @@
 
 ## 🚀 Quick Start
 
+> **📖 Complete setup guide**: See our [detailed installation documentation](doc/installation.html) for comprehensive instructions and examples.
+
 ### Installation
 
 #### Basic Installation
 ```toml
 [dependencies]
-mystical-runic = "0.5.0"
+mystical-runic = "0.5.2"
 ```
 
 #### With Ecosystem Integration Features (v0.5.0)
 ```toml
 [dependencies]
 # Async support for high-performance web apps
-mystical-runic = { version = "0.5.0", features = ["async"] }
+mystical-runic = { version = "0.5.2", features = ["async"] }
 
 # Web framework integration
-mystical-runic = { version = "0.5.0", features = ["web-frameworks"] }
+mystical-runic = { version = "0.5.2", features = ["web-frameworks"] }
 # Or specific frameworks:
-# mystical-runic = { version = "0.5.0", features = ["axum-integration"] }
-# mystical-runic = { version = "0.5.0", features = ["warp-integration"] }
-# mystical-runic = { version = "0.5.0", features = ["actix-integration"] }
+# mystical-runic = { version = "0.5.2", features = ["axum-integration"] }
+# mystical-runic = { version = "0.5.2", features = ["warp-integration"] }
+# mystical-runic = { version = "0.5.2", features = ["actix-integration"] }
 
 # WASM browser compatibility
-mystical-runic = { version = "0.5.0", features = ["wasm"] }
+mystical-runic = { version = "0.5.2", features = ["wasm"] }
 
 # CLI tools and utilities
-mystical-runic = { version = "0.5.0", features = ["cli"] }
+mystical-runic = { version = "0.5.2", features = ["cli"] }
 
 # All ecosystem features
-mystical-runic = { version = "0.5.0", features = ["full"] }
+mystical-runic = { version = "0.5.2", features = ["full"] }
 ```
 
 **Available Features:**
-- `async` - Async template rendering with tokio
-- `axum-integration` - Axum web framework support  
-- `warp-integration` - Warp web framework support
-- `actix-integration` - Actix-web framework support
-- `web-frameworks` - All web framework integrations
-- `wasm` - WebAssembly browser compatibility
-- `cli` - Command-line tools and utilities  
-- `full` - All ecosystem integration features
+
+| Feature | Description | Category |
+|---------|-------------|-----------|
+| `async` | Async template rendering with Tokio | 🚀 Performance |
+| `axum-integration` | Axum web framework support | 🌐 Web Frameworks |
+| `warp-integration` | Warp web framework support | 🌐 Web Frameworks |
+| `actix-integration` | Actix-web framework support | 🌐 Web Frameworks |
+| `web-frameworks` | All web framework integrations | 🌐 Web Frameworks |
+| `wasm` | WebAssembly browser compatibility | 🕸️ Browser/WASM |
+| `cli` | Command-line tools and utilities | 🛠️ Developer Tools |
+| `full` | All ecosystem integration features | 📦 Complete Package |
 
 ### Basic Usage - Choose Your Style! 🎭
 
@@ -1072,15 +1099,21 @@ Mystical-Runic follows strict **Test-Driven Development** practices. When contri
 
 ## 🗺️ Roadmap
 
-### ✅ v0.3.0-v0.4.1 - COMPLETED
+### ✅ v0.3.0-v0.5.2 - COMPLETED Features
+
+#### 🔧 Filters & I18n *(v0.3.0-v0.3.4)*
 - ✅ **i18n Support**: `{{t "key"}}` syntax for translations
 - ✅ **Pluralization**: Smart plural forms based on count  
 - ✅ **Custom Filter Registration**: API for user-defined filters
 - ✅ **Advanced Math Filters**: Mathematical operations and formatting
+
+#### 🏗️ Core Engine *(v0.3.4)*
 - ✅ **Nested Loops**: Stack-based parsing for complex nested structures
 - ✅ **Recursive Includes**: Deep template inclusion hierarchies
 - ✅ **Path Traversal Protection**: Enterprise-grade security features
 - ✅ **Complete Real-World Demo**: Full-featured showcase application
+
+#### 🛠️ Developer Experience *(v0.4.0-v0.4.1)*
 - ✅ **Enhanced Error Messages**: Line/column numbers and intelligent suggestions
 - ✅ **Template Debugging**: Step-through debugging with variable tracking
 - ✅ **Hot Reload**: Development-time template reloading
@@ -1091,11 +1124,13 @@ Mystical-Runic follows strict **Test-Driven Development** practices. When contri
 - ✅ **Hover Information**: Variable type and value inspection
 - ✅ **Go to Definition**: Navigate to macro and template definitions
 
-### 🌐 v0.5.0 - Ecosystem Integration
-- **Async Support**: Non-blocking template rendering
-- **Web Framework Integration**: First-class Axum, Warp, Actix support
-- **WASM Compatibility**: Browser and edge runtime support
-- **CLI Tools**: Command-line template processing utilities
+#### 🌐 Ecosystem Integration *(v0.5.0-v0.5.2)*
+- ✅ **Async Support**: Non-blocking template rendering
+- ✅ **Web Framework Integration**: First-class Axum, Warp, Actix support
+- ✅ **WASM Compatibility**: Browser and edge runtime support
+- ✅ **CLI Tools**: Command-line template processing utilities
+- ✅ **Performance Monitoring**: Advanced metrics collection *(v0.5.1)*
+- ✅ **Enterprise Security**: Threat classification and audit logging *(v0.5.1)*
 
 ## 🌟 Why "Mystical-Runic"?
 
@@ -1107,12 +1142,36 @@ Because templating is basically ancient magic:
 - Documentation is written in a language only the initiated understand
 - And just like real magic, it works perfectly until production 🔥
 
+## 📊 Performance Benchmarks
+
+Mystical-Runic v0.5.2 includes comprehensive performance benchmarks demonstrating enterprise-grade performance:
+
+```bash
+# Quick performance test
+cargo build --release
+rustc --edition 2021 benchmarks/simple_benchmark.rs -L target/release/deps --extern mystical_runic=target/release/libmystical_runic.rlib -O && ./simple_benchmark
+```
+
+### 🎯 Performance Results
+- **Template Rendering**: ~2.7µs per simple template (excellent)
+- **Filter Processing**: ~4.4µs per filter chain (optimized)  
+- **Complex Templates**: ~470µs per complex template (scalable)
+- **Large Data Sets**: 215ms per 1000 items (production-ready)
+
+### 📈 Available Benchmarks
+- **`simple_benchmark.rs`** - Core functionality performance ✅
+- **`v0_5_2_performance_benchmark.rs`** - Comprehensive enterprise testing 🚧
+- **`ecosystem_benchmark.rs`** - Async and CLI integration testing 🌐
+
+See [`benchmarks/README.md`](benchmarks/README.md) for detailed benchmark documentation and results.
+
 ## 🔗 Links
 
-- **Documentation**: [docs.rs/mystical-runic](https://docs.rs/mystical-runic)
-- **Crates.io**: [crates.io/crates/mystical-runic](https://crates.io/crates/mystical-runic)
-- **Repository**: [github.com/yrbane/mystical-runic](https://github.com/yrbane/mystical-runic)
-- **Issues**: [github.com/yrbane/mystical-runic/issues](https://github.com/yrbane/mystical-runic/issues)
+- **📚 API Documentation**: [docs.rs/mystical-runic](https://docs.rs/mystical-runic)
+- **🇫🇷 User Guide**: [Documentation HTML](https://github.com/yrbane/mystical-runic/tree/main/doc) (français)
+- **📦 Crates.io**: [crates.io/crates/mystical-runic](https://crates.io/crates/mystical-runic)
+- **🔧 Repository**: [github.com/yrbane/mystical-runic](https://github.com/yrbane/mystical-runic)
+- **🐛 Issues**: [github.com/yrbane/mystical-runic/issues](https://github.com/yrbane/mystical-runic/issues)
 
 ## 📄 License
 

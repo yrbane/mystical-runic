@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Mystical-Runic v0.5.2 (Bibliothèque)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Highlight.js for Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e2e8f0; /* Light text */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .sidebar {
+            background-color: #2d3748; /* Darker sidebar */
+            border-right: 1px solid #4a5568; /* Subtle border */
+        }
+        .nav-link {
+            color: #a0aec0; /* Lighter grey for links */
+            display: flex;
+            align-items: center;
+        }
+        .nav-link:hover {
+            color: #cbd5e0; /* Even lighter on hover */
+            background-color: #4a5568; /* Slightly lighter background on hover */
+        }
+        .nav-link i {
+            margin-right: 0.75rem; /* Space between icon and text */
+            width: 1.25rem; /* Fixed width for icons */
+            text-align: center;
+        }
+        h1, h2, h3, h4 {
+            color: #63b3ed; /* Blue headings */
+            font-weight: 700; /* Bold headings */
+        }
+        h1 {
+            font-size: 2.5rem; /* Larger H1 */
+        }
+        h2 {
+            font-size: 2rem; /* Larger H2 */
+        }
+        h3 {
+            font-size: 1.75rem; /* Larger H3 */
+        }
+        code {
+            background-color: #2d3748;
+            color: #f6e05e; /* Yellow for code */
+            padding: 0.2em 0.4em;
+            border-radius: 0.25rem;
+        }
+        pre {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 1em;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem; /* More space below code blocks */
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        /* Specific styles for highlight.js */
+        .hljs {
+            background: #2d3748 !important; /* Ensure background matches pre */
+            color: #e2e8f0 !important; /* Ensure text color matches pre */
+        }
+    </style>
+</head>
+<body class="flex">
+    <!-- Sidebar -->
+    <aside class="sidebar w-64 p-6 h-screen overflow-y-auto shadow-lg flex-shrink-0">
+        <h2 class="text-2xl font-bold mb-6 text-white"><i class="fas fa-hat-wizard"></i> Mystical-Runic</h2>
+        <nav>
+            <ul>
+                <li class="mb-2"><a href="index.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-home"></i> Accueil</a></li>
+                <li class="mb-2"><a href="installation.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-download"></i> Installation</a></li>
+                <li class="mb-2"><a href="whats_new.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-star"></i> Nouveautés v0.5.2</a></li>
+                <li class="mb-2">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2"><i class="fas fa-lightbulb"></i> Concepts Clés</h3>
+                    <ul>
+                        <li class="mb-1 ml-4"><a href="concepts/overview.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-eye"></i> Vue d'ensemble</a></li>
+                        <li class="mb-1 ml-4"><a href="concepts/templating_syntax.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-code"></i> Syntaxe de Templating</a></li>
+                        <li class="mb-1 ml-4"><a href="concepts/data_structures.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-database"></i> Structures de Données</a></li>
+                        <li class="mb-1 ml-4"><a href="concepts/security_performance.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-shield-alt"></i> Sécurité & Performance</a></li>
+                        <li class="mb-1 ml-4"><a href="concepts/filters_helpers.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-filter"></i> Filtres & Helpers</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2"><i class="fas fa-book"></i> Référence API</h3>
+                    <ul>
+                        <li class="mb-1 ml-4"><a href="api/overview.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-sitemap"></i> Vue d'ensemble API</a></li>
+                        <li class="mb-1 ml-4"><a href="api/functions/template_engine.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-cogs"></i> TemplateEngine</a></li>
+                        <li class="mb-1 ml-4"><a href="api/functions/template_context.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-box"></i> TemplateContext</a></li>
+                        <li class="mb-1 ml-4"><a href="api/functions/template_value.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-cube"></i> TemplateValue</a></li>
+                        <li class="mb-1 ml-4"><a href="api/functions/template_error.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-exclamation-triangle"></i> TemplateError</a></li>
+                        <li class="mb-1 ml-4"><a href="api/functions/filter_function.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-magic"></i> FilterFunction</a></li>
+                        <li class="mb-1 ml-4"><a href="api/functions/helper_function.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-hat-wizard"></i> HelperFunction</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2"><a href="examples.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-file-code"></i> Exemples</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10 overflow-y-auto">
+        <div class="container mx-auto">
+            <h1 class="text-4xl font-extrabold mb-6">Documentation de la Bibliothèque Mystical-Runic v0.5.2</h1>
+            <p class="text-lg mb-8 leading-relaxed">Bienvenue dans la documentation de <strong>Mystical-Runic v0.5.2</strong>, un moteur de templating Rust haute performance avec fonctionnalités d'entreprise. Conçu pour la sécurité, les performances exceptionnelles, et l'intégration d'écosystème moderne. Plongez dans le monde de la magie du templating avec des symboles anciens pour des créations web modernes !</p>
+
+            <h2 class="text-3xl font-bold mb-4">Fonctionnalités Clés v0.5.2</h2>
+            <ul class="list-disc pl-5 text-lg mb-6 space-y-2">
+                <li><i class="fas fa-lock text-green-400"></i> <strong>Sécurité Entreprise :</strong> Protection XSS par défaut, prévention de la traversée de chemins, classification des menaces et journalisation d'audit pour des applications web sûres.</li>
+                <li><i class="fas fa-tachometer-alt text-blue-400"></i> <strong>Performance Optimisée :</strong> Compilation en bytecode, mise en cache des templates, rendu asynchrone, traitement concurrent et surveillance avancée des métriques.</li>
+                <li><i class="fas fa-file-alt text-purple-400"></i> <strong>Syntaxe de Templating Riche :</strong> Variables, conditionnelles, boucles imbriquées, inclusions récursives, héritage de templates, macros réutilisables et navigation d'objet profonde.</li>
+                <li><i class="fas fa-exchange-alt text-yellow-400"></i> <strong>Filtres Puissants :</strong> Filtres intégrés (majuscules, minuscules, devise, mathématiques, date) avec chaînage et API flexible pour filtres personnalisés.</li>
+                <li><i class="fas fa-globe text-red-400"></i> <strong>Internationalisation Avancée :</strong> Support multi-langues complet avec syntaxe <code>{{t "key"}}</code>, pluralisation intelligente et commutation de locale dynamique.</li>
+                <li><i class="fas fa-tools text-gray-400"></i> <strong>Outils de Développement :</strong> Messages d'erreur précis (ligne/colonne), débogage de templates, rechargement à chaud, intégration IDE complète (LSP, auto-complétion, coloration syntaxique).</li>
+                <li><i class="fas fa-puzzle-piece text-teal-400"></i> <strong>Intégration Écosystème (v0.5.0+) :</strong> Support natif Axum, Warp, Actix-web, compatibilité WASM, outils CLI et traitement par lots.</li>
+                <li><i class="fas fa-chart-line text-pink-400"></i> <strong>Surveillance et Métriques :</strong> Collection avancée de métriques, monitoring des performances et optimisation avec OpenTelemetry.</li>
+                <li><i class="fas fa-code-branch text-orange-400"></i> <strong>Rust Moderne :</strong> Implémentation pure Rust, édition 2021, MSRV 1.74.0+, prêt pour Rust 2024, zéro dépendances superflues.</li>
+            </ul>
+
+            <h2 class="text-3xl font-bold mb-4">Sommaire</h2>
+            <ul class="list-disc pl-5 text-lg space-y-2">
+                <li class="mb-2"><a href="installation.html" class="text-blue-400 hover:underline"><i class="fas fa-download"></i> Installation</a> : Comment ajouter la bibliothèque à votre projet Rust.</li>
+                <li class="mb-2"><a href="whats_new.html" class="text-green-400 hover:underline"><i class="fas fa-star"></i> Nouveautés v0.5.2</a> : Découvrez les dernières fonctionnalités et améliorations.</li>
+                <li class="mb-2"><a href="concepts/overview.html" class="text-blue-400 hover:underline"><i class="fas fa-lightbulb"></i> Concepts Clés</a> : Comprendre les principes fondamentaux et les fonctionnalités de la bibliothèque.
+                    <ul class="list-disc pl-5 text-base space-y-1 mt-1">
+                        <li><a href="concepts/templating_syntax.html" class="text-blue-400 hover:underline"><i class="fas fa-code"></i> Syntaxe de Templating</a></li>
+                        <li><a href="concepts/data_structures.html" class="text-blue-400 hover:underline"><i class="fas fa-database"></i> Structures de Données (TemplateContext, TemplateValue)</a></li>
+                        <li><a href="concepts/security_performance.html" class="text-blue-400 hover:underline"><i class="fas fa-shield-alt"></i> Sécurité & Performance</a></li>
+                        <li><a href="concepts/filters_helpers.html" class="text-blue-400 hover:underline"><i class="fas fa-filter"></i> Filtres & Helpers</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2"><a href="api/overview.html" class="text-blue-400 hover:underline"><i class="fas fa-book"></i> Référence API</a> : Description détaillée des traits, structures et fonctions publiques.
+                    <ul class="list-disc pl-5 text-base space-y-1 mt-1">
+                        <li><a href="api/functions/template_engine.html" class="text-blue-400 hover:underline"><i class="fas fa-cogs"></i> TemplateEngine</a></li>
+                        <li><a href="api/functions/template_context.html" class="text-blue-400 hover:underline"><i class="fas fa-box"></i> TemplateContext</a></li>
+                        <li><a href="api/functions/template_value.html" class="text-blue-400 hover:underline"><i class="fas fa-cube"></i> TemplateValue</a></li>
+                        <li><a href="api/functions/template_error.html" class="text-blue-400 hover:underline"><i class="fas fa-exclamation-triangle"></i> TemplateError</a></li>
+                        <li><a href="api/functions/filter_function.html" class="text-blue-400 hover:underline"><i class="fas fa-magic"></i> FilterFunction</a></li>
+                        <li><a href="api/functions/helper_function.html" class="text-blue-400 hover:underline"><i class="fas fa-hat-wizard"></i> HelperFunction</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2"><a href="examples.html" class="text-blue-400 hover:underline"><i class="fas fa-file-code"></i> Exemples</a></li>
+            </ul>
+        </div>
+    </main>
+    <!-- Highlight.js Initialization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

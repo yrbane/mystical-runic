@@ -40,14 +40,32 @@
 //!
 //! ## 📖 Quick Start Guide
 //!
+//! > **📚 Documentation complète disponible** : 
+//! > - **Documentation technique** : `cargo doc --open --all-features`
+//! > - **Guide utilisateur** : [Documentation HTML](https://github.com/yrbane/mystical-runic/tree/main/doc) (français)
+//! > - **Référence en ligne** : [docs.rs/mystical-runic](https://docs.rs/mystical-runic)
+//!
 //! Add to your `Cargo.toml`:
 //! ```toml
 //! [dependencies]
-//! mystical-runic = "0.5.0"
+//! mystical-runic = "0.5.2"
 //!
-//! # Optional features
-//! mystical-runic = { version = "0.5.0", features = ["async", "web-frameworks", "wasm", "cli"] }
+//! # Optional features for ecosystem integration
+//! mystical-runic = { version = "0.5.2", features = ["async", "web-frameworks", "wasm", "cli"] }
 //! ```
+//!
+//! ## 🌐 Optional Features
+//!
+//! | Feature | Description | Dependencies |
+//! |---------|-------------|--------------|
+//! | `async` | Asynchronous template rendering with Tokio | `tokio`, `futures` |
+//! | `axum-integration` | Direct Axum framework support | `axum`, `async` |
+//! | `warp-integration` | Direct Warp framework support | `warp`, `async` |
+//! | `actix-integration` | Direct Actix-web framework support | `actix-web`, `async` |
+//! | `web-frameworks` | All web framework integrations | All above web features |
+//! | `wasm` | WebAssembly browser compatibility | `wasm-bindgen`, `js-sys`, `web-sys` |
+//! | `cli` | Command-line tools and utilities | `clap`, `serde`, `serde_json`, `toml` |
+//! | `full` | All ecosystem integration features | All optional features |
 //!
 //! ## 🧙‍♂️ Usage Examples - Choose Your Style
 //!
@@ -110,6 +128,62 @@
 //! - **Smart Suggestions**: Intelligent template and variable suggestions
 //! - **Precise Errors**: Line/column error reporting with context
 //! - **Performance Metrics**: Built-in execution time measurement
+//!
+//! ## 🚀 Ecosystem Integration Examples
+//!
+//! ### Async Template Rendering (requires `async` feature)
+//! ```rust,ignore
+//! use mystical_runic::{TemplateEngine, TemplateContext};
+//!
+//! #[tokio::main]
+//! async fn main() -> Result<(), Box<dyn std::error::Error>> {
+//!     let mut engine = TemplateEngine::new("templates");
+//!     let mut context = TemplateContext::new();
+//!     context.set_string("user", "Async Developer");
+//!
+//!     let result = engine.render_string_async(
+//!         "Hello {{user}}! Processing async request...",
+//!         &context
+//!     ).await?;
+//!
+//!     println!("{}", result);
+//!     Ok(())
+//! }
+//! ```
+//!
+//! ### Web Framework Integration (requires framework-specific features)
+//! ```rust,ignore
+//! // Axum Integration (requires `axum-integration` feature)
+//! use axum::{response::Html, routing::get, Router};
+//! use mystical_runic::{TemplateEngine, TemplateContext};
+//!
+//! async fn render_page() -> Html<String> {
+//!     let mut engine = TemplateEngine::new("templates");
+//!     let mut context = TemplateContext::new();
+//!     context.set_string("title", "My Axum App");
+//!
+//!     let html = engine.render_string("<h1>{{title}}</h1>", &context).unwrap();
+//!     Html(html)
+//! }
+//! ```
+//!
+//! ### CLI Template Processing (requires `cli` feature)
+//! ```rust,ignore
+//! use mystical_runic::{process_template, batch_process};
+//!
+//! fn main() -> Result<(), Box<dyn std::error::Error>> {
+//!     // Single template processing
+//!     let result = process_template("Hello {{name}}!", r#"{"name": "CLI User"}"#)?;
+//!     println!("{}", result);
+//!
+//!     // Batch processing multiple templates
+//!     let templates = vec!["template1.html", "template2.html"];
+//!     let context_json = r#"{"theme": "dark", "version": "0.5.2"}"#;
+//!     let results = batch_process(templates, context_json)?;
+//!
+//!     Ok(())
+//! }
+//! ```
 
 mod error;
 mod engine;
@@ -138,21 +212,28 @@ pub use debug::{DebugInfo, DebugRenderResult, ExecutionStep, PerformanceMetrics}
 pub use lsp::{LspParseResult, TemplateBlock, CompletionItem, SyntaxToken, Diagnostic, HoverInfo, DefinitionInfo};
 
 // 🚀 v0.5.0 Ecosystem Integration exports
+
+/// Async template engine support (requires `async` feature)
 #[cfg(feature = "async")]
 pub use async_engine::AsyncTemplateEngine;
 
+/// Axum web framework integration (requires `axum-integration` feature)
 #[cfg(feature = "axum-integration")]
 pub use web_frameworks::axum_integration::{AxumTemplateEngine, TemplateResponseError};
 
-#[cfg(feature = "warp-integration")]  
+/// Warp web framework integration (requires `warp-integration` feature)
+#[cfg(feature = "warp-integration")]
 pub use web_frameworks::warp_integration::WarpTemplateEngine;
 
+/// Actix-web framework integration (requires `actix-integration` feature)
 #[cfg(feature = "actix-integration")]
 pub use web_frameworks::actix_integration::ActixTemplateEngine;
 
+/// WebAssembly browser compatibility (requires `wasm` feature)
 #[cfg(feature = "wasm")]
 pub use wasm_support::{WasmTemplateEngine, WasmRuneEngine};
 
+/// Command-line tools and utilities (requires `cli` feature)
 #[cfg(feature = "cli")]
 pub use cli::{Cli, Commands, CliConfig, TemplateWatcher, process_template, process_files, batch_process, load_config};
 
@@ -169,21 +250,28 @@ pub use debug::{DebugInfo as RuneTrace, DebugRenderResult as RuneDivination, Exe
 pub use lsp::{LspParseResult as RunicLore, TemplateBlock as RunicBlock, CompletionItem as RunicCompletion, SyntaxToken as RunicToken, Diagnostic as RunicDiagnostic, HoverInfo as RunicWisdom, DefinitionInfo as RunicOrigin};
 
 // 🔮 v0.5.0 Mystical ecosystem aliases
+
+/// Async rune engine (mystical alias, requires `async` feature)
 #[cfg(feature = "async")]
 pub use async_engine::AsyncTemplateEngine as AsyncRuneEngine;
 
+/// Axum rune engine (mystical alias, requires `axum-integration` feature)
 #[cfg(feature = "axum-integration")]
 pub use web_frameworks::axum_integration::{AxumTemplateEngine as AxumRuneEngine, TemplateResponseError as RuneResponseError};
 
+/// Warp rune engine (mystical alias, requires `warp-integration` feature)
 #[cfg(feature = "warp-integration")]
 pub use web_frameworks::warp_integration::WarpTemplateEngine as WarpRuneEngine;
 
+/// Actix rune engine (mystical alias, requires `actix-integration` feature)
 #[cfg(feature = "actix-integration")]
 pub use web_frameworks::actix_integration::ActixTemplateEngine as ActixRuneEngine;
 
+/// WebAssembly rune engines (mystical aliases, requires `wasm` feature)
 #[cfg(feature = "wasm")]
 pub use wasm_support::{WasmTemplateEngine as WasmRuneEngineTrait, WasmRuneEngine as BrowserRuneEngine};
 
+/// Command-line runic tools (mystical aliases, requires `cli` feature)
 #[cfg(feature = "cli")]
 pub use cli::{Cli as RunicCli, Commands as RunicCommands, CliConfig as RunicConfig, TemplateWatcher as RuneWatcher};
 

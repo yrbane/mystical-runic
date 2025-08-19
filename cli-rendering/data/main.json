@@ -1,0 +1,14 @@
+{
+    "title": "Chronicles of Eldoria",
+    "character": {
+        "name": "Lyra",
+        "power_level": 9500,
+        "is_chosen_one": true
+    },
+    "grimoire": [
+        { "name": "Celestial Orb", "cost": 100 },
+        { "name": "Temporal Shift", "cost": 75 },
+        { "name": "Ethereal Shield", "cost": 50 }
+    ],
+    "raw_html": "<p><em>A shimmering portal flickers into existence...</em></p><button style=\"background: #00ffff; color: #1a0a2a; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-family: 'Cinzel', serif; box-shadow: 0 0 10px #00ffff;\">Enter the Void</button>"
+}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Spectral:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Spectral', serif;
+            line-height: 1.8;
+            margin: 0;
+            background: linear-gradient(to bottom right, #1a0a2a, #0a0a1a);
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: rgba(25, 0, 50, 0.8);
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(150, 0, 255, 0.5), 0 0 60px rgba(100, 0, 200, 0.3);
+            border: 1px solid rgba(150, 0, 255, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
+            color: #a0e0ff;
+            text-shadow: 0 0 10px rgba(160, 224, 255, 0.6);
+            margin-bottom: 15px;
+        }
+        h1 { font-size: 2.8em; text-align: center; margin-bottom: 30px; }n        h2 { font-size: 2.2em; border-bottom: 1px solid rgba(160, 224, 255, 0.3); padding-bottom: 10px; margin-top: 30px; }n        h3 { font-size: 1.8em; }n
+        .grimoire {
+            list-style: none;
+            padding: 0;
+        }
+        .grimoire li {
+            background: rgba(50, 0, 100, 0.6);
+            margin-bottom: 8px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(150, 0, 255, 0.4);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .grimoire li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(150, 0, 255, 0.7);
+        }
+        .raw-html {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(100, 200, 255, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(100, 200, 255, 0.2);
+        }
+        .wisdom {
+            background: rgba(70, 0, 140, 0.7);
+            padding: 20px;
+            border-left: 5px solid #ffcc00;
+            border-radius: 8px;
+            margin-top: 30px;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+        }
+        .chosen-one {
+            text-align: center;
+            font-size: 1.2em;
+            color: #ffcc00;
+            text-shadow: 0 0 8px rgba(255, 204, 0, 0.8);
+            margin-top: 20px;
+        }
+        .magic-icon {
+            width: 1.2em;
+            height: 1.2em;
+            vertical-align: middle;
+            margin-right: 5px;
+            fill: currentColor; /* Use current text color */
+            filter: drop-shadow(0 0 3px rgba(0, 255, 255, 0.8)); /* Cyan glow */
+        }
+        .magic-icon.star { fill: #00ffff; }n        .magic-icon.orb { fill: #ff00ff; }n        .magic-icon.scroll { fill: #ffff00; }n    </style>
+</head>
+<body>
+    <div class="container">
+        {{! This is the main template }}
+        <h1>
+            <svg class="magic-icon star" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            {{title}}
+            <svg class="magic-icon star" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        </h1>
+        <p>Welcome, noble {{character.name}}!</p>
+
+        <h2>Your Arcane Power Level: {{character.power_level}}</h2>
+
+        {{if character.is_chosen_one}}
+        <p class="chosen-one">
+            <svg class="magic-icon star" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <strong>You are the chosen one, destined for greatness!</strong>
+            <svg class="magic-icon star" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        </p>
+        {{/if}}
+
+        <h3>Grimoire of Ancient Spells</h3>
+        <ul class="grimoire">
+        {{for spell in grimoire}}
+            <li>
+                <svg class="magic-icon orb" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                <strong>{{spell.name}}</strong> - Cost: {{spell.cost}} mana.
+            </li>
+        {{/for}}
+        </ul>
+
+        <h3>Whispers from the Aether (Raw HTML)</h3>
+        <div class="raw-html">
+            {{& raw_html}}
+        </div>
+
+        <h3>A Scroll of Timeless Wisdom</h3>
+        <div class="wisdom">
+            <svg class="magic-icon scroll" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-2 4 2 4-2 4 2 4-2V4c0-1.1-.9-2-2-2zm0 15.23l-2-1-2 1-2-1-2 1-2-1-2 1V4h16v13.23z"/></svg>
+            {{include "templates/scrolls/wisdom.rune"}}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TemplateContext - Mystical-Runic API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Highlight.js for Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e2e8f0; /* Light text */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .sidebar {
+            background-color: #2d3748; /* Darker sidebar */
+            border-right: 1px solid #4a5568; /* Subtle border */
+        }
+        .nav-link {
+            color: #a0aec0; /* Lighter grey for links */
+            display: flex;
+            align-items: center;
+        }
+        .nav-link:hover {
+            color: #cbd5e0; /* Even lighter on hover */
+            background-color: #4a5568; /* Slightly lighter background on hover */
+        }
+        .nav-link i {
+            margin-right: 0.75rem; /* Space between icon and text */
+            width: 1.25rem; /* Fixed width for icons */
+            text-align: center;
+        }
+        h1, h2, h3, h4 {
+            color: #63b3ed; /* Blue headings */
+            font-weight: 700; /* Bold headings */
+        }
+        h1 {
+            font-size: 2.5rem; /* Larger H1 */
+        }
+        h2 {
+            font-size: 2rem; /* Larger H2 */
+        }
+        h3 {
+            font-size: 1.75rem; /* Larger H3 */
+        }
+        code {
+            background-color: #2d3748;
+            color: #f6e05e; /* Yellow for code */
+            padding: 0.2em 0.4em;
+            border-radius: 0.25rem;
+        }
+        pre {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 1em;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem; /* More space below code blocks */
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        /* Specific styles for highlight.js */
+        .hljs {
+            background: #2d3748 !important; /* Ensure background matches pre */
+            color: #e2e8f0 !important; /* Ensure text color matches pre */
+        }
+    </style>
+</head>
+<body class="flex">
+    <!-- Sidebar -->
+    <aside class="sidebar w-64 p-6 h-screen overflow-y-auto shadow-lg flex-shrink-0">
+        <h2 class="text-2xl font-bold mb-6 text-white"><i class="fas fa-hat-wizard"></i> Mystical-Runic</h2>
+        <nav>
+            <ul>
+                <li class="mb-2"><a href="../../index.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-home"></i> Accueil</a></li>
+                <li class="mb-2"><a href="../../installation.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-download"></i> Installation</a></li>
+                <li class="mb-2">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2"><i class="fas fa-lightbulb"></i> Concepts Clés</h3>
+                    <ul>
+                        <li class="mb-1 ml-4"><a href="../../concepts/overview.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-eye"></i> Vue d'ensemble</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/templating_syntax.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-code"></i> Syntaxe de Templating</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/data_structures.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-database"></i> Structures de Données</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/security_performance.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-shield-alt"></i> Sécurité & Performance</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/filters_helpers.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-filter"></i> Filtres & Helpers</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2"><i class="fas fa-book"></i> Référence API</h3>
+                    <ul>
+                        <li class="mb-1 ml-4"><a href="../overview.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-sitemap"></i> Vue d'ensemble API</a></li>
+                        <li class="mb-1 ml-4"><a href="template_engine.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-cogs"></i> TemplateEngine</a></li>
+                        <li class="mb-1 ml-4"><a href="template_context.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-box"></i> TemplateContext</a></li>
+                        <li class="mb-1 ml-4"><a href="template_value.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-cube"></i> TemplateValue</a></li>
+                        <li class="mb-1 ml-4"><a href="template_error.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-exclamation-triangle"></i> TemplateError</a></li>
+                        <li class="mb-1 ml-4"><a href="filter_function.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-magic"></i> FilterFunction</a></li>
+                        <li class="mb-1 ml-4"><a href="helper_function.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-hat-wizard"></i> HelperFunction</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2"><a href="../../examples.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-file-code"></i> Exemples</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10 overflow-y-auto">
+        <div class="container mx-auto">
+            <h1 class="text-4xl font-extrabold mb-6">Struct <code>TemplateContext</code> (alias <code>RuneScroll</code>)</h1>
+            <p class="text-lg mb-4 leading-relaxed"><code>TemplateContext</code> est la structure fondamentale qui encapsule toutes les données que vous souhaitez rendre disponibles dans vos templates Mystical-Runic. Elle agit comme un conteneur clé-valeur, similaire à une carte (map) ou un objet JSON, où chaque clé correspond au nom d'une variable accessible dans le template, et chaque valeur est une instance de <code>TemplateValue</code>.</p>
+
+            <h2 class="text-3xl font-bold mb-4">Création d'une Instance</h2>
+            <h3 class="text-2xl font-bold mb-3"><code>TemplateContext::new()</code></h3>
+            <p class="mb-2 leading-relaxed">Crée une nouvelle instance vide de <code>TemplateContext</code>. C'est le point de départ pour construire votre contexte de données.</p>
+            <ul class="list-disc pl-5 text-lg mb-4 space-y-1">
+                <li><strong>Exemple :</strong>
+                    <pre><code class="language-rust">
+use mystical_runic::TemplateContext;
+
+let mut context = TemplateContext::new();
+</code></pre>
+                </li>
+            </ul>
+
+            <h2 class="text-3xl font-bold mb-4">Ajout de Données</h2>
+            <h3 class="text-2xl font-bold mb-3"><code>set(&self, key: &str, value: TemplateValue)</code></h3>
+            <p class="mb-2 leading-relaxed">Ajoute une paire clé-valeur au contexte. La clé est le nom de la variable tel qu'il sera utilisé dans le template, et la valeur est une instance de <code>TemplateValue</code>. Cette méthode est essentielle pour peupler votre contexte avec les données nécessaires au rendu.</p>
+            <ul class="list-disc pl-5 text-lg mb-4 space-y-1">
+                <li><strong>Paramètres :</strong>
+                    <ul class="list-disc pl-5 text-base space-y-1">
+                        <li><code>key</code> : Le nom de la variable dans le template (par exemple, <code>"user_name"</code>, <code>"product_list"</code>).</li>
+                        <li><code>value</code> : La donnée à associer à cette clé, encapsulée dans un <code>TemplateValue</code>.</li>
+                    </ul>
+                </li>
+                <li><strong>Exemple :</strong>
+                    <pre><code class="language-rust">
+use mystical_runic::{TemplateContext, TemplateValue};
+
+let mut context = TemplateContext::new();
+context.set("user_name", TemplateValue::String("Alice".to_string()));
+context.set("age", TemplateValue::Number(30));
+context.set("is_active", TemplateValue::Bool(true));
+
+// Pour des objets imbriqués ou des tableaux, vous construisez des TemplateValue::Object ou TemplateValue::Array
+let mut address_map = std::collections::HashMap::new();
+address_map.insert("street".to_string(), TemplateValue::String("123 Main St".to_string()));
+address_map.insert("city".to_string(), TemplateValue::String("Anytown".to_string()));
+context.set("address", TemplateValue::Object(address_map));
+</code></pre>
+                </li>
+            </ul>
+
+            <h2 class="text-3xl font-bold mb-4">Utilisation dans les Templates</h2>
+            <p class="mb-4 leading-relaxed">Les données définies dans <code>TemplateContext</code> sont accessibles dans vos templates en utilisant la syntaxe de variable standard de Mystical-Runic. Pour les objets imbriqués, utilisez la notation par points.</p>
+            <pre><code class="language-html">
+&lt;p&gt;Nom: {{ user_name }}&lt;/p&gt;
+&lt;p&gt;Âge: {{ age }}&lt;/p&gt;
+{{#if is_active}}
+    &lt;p&gt;Utilisateur actif.&lt;/p&gt;
+{{/if}}
+&lt;p&gt;Adresse: {{ address.street }}, {{ address.city }}&lt;/p&gt;
+</code></pre>
+        </div>
+    </main>
+    <!-- Highlight.js Initialization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

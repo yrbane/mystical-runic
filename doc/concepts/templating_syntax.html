@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syntaxe de Templating - Mystical-Runic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Highlight.js for Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e2e8f0; /* Light text */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .sidebar {
+            background-color: #2d3748; /* Darker sidebar */
+            border-right: 1px solid #4a5568; /* Subtle border */
+        }
+        .nav-link {
+            color: #a0aec0; /* Lighter grey for links */
+            display: flex;
+            align-items: center;
+        }
+        .nav-link:hover {
+            color: #cbd5e0; /* Even lighter on hover */
+            background-color: #4a5568; /* Slightly lighter background on hover */
+        }
+        .nav-link i {
+            margin-right: 0.75rem; /* Space between icon and text */
+            width: 1.25rem; /* Fixed width for icons */
+            text-align: center;
+        }
+        h1, h2, h3, h4 {
+            color: #63b3ed; /* Blue headings */
+            font-weight: 700; /* Bold headings */
+        }
+        h1 {
+            font-size: 2.5rem; /* Larger H1 */
+        }
+        h2 {
+            font-size: 2rem; /* Larger H2 */
+        }
+        h3 {
+            font-size: 1.75rem; /* Larger H3 */
+        }
+        code {
+            background-color: #2d3748;
+            color: #f6e05e; /* Yellow for code */
+            padding: 0.2em 0.4em;
+            border-radius: 0.25rem;
+        }
+        pre {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 1em;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem; /* More space below code blocks */
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        /* Specific styles for highlight.js */
+        .hljs {
+            background: #2d3748 !important; /* Ensure background matches pre */
+            color: #e2e8f0 !important; /* Ensure text color matches pre */
+        }
+    </style>
+</head>
+<body class="flex">
+    <!-- Sidebar -->
+    <aside class="sidebar w-64 p-6 h-screen overflow-y-auto shadow-lg flex-shrink-0">
+        <h2 class="text-2xl font-bold mb-6 text-white"><i class="fas fa-hat-wizard"></i> Mystical-Runic</h2>
+        <nav>
+            <ul>
+                <li class="mb-2"><a href="../index.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-home"></i> Accueil</a></li>
+                <li class="mb-2"><a href="../installation.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-download"></i> Installation</a></li>
+                <li class="mb-2">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2"><i class="fas fa-lightbulb"></i> Concepts Clés</h3>
+                    <ul>
+                        <li class="mb-1 ml-4"><a href="overview.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-eye"></i> Vue d'ensemble</a></li>
+                        <li class="mb-1 ml-4"><a href="templating_syntax.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-code"></i> Syntaxe de Templating</a></li>
+                        <li class="mb-1 ml-4"><a href="data_structures.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-database"></i> Structures de Données</a></li>
+                        <li class="mb-1 ml-4"><a href="security_performance.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-shield-alt"></i> Sécurité & Performance</a></li>
+                        <li class="mb-1 ml-4"><a href="filters_helpers.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-filter"></i> Filtres & Helpers</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2"><i class="fas fa-book"></i> Référence API</h3>
+                    <ul>
+                        <li class="mb-1 ml-4"><a href="../api/overview.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-sitemap"></i> Vue d'ensemble API</a></li>
+                        <li class="mb-1 ml-4"><a href="../api/functions/template_engine.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-cogs"></i> TemplateEngine</a></li>
+                        <li class="mb-1 ml-4"><a href="../api/functions/template_context.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-box"></i> TemplateContext</a></li>
+                        <li class="mb-1 ml-4"><a href="../api/functions/template_value.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-cube"></i> TemplateValue</a></li>
+                        <li class="mb-1 ml-4"><a href="../api/functions/template_error.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-exclamation-triangle"></i> TemplateError</a></li>
+                        <li class="mb-1 ml-4"><a href="../api/functions/filter_function.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-magic"></i> FilterFunction</a></li>
+                        <li class="mb-1 ml-4"><a href="../api/functions/helper_function.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-hat-wizard"></i> HelperFunction</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2"><a href="../examples.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-file-code"></i> Exemples</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10 overflow-y-auto">
+        <div class="container mx-auto">
+            <h1 class="text-4xl font-extrabold mb-6">Syntaxe de Templating</h1>
+            <p class="text-lg mb-4 leading-relaxed">Mystical-Runic utilise une syntaxe de templating inspirée de Mustache, rendant les templates intuitifs et faciles à lire. Cette section détaille les principaux éléments de syntaxe que vous utiliserez pour construire vos templates dynamiques.</p>
+
+            <h2 class="text-3xl font-bold mb-4">Variables (<code>{{ variable }}</code>)</h2>
+            <p class="mb-2 leading-relaxed">Affiche la valeur d'une variable. Le contenu est automatiquement échappé pour prévenir les attaques de Cross-Site Scripting (XSS), garantissant que le HTML généré est sûr.</p>
+            <pre><code class="language-html">{{ nom_de_la_variable }}</code></pre>
+            <p class="mb-4 leading-relaxed"><strong>Exemple :</strong> Si votre contexte contient <code>{"user": {"name": "Alice"}}</code>, alors <code>{{ user.name }}</code> affichera <code>Alice</code>.</p>
+
+            <h2 class="text-3xl font-bold mb-4">Contenu Non Échappé (Raw HTML) (<code>{{& html }}</code>)</h2>
+            <p class="mb-2 leading-relaxed">Permet d'afficher du contenu HTML brut sans aucun échappement. À utiliser avec une extrême prudence et uniquement avec des sources de données fiables, car cela peut introduire des vulnérabilités XSS si le contenu n'est pas sécurisé.</p>
+            <pre><code class="language-html">{{& raw_html_content }}</code></pre>
+            <p class="mb-4 leading-relaxed"><strong>Exemple :</strong> Si <code>raw_html_content</code> est <code>&lt;strong&gt;Texte en gras&lt;/strong&gt;</code>, alors <code>{{& raw_html_content }}</code> affichera <strong>Texte en gras</strong>.</p>
+
+            <h2 class="text-3xl font-bold mb-4">Conditionnelles (If/Else) (<code>{{#if}}...{{/if}}</code>)</h2>
+            <p class="mb-2 leading-relaxed">Affiche un bloc de contenu si une condition donnée est vraie. Vous pouvez également utiliser un bloc <code>{{else}}</code> pour un contenu alternatif.</p>
+            <pre><code class="language-html">{{#if is_admin}}
+    &lt;p&gt;Bienvenue, administrateur !&lt;/p&gt;
+{{/if}}
+
+{{#if user_logged_in}}
+    &lt;p&gt;Vous êtes connecté.&lt;/p&gt;
+{{else}}
+    &lt;p&gt;Veuillez vous connecter.&lt;/p&gt;
+{{/if}}
+</code></pre>
+
+            <h2 class="text-3xl font-bold mb-4">Boucles (For) (<code>{{#for}}...{{/for}}</code>)</h2>
+            <p class="mb-2 leading-relaxed">Itère sur une collection (tableau ou objet) et rend un bloc de contenu pour chaque élément. Très utile pour générer des listes ou des tableaux dynamiques.</p>
+            <pre><code class="language-html">{{#for item in items}}
+    &lt;li&gt;{{ item.name }} (Quantité: {{ item.quantity }})&lt;/li&gt;
+{{/for}}
+</code></pre>
+            <p class="mb-4 leading-relaxed">Vous pouvez également accéder à l'index de l'itération pour les tableaux :</p>
+            <pre><code class="language-html">{{#for item in items with index}}
+    &lt;li&gt;{{ index }}: {{ item.name }}&lt;/li&gt;
+{{/for}}
+</code></pre>
+
+            <h2 class="text-3xl font-bold mb-4">Inclusions (<code>{{include "chemin/vers/fichier"}}</code>)</h2>
+            <p class="mb-2 leading-relaxed">Permet d'inclure le contenu d'un autre fichier de template dans le template actuel. Utile pour la modularité et la réutilisation de composants.</p>
+            <pre><code class="language-html">{{include "partials/header.html"}}
+&lt;main&gt;
+    &lt;h1&gt;Contenu principal&lt;/h1&gt;
+&lt;/main&gt;
+{{include "partials/footer.html"}}
+</code></pre>
+
+            <h2 class="text-3xl font-bold mb-4">Commentaires (<code>{{! Commentaire }}</code>)</h2>
+            <p class="mb-2 leading-relaxed">Les commentaires sont des notes pour les développeurs et ne sont pas inclus dans le HTML rendu final. Ils sont ignorés par le moteur de template.</p>
+            <pre><code class="language-html">{{! Ceci est un commentaire interne au template, invisible dans le HTML final }}</code></pre>
+
+            <h2 class="text-3xl font-bold mb-4">Accès aux Propriétés d'Objet (<code>{{ object.property }}</code>)</h2>
+            <p class="mb-2 leading-relaxed">Accédez aux propriétés imbriquées d'un objet en utilisant la notation par points, similaire à l'accès aux propriétés en JavaScript ou Rust.</p>
+            <pre><code class="language-html">{{ user.address.street }}
+{{ product.details.color }}</code></pre>
+
+            <h2 class="text-3xl font-bold mb-4">Héritage de Template (Layouts) (<code>{{#extends}}...{{#block}}...{{/block}}</code>)</h2>
+            <p class="mb-2 leading-relaxed">Mystical-Runic supporte l'héritage de template, une fonctionnalité puissante pour créer des layouts de base réutilisables et les étendre dans des templates enfants. Cela favorise la cohérence du design et réduit la duplication de code.</p>
+            <pre><code class="language-html">// layout.html (Template Parent)
+&lt;!DOCTYPE html&gt;
+&lt;html lang="fr"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;{{ title }} - Mon Site&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;Mon En-tête&lt;/header&gt;
+    &lt;main&gt;
+        {{#block "content"}}<!-- Contenu par défaut ou vide -->{{/block}}
+    &lt;/main&gt;
+    &lt;footer&gt;Mon Pied de Page&lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+// page.html (Template Enfant)
+{{#extends "layout.html"}}
+    {{#block "content"}}
+        &lt;h1&gt;Bienvenue sur ma page spécifique !&lt;/h1&gt;
+        &lt;p&gt;Ceci est le contenu unique de cette page.&lt;/p&gt;
+    {{/block}}
+{{/extends}}
+</code></pre>
+
+            <h2 class="text-3xl font-bold mb-4">Macros Réutilisables (<code>{{#macro}}...{{/macro}}</code>)</h2>
+            <p class="mb-2 leading-relaxed">Définissez des blocs de code réutilisables avec des paramètres, similaires à des fonctions ou des composants. Les macros peuvent être définies une fois et appelées plusieurs fois dans vos templates.</p>
+            <pre><code class="language-html">{{#macro "card" title content}}
+    &lt;div class="card"&gt;
+        &lt;h3&gt;{{ title }}&lt;/h3&gt;
+        &lt;p&gt;{{ content }}&lt;/p&gt;
+    &lt;/div&gt;
+{{/macro}}
+
+{{card "Titre de la Carte 1" "Contenu de la première carte."}}
+{{card "Titre de la Carte 2" "Contenu de la deuxième carte."}}
+</code></pre>
+        </div>
+    </main>
+    <!-- Highlight.js Initialization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

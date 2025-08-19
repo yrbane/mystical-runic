@@ -1,0 +1,15 @@
+# Configuration rustdoc pour Mystical-Runic
+# Documentation configuration for enhanced rustdoc generation
+
+# HTML customization
+[html]
+playground-url = "https://play.rust-lang.org/"
+issue-tracker-base-url = "https://github.com/yrbane/mystical-runic/issues/"
+root-url = "https://docs.rs/mystical-runic/"
+resource-suffix = ""
+
+# Include theme for consistency with docs.rs
+theme = "light"
+
+# Additional CSS for better styling
+additional-css = ["rustdoc-custom.css"]

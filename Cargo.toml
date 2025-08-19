@@ -9,7 +9,18 @@ license = "MIT"
 repository = "https://github.com/yrbane/mystical-runic.git"
 keywords = ["template", "templating", "html", "web", "mustache"]
 categories = ["template-engine", "web-programming", "development-tools"]
-exclude = ["examples/", "benchmarks/", "target/"]
+exclude = ["examples/", "benchmarks/", "target/", "doc/"]
+readme = "README.md"
+documentation = "https://docs.rs/mystical-runic"
+homepage = "https://github.com/yrbane/mystical-runic"
+
+[package.metadata.docs.rs]
+# Enable all features when building docs on docs.rs
+all-features = true
+# Set the default target to show the crate documentation
+default-target = "x86_64-unknown-linux-gnu"
+# Use rustdoc args to improve documentation generation
+rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
 # Async runtime support

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TemplateError - Mystical-Runic API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Highlight.js for Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e2e8f0; /* Light text */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .sidebar {
+            background-color: #2d3748; /* Darker sidebar */
+            border-right: 1px solid #4a5568; /* Subtle border */
+        }
+        .nav-link {
+            color: #a0aec0; /* Lighter grey for links */
+            display: flex;
+            align-items: center;
+        }
+        .nav-link:hover {
+            color: #cbd5e0; /* Even lighter on hover */
+            background-color: #4a5568; /* Slightly lighter background on hover */
+        }
+        .nav-link i {
+            margin-right: 0.75rem; /* Space between icon and text */
+            width: 1.25rem; /* Fixed width for icons */
+            text-align: center;
+        }
+        h1, h2, h3, h4 {
+            color: #63b3ed; /* Blue headings */
+            font-weight: 700; /* Bold headings */
+        }
+        h1 {
+            font-size: 2.5rem; /* Larger H1 */
+        }
+        h2 {
+            font-size: 2rem; /* Larger H2 */
+        }
+        h3 {
+            font-size: 1.75rem; /* Larger H3 */
+        }
+        code {
+            background-color: #2d3748;
+            color: #f6e05e; /* Yellow for code */
+            padding: 0.2em 0.4em;
+            border-radius: 0.25rem;
+        }
+        pre {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 1em;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem; /* More space below code blocks */
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        /* Specific styles for highlight.js */
+        .hljs {
+            background: #2d3748 !important; /* Ensure background matches pre */
+            color: #e2e8f0 !important; /* Ensure text color matches pre */
+        }
+    </style>
+</head>
+<body class="flex">
+    <!-- Sidebar -->
+    <aside class="sidebar w-64 p-6 h-screen overflow-y-auto shadow-lg flex-shrink-0">
+        <h2 class="text-2xl font-bold mb-6 text-white"><i class="fas fa-hat-wizard"></i> Mystical-Runic</h2>
+        <nav>
+            <ul>
+                <li class="mb-2"><a href="../../index.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-home"></i> Accueil</a></li>
+                <li class="mb-2"><a href="../../installation.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-download"></i> Installation</a></li>
+                <li class="mb-2">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2"><i class="fas fa-lightbulb"></i> Concepts Clés</h3>
+                    <ul>
+                        <li class="mb-1 ml-4"><a href="../../concepts/overview.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-eye"></i> Vue d'ensemble</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/templating_syntax.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-code"></i> Syntaxe de Templating</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/data_structures.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-database"></i> Structures de Données</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/security_performance.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-shield-alt"></i> Sécurité & Performance</a></li>
+                        <li class="mb-1 ml-4"><a href="../../concepts/filters_helpers.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-filter"></i> Filtres & Helpers</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2"><i class="fas fa-book"></i> Référence API</h3>
+                    <ul>
+                        <li class="mb-1 ml-4"><a href="../overview.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-sitemap"></i> Vue d'ensemble API</a></li>
+                        <li class="mb-1 ml-4"><a href="template_engine.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-cogs"></i> TemplateEngine</a></li>
+                        <li class="mb-1 ml-4"><a href="template_context.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-box"></i> TemplateContext</a></li>
+                        <li class="mb-1 ml-4"><a href="template_value.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-cube"></i> TemplateValue</a></li>
+                        <li class="mb-1 ml-4"><a href="template_error.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-exclamation-triangle"></i> TemplateError</a></li>
+                        <li class="mb-1 ml-4"><a href="filter_function.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-magic"></i> FilterFunction</a></li>
+                        <li class="mb-1 ml-4"><a href="helper_function.html" class="nav-link block py-1 px-2 rounded transition duration-200"><i class="fas fa-hat-wizard"></i> HelperFunction</a></li>
+                    </ul>
+                </li>
+                <li class="mb-2"><a href="../../examples.html" class="nav-link block py-2 px-4 rounded transition duration-200"><i class="fas fa-file-code"></i> Exemples</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10 overflow-y-auto">
+        <div class="container mx-auto">
+            <h1 class="text-4xl font-extrabold mb-6">Enum <code>TemplateError</code> (alias <code>RuneError</code>)</h1>
+            <p class="text-lg mb-4 leading-relaxed"><code>TemplateError</code> est le type d'erreur principal utilisé par la bibliothèque Mystical-Runic pour signaler les problèmes survenus pendant les opérations de templating. Il encapsule diverses conditions d'erreur qui peuvent survenir lors du parsing, de la compilation ou du rendu des templates, offrant une gestion d'erreur robuste et informative.</p>
+
+            <h2 class="text-3xl font-bold mb-4">Définition</h2>
+            <p class="mb-4 leading-relaxed">Bien que les détails internes de l'énumération <code>TemplateError</code> puissent être complexes et inclure diverses variantes pour différents types d'erreurs (par exemple, erreurs de syntaxe, erreurs d'E/S lors de la lecture de fichiers, erreurs de données manquantes ou de type incorrect, erreurs d'exécution de filtres/helpers), elle est généralement exposée comme un type d'erreur qui implémente les traits standards de Rust comme <code>std::error::Error</code> et <code>std::fmt::Display</code>. Cela permet une gestion d'erreur cohérente et la possibilité d'afficher des messages d'erreur conviviaux.</p>
+            <pre><code class="language-rust">
+pub enum TemplateError {
+    // Erreurs de parsing (par exemple, syntaxe de template invalide)
+    ParseError(String),
+    // Erreurs d'E/S (par exemple, fichier de template introuvable)
+    IoError(String),
+    // Erreurs de données (par exemple, variable non trouvée, type incorrect)
+    DataError(String),
+    // Erreurs d'exécution (par exemple, problème dans un filtre ou helper personnalisé)
+    RuntimeError(String),
+    // Autres erreurs génériques
+    Other(String),
+}
+
+// Implémentations pour Display, Error, etc. (simplifié)
+impl std::fmt::Display for TemplateError {
+    fn fmt(&self, f: &mut std::fmt::Formatter&lt;'_&gt;) -> std::fmt::Result {
+        // ... logique d'affichage ...
+        write!(f, "Erreur de template: {{:?}}", self)
+    }
+}
+
+impl std::error::Error for TemplateError {}
+</code></pre>
+
+            <h2 class="text-3xl font-bold mb-4">Gestion des Erreurs</h2>
+            <p class="mb-4 leading-relaxed">Les fonctions de rendu et de manipulation des templates dans Mystical-Runic retournent généralement un <code>TemplateResult&lt;T&gt;</code> (alias <code>RuneResult&lt;T&gt;</code>), qui est un alias pour <code>Result&lt;T, TemplateError&gt;</code>. Cela vous permet de gérer les erreurs de manière idiomatique en Rust en utilisant le pattern <code>Result</code> et l'opérateur <code>?</code>.</p>
+
+            <h3 class="text-2xl font-bold mb-3">Exemple de Gestion d'Erreur</h3>
+            <pre><code class="language-rust">
+use mystical_runic::{TemplateEngine, TemplateContext, TemplateValue, TemplateError};
+
+fn main() -> Result&lt;(), TemplateError&gt; {
+    let mut engine = TemplateEngine::new("templates");
+    let mut context = TemplateContext::new();
+
+    // Exemple 1: Erreur de syntaxe dans le template
+    let invalid_template = "Hello {{ name }! "; // Manque un '}'
+    match engine.render_string(invalid_template, &context) {
+        Ok(rendered) => println!("Rendu : {{}}", rendered),
+        Err(e) => eprintln!("Erreur de rendu (syntaxe) : {{}}", e),
+    }
+
+    // Exemple 2: Fichier de template manquant
+    match engine.render_file("non_existent.html", &context) {
+        Ok(rendered) => println!("Rendu : {{}}", rendered),
+        Err(e) => eprintln!("Erreur de lecture de fichier : {{}}", e),
+    }
+
+    // Exemple 3: Variable manquante ou de type incorrect (peut être une DataError ou RuntimeError selon l'implémentation)
+    let template_with_missing_var = "Hello {{ missing_var }}!";
+    match engine.render_string(template_with_missing_var, &context) {
+        Ok(rendered) => println!("Rendu : {{}}", rendered),
+        Err(e) => eprintln!("Erreur de données : {{}}", e),
+    }
+
+    Ok(())
+}
+</code></pre>
+        </div>
+    </main>
+    <!-- Highlight.js Initialization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html>
