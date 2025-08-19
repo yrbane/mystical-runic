@@ -76,8 +76,8 @@ impl TemplateCompiler {
                 let directive = directive.trim();
                 
                 // Simple parsing (minimal for GREEN phase)
-                if directive.starts_with("if ") {
-                    let var_name = directive[3..].trim();
+                if let Some(stripped) = directive.strip_prefix("if ") {
+                    let var_name = stripped.trim();
                     let path = Self::parse_variable_path(var_name);
                     instructions.push(BytecodeInstruction::JumpIfFalsy(path, 0)); // Will be fixed up later
                 } else if directive == "/if" {
@@ -92,8 +92,8 @@ impl TemplateCompiler {
                     }
                 } else if directive == "/for" {
                     instructions.push(BytecodeInstruction::EndLoop(0)); // Will be fixed up later
-                } else if directive.starts_with("& ") {
-                    let var_name = directive[2..].trim();
+                } else if let Some(stripped) = directive.strip_prefix("& ") {
+                    let var_name = stripped.trim();
                     let path = Self::parse_variable_path(var_name);
                     instructions.push(BytecodeInstruction::OutputRaw(path));
                 } else {
@@ -169,7 +169,7 @@ impl BytecodeExecutor {
                         // Deep dot notation
                         if let Some(root_value) = context.variables.get(&path[0]) {
                             let nested_value = self.get_nested_value(root_value, &path[1..]);
-                            nested_value.map_or(false, |v| self.is_truthy_value(v))
+                            nested_value.is_some_and(|v| self.is_truthy_value(v))
                         } else {
                             false
                         }
@@ -219,6 +219,7 @@ impl BytecodeExecutor {
         }
     }
     
+    #[allow(clippy::only_used_in_recursion)]
     fn traverse_nested_value(&self, current_value: &crate::value::TemplateValue, remaining_parts: &[String]) -> String {
         use crate::value::TemplateValue;
         
@@ -283,6 +284,7 @@ impl BytecodeExecutor {
         }
     }
     
+    #[allow(clippy::only_used_in_recursion)]
     fn get_nested_value<'a>(&self, current_value: &'a crate::value::TemplateValue, remaining_parts: &[String]) -> Option<&'a crate::value::TemplateValue> {
         use crate::value::TemplateValue;
         

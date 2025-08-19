@@ -14,6 +14,7 @@ pub struct EcosystemCompatibility {
 
 impl EcosystemCompatibility {
     /// Check current ecosystem compatibility
+    #[allow(unused_mut)] // Mut needed for conditional compilation
     pub fn check() -> Self {
         let mut compatibility = EcosystemCompatibility {
             async_supported: false,

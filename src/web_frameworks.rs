@@ -131,4 +131,5 @@ pub mod actix_integration {
 
 #[cfg(not(feature = "async"))]
 /// Placeholder when web framework features are not enabled
+#[allow(dead_code)]
 pub struct WebFrameworkPlaceholder;

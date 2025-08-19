@@ -293,4 +293,5 @@ fn add_toml_to_context(context: &mut TemplateContext, value: &toml::Value) -> Te
 
 #[cfg(not(feature = "cli"))]
 /// Placeholder when CLI feature is not enabled
+#[allow(dead_code)]
 pub struct CliPlaceholder;

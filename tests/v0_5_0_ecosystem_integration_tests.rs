@@ -330,7 +330,7 @@ mod ecosystem_error_handling_tests {
     #[test]
     fn test_feature_not_enabled_errors() {
         // 🔴 RED: This test should fail initially
-        let _engine = RuneEngine::new(".");
+        let engine = RuneEngine::new(".");
         let _context = RuneScroll::new();
         
         // Should provide helpful errors when features are not enabled

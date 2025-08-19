@@ -68,10 +68,12 @@ impl AsyncTemplateEngine for TemplateEngine {
 
 #[cfg(not(feature = "async"))]
 /// Placeholder when async feature is not enabled
+#[allow(dead_code)]
 pub struct AsyncPlaceholder;
 
 #[cfg(not(feature = "async"))]
 impl AsyncPlaceholder {
+    #[allow(dead_code)]
     pub fn try_async_operation() -> Result<(), crate::TemplateError> {
         Err(crate::TemplateError::Runtime("async feature not enabled. Enable the 'async' feature in Cargo.toml".to_string()))
     }

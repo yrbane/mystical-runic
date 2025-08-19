@@ -143,4 +143,5 @@ impl WasmRuneEngine {
 
 #[cfg(not(feature = "wasm"))]
 /// Placeholder when WASM feature is not enabled
+#[allow(dead_code)]
 pub struct WasmPlaceholder;

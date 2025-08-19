@@ -4,7 +4,7 @@
 use mystical_runic::{TemplateEngine, TemplateContext, TemplateValue};
 use std::collections::HashMap;
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::time::Instant;
 
 fn main() {
@@ -60,7 +60,7 @@ fn create_temp_dir() -> PathBuf {
     temp_path
 }
 
-fn create_test_templates(temp_dir: &PathBuf) {
+fn create_test_templates(temp_dir: &Path) {
     // Create multiple template files for parallel processing test
     for i in 0..5 {
         let template_content = format!(

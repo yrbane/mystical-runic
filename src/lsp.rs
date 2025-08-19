@@ -112,6 +112,12 @@ pub struct DefinitionInfo {
     pub file_path: Option<String>,
 }
 
+impl Default for LspParseResult {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl LspParseResult {
     /// Create new empty LSP parse result
     pub fn new() -> Self {

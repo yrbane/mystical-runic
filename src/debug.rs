@@ -56,6 +56,12 @@ pub struct DebugRenderResult {
     pub debug_info: DebugInfo,
 }
 
+impl Default for DebugInfo {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl DebugInfo {
     /// Create new empty debug info
     pub fn new() -> Self {
@@ -82,6 +88,12 @@ impl DebugInfo {
     /// Add an execution step to the debug trace
     pub fn add_execution_step(&mut self, step: ExecutionStep) {
         self.execution_steps.push(step);
+    }
+}
+
+impl Default for PerformanceMetrics {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

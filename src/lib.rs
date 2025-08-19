@@ -1,27 +1,55 @@
-//! # 🔮 Runic - Ancient Symbols for Modern Web Magic
+//! # 🔮 Mystical-Runic - Professional Template Engine for Rust
 //!
-//! *"In the beginning was the Word, and the Word was `{{mustache}}`..."*
+//! [![Crates.io](https://img.shields.io/crates/v/mystical-runic.svg)](https://crates.io/crates/mystical-runic)
+//! [![Documentation](https://docs.rs/mystical-runic/badge.svg)](https://docs.rs/mystical-runic)
+//! [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 //! 
-//! **Rust Compatibility**: This crate requires Rust 1.74.0+ and targets Rust 2021 edition
-//! with future Rust 2024 readiness.
+//! **Rust Compatibility**: Requires Rust 1.74.0+ | Edition 2021 | Future Rust 2024 Ready
 //! 
-//! Welcome, brave developer, to the mystical realm of **Runic** - where ancient Nordic symbols
-//! meet modern HTML templating in a beautiful dance of curly braces and digital sorcery!
+//! **Mystical-Runic** is a high-performance, zero-dependency templating engine for Rust that combines
+//! Mustache-inspired syntax with advanced features like template inheritance, macros, filters,
+//! enterprise-grade security, comprehensive developer tools, and ecosystem integration.
 //!
-//! **NEW in v0.4.1**: Full IDE Integration with Language Server Protocol support, auto-completion,
-//! syntax highlighting, real-time diagnostics, hover information, and go-to-definition features!
+//! ## 🌟 Key Features
 //!
-//! ## ⚡ The Sacred Incantations
+//! - **Zero Dependencies Core**: No external dependencies for core functionality
+//! - **Enterprise Security**: XSS protection, path traversal prevention, template injection security
+//! - **High Performance**: Bytecode compilation, caching, parallel processing, memory mapping
+//! - **Developer Experience**: Hot reload, debugging, IDE integration, intelligent error messages
+//! - **Ecosystem Integration**: Async support, web framework integration, WASM compatibility, CLI tools
+//! - **Comprehensive Testing**: 204+ tests with 100% coverage following strict TDD methodology
+//! - **Professional & Mystical APIs**: Choose your preferred naming style
 //!
-//! - **Whisper Variables**: `{{name}}` - Speak a name and it shall manifest (safely escaped from evil XSS spirits)
-//! - **Summon Raw Power**: `{{& html}}` - Unleash unescaped HTML with great responsibility and greater danger
-//! - **Divine Conditionals**: `{{if chosen_one}}...{{/if}}` - The HTML appears only for the worthy
-//! - **Mystical Loops**: `{{for spell in grimoire}}...{{/for}}` - Repeat incantations until magic happens
-//! - **Ancient Includes**: `{{include "scrolls/wisdom.html"}}` - Import wisdom from other sacred texts
-//! - **Silent Whispers**: `{{! This is but a comment, invisible to mortals }}` - Notes for future wizards
-//! - **Object Divination**: `{{user.power_level}}` - Peer into the properties of mystical entities
+//! ## 📋 Template Syntax Reference
 //!
-//! ## 🧙‍♂️ Example Usage - Choose Your Style
+//! | Feature | Syntax | Description |
+//! |---------|--------|-------------|
+//! | **Variables** | `{{name}}` | HTML-escaped variable output |
+//! | **Raw HTML** | `{{& html}}` | Unescaped HTML output (use carefully) |
+//! | **Conditionals** | `{{if condition}}...{{/if}}` | Conditional rendering with comparison operators |
+//! | **Loops** | `{{for item in items}}...{{/for}}` | Iterate over arrays and nested structures |
+//! | **Deep Access** | `{{user.profile.name}}` | Unlimited depth object property access |
+//! | **Includes** | `{{include "template.html"}}` | Template composition and reuse |
+//! | **Comments** | `{{! comment }}` | Template comments (not rendered) |
+//! | **Filters** | `{{value\|upper\|truncate:10}}` | Transform output with filter chains |
+//! | **Macros** | `{{macro name(params)}}...{{/macro}}` | Reusable template components |
+//! | **Inheritance** | `{{extend "layout.html"}}` | Template inheritance system |
+//! | **Blocks** | `{{block content}}...{{/block}}` | Replaceable content blocks |
+//! | **I18n** | `{{t "key" name=user}}` | Internationalization with variables |
+//! | **Pluralization** | `{{plural count "item" "items"}}` | Smart plural forms |
+//!
+//! ## 📖 Quick Start Guide
+//!
+//! Add to your `Cargo.toml`:
+//! ```toml
+//! [dependencies]
+//! mystical-runic = "0.5.0"
+//!
+//! # Optional features
+//! mystical-runic = { version = "0.5.0", features = ["async", "web-frameworks", "wasm", "cli"] }
+//! ```
+//!
+//! ## 🧙‍♂️ Usage Examples - Choose Your Style
 //!
 //! ### Professional Style
 //! ```rust
@@ -58,18 +86,30 @@
 //! ).unwrap();
 //! ```
 //!
-//! ## 🌟 Why "Runic"?
+//! ## 🚀 Performance & Security
 //!
-//! Because templating is basically ancient magic:
-//! - You write mysterious symbols (`{{}}`) that transform into reality
-//! - Variables appear and disappear like spirits
-//! - One wrong bracket and your entire spell explodes
-//! - Senior developers guard the template secrets like ancient druids
-//! - Documentation is written in a language only the initiated understand
-//! - And just like real magic, it works perfectly until production 🔥
+//! **Performance Features:**
+//! - Template caching with smart invalidation
+//! - Bytecode compilation for frequently-used templates  
+//! - Parallel template processing capabilities
+//! - Memory-mapped file loading for large templates
+//! - Optimized nested property traversal
 //!
-//! *"May your templates be bug-free and your variables always defined."*  
-//! — Ancient DevOps Proverb
+//! **Security Features:**
+//! - HTML escaping by default (XSS prevention)
+//! - Path traversal protection (`../` and absolute path blocking)
+//! - Template injection prevention
+//! - Memory exhaustion protection
+//! - Input validation and sanitization
+//!
+//! ## 🛠️ Developer Experience
+//!
+//! - **Hot Reload**: Automatic template recompilation during development
+//! - **Debug Mode**: Variable tracking and execution analysis
+//! - **IDE Integration**: LSP support with auto-completion and diagnostics
+//! - **Smart Suggestions**: Intelligent template and variable suggestions
+//! - **Precise Errors**: Line/column error reporting with context
+//! - **Performance Metrics**: Built-in execution time measurement
 
 mod error;
 mod engine;

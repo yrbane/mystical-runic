@@ -1,14 +1,14 @@
 [package]
 name = "mystical-runic"
-version = "0.5.0"
+version = "0.5.1"
 edition = "2021"
 rust-version = "1.74.0"
 authors = ["yrbane <yrbane@nethttp.net>"]
-description = "🔮 Ancient symbols for modern web magic - A mystical templating engine with full IDE integration: LSP, auto-completion, syntax highlighting, real-time diagnostics"
+description = "Professional-grade templating engine for Rust with enterprise security, advanced performance monitoring, comprehensive developer tools, and ecosystem integration. Zero-dependency core with optional async, web framework, WASM, and CLI features."
 license = "MIT"
 repository = "https://github.com/yrbane/mystical-runic.git"
-keywords = ["template", "html", "web", "runic", "magic"]
-categories = ["template-engine", "web-programming"]
+keywords = ["template", "templating", "html", "web", "mustache"]
+categories = ["template-engine", "web-programming", "development-tools"]
 
 [dependencies]
 # Async runtime support

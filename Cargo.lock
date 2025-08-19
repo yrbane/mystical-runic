@@ -1257,7 +1257,7 @@ dependencies = [
 
 [[package]]
 name = "mystical-runic"
-version = "0.5.0"
+version = "0.5.1"
 dependencies = [
  "actix-web",
  "axum",

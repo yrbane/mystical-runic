@@ -12,6 +12,31 @@ pub enum TemplateError {
     Render(String),
     Security(String),
     
+    // v0.5.1 Professional Security Enhancements
+    /// Advanced security violation with detailed threat analysis
+    SecurityViolation {
+        violation_type: SecurityViolationType,
+        attempted_path: String,
+        threat_level: ThreatLevel,
+        mitigation: String,
+        request_id: Option<String>,
+    },
+    
+    /// Rate limiting violation
+    RateLimit {
+        limit_type: String,
+        current_count: u64,
+        max_allowed: u64,
+        reset_time: std::time::SystemTime,
+    },
+    
+    /// Template size or complexity violation
+    ResourceExhaustion {
+        resource_type: String,
+        current_usage: u64,
+        max_allowed: u64,
+    },
+    
     // v0.4.0 Enhanced Error Types for Better Developer Experience
     /// Parse error with precise location information
     ParseWithLocation {
@@ -170,6 +195,45 @@ impl fmt::Display for TemplateError {
                 
                 Ok(())
             },
+            
+            // v0.5.1 Professional Security Enhancements
+            TemplateError::SecurityViolation {
+                violation_type,
+                attempted_path,
+                threat_level,
+                mitigation,
+                request_id,
+            } => {
+                writeln!(f, "🔴 SECURITY VIOLATION [{:?}]: {:?}", threat_level, violation_type)?;
+                writeln!(f, "Attempted Path: {}", attempted_path)?;
+                writeln!(f, "Mitigation: {}", mitigation)?;
+                if let Some(id) = request_id {
+                    writeln!(f, "Request ID: {}", id)?;
+                }
+                Ok(())
+            },
+            
+            TemplateError::RateLimit {
+                limit_type,
+                current_count,
+                max_allowed,
+                reset_time,
+            } => {
+                writeln!(f, "⚠️ RATE LIMIT EXCEEDED: {}", limit_type)?;
+                writeln!(f, "Current: {} / Max: {}", current_count, max_allowed)?;
+                writeln!(f, "Reset time: {:?}", reset_time)?;
+                Ok(())
+            },
+            
+            TemplateError::ResourceExhaustion {
+                resource_type,
+                current_usage,
+                max_allowed,
+            } => {
+                writeln!(f, "📊 RESOURCE EXHAUSTION: {}", resource_type)?;
+                writeln!(f, "Usage: {} / Limit: {}", current_usage, max_allowed)?;
+                Ok(())
+            },
         }
     }
 }
@@ -187,6 +251,52 @@ impl From<std::io::Error> for TemplateError {
     fn from(err: std::io::Error) -> Self {
         TemplateError::Io(err)
     }
+}
+
+/// Security violation types for comprehensive threat classification
+#[derive(Debug, Clone)]
+pub enum SecurityViolationType {
+    /// Path traversal attempt (../ or absolute paths)
+    PathTraversal,
+    /// Template injection attempt
+    TemplateInjection,
+    /// XSS attempt through unescaped content
+    CrossSiteScripting,
+    /// Server-side template injection
+    ServerSideTemplateInjection,
+    /// Unauthorized file access
+    UnauthorizedFileAccess,
+    /// Malicious payload in template variable
+    MaliciousPayload,
+    /// Resource exhaustion attack
+    ResourceExhaustion,
+}
+
+/// Threat severity levels for security incidents
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub enum ThreatLevel {
+    /// Low severity - potential issue, logged but processing continues
+    Low,
+    /// Medium severity - security concern, additional validation applied
+    Medium,
+    /// High severity - clear attack attempt, request blocked
+    High,
+    /// Critical severity - sophisticated attack, immediate blocking and alerting
+    Critical,
+}
+
+/// Security incident details for audit logging
+#[derive(Debug, Clone)]
+#[allow(dead_code)]
+pub struct SecurityIncident {
+    pub timestamp: std::time::SystemTime,
+    pub violation_type: SecurityViolationType,
+    pub threat_level: ThreatLevel,
+    pub source_ip: Option<String>,
+    pub user_agent: Option<String>,
+    pub request_path: String,
+    pub payload: String,
+    pub mitigation_applied: String,
 }
 
 /// Template engine result type
