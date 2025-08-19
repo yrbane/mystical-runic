@@ -6,7 +6,7 @@
 //!
 //! ## Key Components
 //!
-//! - [`TemplateEngine`]: Main engine class with professional API
+//! - [`TemplateEngine`]: Main engine class with standard API
 //! - [`MacroDefinition`]: Reusable template component system
 //! - [`FilterFunction`]: Custom filter transformation functions
 //! - [`HelperFunction`]: Template helper functions
@@ -52,7 +52,7 @@ pub type HelperFunction = Arc<dyn Fn(&[TemplateValue]) -> TemplateResult<Templat
 /// Custom filter function type
 pub type FilterFunction = Arc<dyn Fn(&str, &[&str]) -> TemplateResult<String> + Send + Sync>;
 
-/// # TemplateEngine - Professional Template Processing Engine
+/// # TemplateEngine - High-Performance Template Processing Engine
 ///
 /// The `TemplateEngine` is the core component for template processing, providing
 /// high-performance template rendering with enterprise-grade features:
@@ -116,7 +116,7 @@ pub struct TemplateEngine {
     /// WASM console logging enabled
     wasm_console_logging: bool,
     
-    // v0.5.1 Professional Performance Features
+    // v0.5.1 Advanced Performance Features
     /// Advanced performance monitoring
     performance_monitoring_enabled: bool,
     /// Template compilation statistics
@@ -176,7 +176,7 @@ impl TemplateEngine {
             #[cfg(feature = "wasm")]
             wasm_console_logging: false,
             
-            // v0.5.1 Professional Performance Features
+            // v0.5.1 Advanced Performance Features
             performance_monitoring_enabled: false,
             compilation_stats: HashMap::new(),
             render_stats: HashMap::new(),
@@ -2527,7 +2527,7 @@ impl TemplateEngine {
     }
     
     // =============================================================================
-    // v0.5.1 Professional Performance Features
+    // v0.5.1 Advanced Performance Features
     // =============================================================================
     
     /// Enable advanced performance monitoring and metrics collection.

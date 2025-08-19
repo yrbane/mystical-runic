@@ -1,7 +1,7 @@
 // Test to demonstrate both naming styles work identically
 
 #[cfg(test)]
-mod professional_style_tests {
+mod conventional_style_tests {
     use mystical_runic::{TemplateEngine, TemplateContext, TemplateValue};
     
     #[test]
@@ -9,13 +9,13 @@ mod professional_style_tests {
         let mut engine = TemplateEngine::new("./templates");
         let mut context = TemplateContext::new();
         
-        context.set("name", TemplateValue::String("Professional".to_string()));
+        context.set("name", TemplateValue::String("Developer".to_string()));
         context.set("role", TemplateValue::String("Developer".to_string()));
         
         let template = "Hello {{name}}, you are a {{role}}!";
         let result = engine.render_string(template, &context).unwrap();
         
-        assert_eq!(result, "Hello Professional, you are a Developer!");
+        assert_eq!(result, "Hello Developer, you are a Developer!");
     }
 
     #[test]
@@ -41,7 +41,7 @@ mod professional_style_tests {
         
         context.set("text", TemplateValue::String("hello".to_string()));
         
-        // Register custom filter using professional style
+        // Register custom filter using conventional style
         engine.register_filter("reverse", |input: &str, _args: &[&str]| {
             Ok(input.chars().rev().collect())
         });

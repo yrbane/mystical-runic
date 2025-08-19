@@ -1,4 +1,4 @@
-//! # 🔮 Mystical-Runic - Professional Template Engine for Rust
+//! # 🔮 Mystical-Runic - High-Performance Template Engine for Rust
 //!
 //! [![Crates.io](https://img.shields.io/crates/v/mystical-runic.svg)](https://crates.io/crates/mystical-runic)
 //! [![Documentation](https://docs.rs/mystical-runic/badge.svg)](https://docs.rs/mystical-runic)
@@ -18,7 +18,7 @@
 //! - **Developer Experience**: Hot reload, debugging, IDE integration, intelligent error messages
 //! - **Ecosystem Integration**: Async support, web framework integration, WASM compatibility, CLI tools
 //! - **Comprehensive Testing**: 204+ tests with 100% coverage following strict TDD methodology
-//! - **Professional & Mystical APIs**: Choose your preferred naming style
+//! - **Conventional & Mystical APIs**: Choose your preferred naming style
 //!
 //! ## 📋 Template Syntax Reference
 //!
@@ -51,7 +51,7 @@
 //!
 //! ## 🧙‍♂️ Usage Examples - Choose Your Style
 //!
-//! ### Professional Style
+//! ### Conventional Style
 //! ```rust
 //! use mystical_runic::{TemplateEngine, TemplateContext, TemplateValue};
 //!
@@ -127,7 +127,7 @@ mod wasm_support;
 mod cli;
 mod ecosystem;
 
-// 🏢 Conventional names for professional development environments
+// 🏢 Conventional names for standard development environments
 pub use error::{TemplateError, TemplateResult};
 pub use engine::TemplateEngine;
 pub use context::TemplateContext;

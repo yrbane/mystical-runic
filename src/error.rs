@@ -12,7 +12,7 @@ pub enum TemplateError {
     Render(String),
     Security(String),
     
-    // v0.5.1 Professional Security Enhancements
+    // v0.5.2 Advanced Security Enhancements
     /// Advanced security violation with detailed threat analysis
     SecurityViolation {
         violation_type: SecurityViolationType,
@@ -196,7 +196,7 @@ impl fmt::Display for TemplateError {
                 Ok(())
             },
             
-            // v0.5.1 Professional Security Enhancements
+            // v0.5.2 Advanced Security Enhancements
             TemplateError::SecurityViolation {
                 violation_type,
                 attempted_path,

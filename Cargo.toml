@@ -1,14 +1,15 @@
 [package]
 name = "mystical-runic"
-version = "0.5.1"
+version = "0.5.2"
 edition = "2021"
 rust-version = "1.74.0"
 authors = ["yrbane <yrbane@nethttp.net>"]
-description = "Professional-grade templating engine for Rust with enterprise security, advanced performance monitoring, comprehensive developer tools, and ecosystem integration. Zero-dependency core with optional async, web framework, WASM, and CLI features."
+description = "High-performance templating engine for Rust with enterprise security, advanced monitoring, comprehensive developer tools, and ecosystem integration. Zero-dependency core with optional async, web framework, WASM, and CLI features."
 license = "MIT"
 repository = "https://github.com/yrbane/mystical-runic.git"
 keywords = ["template", "templating", "html", "web", "mustache"]
 categories = ["template-engine", "web-programming", "development-tools"]
+exclude = ["examples/", "benchmarks/", "target/"]
 
 [dependencies]
 # Async runtime support
@@ -42,9 +43,10 @@ wasm = ["wasm-bindgen", "js-sys", "web-sys"]
 cli = ["clap", "serde", "serde_json", "toml"]
 full = ["async", "web-frameworks", "wasm", "cli"]
 
-[[bin]]
-name = "performance_demo"
-path = "benchmarks/performance_demo.rs"
+# Performance demo excluded from publish
+# [[bin]]
+# name = "performance_demo"
+# path = "benchmarks/performance_demo.rs"
 
 [dev-dependencies]
 tokio = { version = "1.0", features = ["full", "test-util"] }
