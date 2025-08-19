@@ -14,11 +14,15 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 🔒 **Security First**: XSS-safe by default with comprehensive HTML escaping  
 ⚡ **High Performance**: Template caching, bytecode compilation, parallel processing  
 🎯 **Simple API**: Clean, intuitive interface for Rust developers  
-🧪 **Well Tested**: 127+ tests with extensive security and performance tests  
+🧪 **Well Tested**: 135+ tests with extensive security and performance tests  
 🏗️ **Template Inheritance**: Advanced layout system with nested inheritance and `{{super}}`  
 🔧 **Powerful Filters**: Built-in filters like `upper`, `lower`, `currency`, `truncate` with chaining support  
 📦 **Reusable Macros**: Define and reuse template components with parameters  
 🌊 **Deep Object Navigation**: Unlimited depth dot notation (e.g., `{{user.profile.stats.level}}`)  
+🌐 **Internationalization (i18n)**: Multi-language support with `{{t "key"}}` syntax and locale switching  
+🔢 **Advanced Math Filters**: Mathematical operations with `add`, `multiply`, `divide`, `percentage`, `round`  
+🎨 **Custom Filter API**: Register your own filters for domain-specific transformations  
+📝 **Smart Pluralization**: Automatic plural forms with `{{plural count "item" "items"}}`  
 🌐 **Zero Dependencies**: Pure Rust implementation with no external dependencies  
 
 ## ⚡ The Sacred Incantations
@@ -40,13 +44,20 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 - **Reusable Spells (Macros)**: `{{macro spell(power)}}...{{/macro}}` - Create reusable incantations
 - **Spell Invocation**: `{{spell("lightning")}}` - Call upon your defined macros
 
+### Global Sorcery (v0.3.0)
+- **Universal Translation**: `{{t "welcome"}}` - Speak all tongues with i18n support
+- **Locale Switching**: Switch between languages with `engine.set_locale("en")`
+- **Quantity Wisdom**: `{{plural count "item" "items"}}` - Smart pluralization magic
+- **Mathematical Alchemy**: `{{price|add:10|multiply:2|percentage}}` - Advanced math transformations
+- **Custom Enchantments**: `engine.register_filter("reverse", |input, _| Ok(input.chars().rev().collect()))` - Forge your own filters
+
 ## 🚀 Quick Start
 
 ### Installation
 
 ```toml
 [dependencies]
-mystical-runic = "0.2.0"
+mystical-runic = "0.3.0"
 ```
 
 ### Basic Usage
@@ -469,6 +480,91 @@ cargo test security_tests
 
 # Run with output
 cargo test -- --nocapture
+```
+
+### Internationalization Example (v0.3.0)
+```rust
+use mystical_runic::{RuneEngine, RuneScroll, RuneSymbol};
+use std::collections::HashMap;
+
+let mut engine = RuneEngine::new("./templates");
+let mut context = RuneScroll::new();
+context.set("name", RuneSymbol::String("Alice".to_string()));
+
+// Set up English translations
+let mut en_translations = HashMap::new();
+en_translations.insert("welcome".to_string(), "Welcome {{name}}!".to_string());
+engine.set_translations("en", en_translations);
+
+// Set up French translations
+let mut fr_translations = HashMap::new();
+fr_translations.insert("welcome".to_string(), "Bienvenue {{name}}!".to_string());
+engine.set_translations("fr", fr_translations);
+
+// Use English
+engine.set_locale("en");
+let welcome_en = engine.render_string("{{t \"welcome\"}}", &context).unwrap();
+// Output: "Welcome Alice!"
+
+// Switch to French
+engine.set_locale("fr");
+let welcome_fr = engine.render_string("{{t \"welcome\"}}", &context).unwrap();
+// Output: "Bienvenue Alice!"
+```
+
+### Custom Filters Example (v0.3.0)
+```rust
+use mystical_runic::{RuneEngine, RuneScroll, RuneSymbol};
+
+let mut engine = RuneEngine::new("./templates");
+let mut context = RuneScroll::new();
+context.set("text", RuneSymbol::String("hello world".to_string()));
+
+// Register custom filters
+engine.register_filter("reverse", |input: &str, _args: &[&str]| {
+    Ok(input.chars().rev().collect())
+});
+
+engine.register_filter("repeat", |input: &str, args: &[&str]| {
+    let times = args.get(0).map_or("1", |v| v).parse::<usize>().unwrap_or(1);
+    Ok(input.repeat(times))
+});
+
+let result = engine.render_string("{{text|reverse|upper|repeat:2}}", &context).unwrap();
+// Output: "DLROW OLLEHDLROW OLLEH"
+```
+
+### Math Filters Example (v0.3.0)  
+```rust
+use mystical_runic::{RuneEngine, RuneScroll, RuneSymbol};
+
+let mut engine = RuneEngine::new("./templates");
+let mut context = RuneScroll::new();
+context.set("price", RuneSymbol::Number(100));
+context.set("tax_rate", RuneSymbol::Number(8));
+
+// Complex calculations with chaining
+let template = "Price: ${{price}}, Total: {{price|multiply:tax_rate|divide:100|add:price|round:2}}";
+let result = engine.render_string(template, &context).unwrap();
+// Output: "Price: $100, Total: 108.00"
+```
+
+### Pluralization Example (v0.3.0)
+```rust
+use mystical_runic::{RuneEngine, RuneScroll, RuneSymbol};
+
+let mut engine = RuneEngine::new("./templates");
+let mut context = RuneScroll::new();
+
+let template = "You have {{count}} {{plural count \"apple\" \"apples\"}}";
+
+context.set("count", RuneSymbol::Number(1));
+let result = engine.render_string(template, &context).unwrap();
+// Output: "You have 1 apple"
+
+context.set("count", RuneSymbol::Number(5)); 
+let result = engine.render_string(template, &context).unwrap();
+// Output: "You have 5 apples"
 ```
 
 ## 🔮 Examples

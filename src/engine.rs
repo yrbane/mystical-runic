@@ -23,6 +23,9 @@ pub struct MacroDefinition {
 /// Custom helper function type
 pub type HelperFunction = Arc<dyn Fn(&[TemplateValue]) -> TemplateResult<TemplateValue> + Send + Sync>;
 
+/// Custom filter function type
+pub type FilterFunction = Arc<dyn Fn(&str, &[&str]) -> TemplateResult<String> + Send + Sync>;
+
 /// Template engine for rendering HTML templates
 #[derive(Clone)]
 pub struct TemplateEngine {
@@ -35,6 +38,11 @@ pub struct TemplateEngine {
     layout_processor: LayoutProcessor,
     macros: HashMap<String, MacroDefinition>,
     helpers: HashMap<String, HelperFunction>,
+    // i18n support
+    translations: HashMap<String, HashMap<String, String>>, // locale -> key -> translation
+    current_locale: Option<String>,
+    // Custom filters
+    custom_filters: HashMap<String, FilterFunction>,
 }
 
 impl TemplateEngine {
@@ -50,6 +58,9 @@ impl TemplateEngine {
             layout_processor: LayoutProcessor::new(),
             macros: HashMap::new(),
             helpers: HashMap::new(),
+            translations: HashMap::new(),
+            current_locale: None,
+            custom_filters: HashMap::new(),
         }
     }
     
@@ -59,6 +70,37 @@ impl TemplateEngine {
         F: Fn(&[TemplateValue]) -> TemplateResult<TemplateValue> + Send + Sync + 'static,
     {
         self.helpers.insert(name.to_string(), Arc::new(func));
+    }
+
+    /// Set translations for a specific locale
+    pub fn set_translations(&mut self, locale: &str, translations: HashMap<String, String>) {
+        self.translations.insert(locale.to_string(), translations);
+    }
+
+    /// Set the current locale for translations
+    pub fn set_locale(&mut self, locale: &str) {
+        self.current_locale = Some(locale.to_string());
+    }
+
+    /// Get translation for a key in the current locale
+    pub fn get_translation(&self, key: &str) -> String {
+        if let Some(ref locale) = self.current_locale {
+            if let Some(translations) = self.translations.get(locale) {
+                if let Some(translation) = translations.get(key) {
+                    return translation.clone();
+                }
+            }
+        }
+        // Fallback to the key itself if no translation found
+        key.to_string()
+    }
+
+    /// Register a custom filter function
+    pub fn register_filter<F>(&mut self, name: &str, func: F)
+    where
+        F: Fn(&str, &[&str]) -> TemplateResult<String> + Send + Sync + 'static,
+    {
+        self.custom_filters.insert(name.to_string(), Arc::new(func));
     }
 
     /// Load and cache a template
@@ -135,6 +177,12 @@ impl TemplateEngine {
         
         // Process loops
         result = self.process_loops(&result, context)?;
+        
+        // Process translations
+        result = self.process_translations(&result, context)?;
+        
+        // Process pluralization
+        result = self.process_pluralization(&result, context)?;
         
         // Process variables
         result = self.process_variables(&result, context)?;
@@ -577,7 +625,50 @@ impl TemplateEngine {
                     .collect::<Vec<_>>()
                     .join("-")
             },
-            _ => value.to_string(), // Unknown filter, return original value
+            // Additional math filters
+            "divide" => {
+                if let Some(arg) = args.first() {
+                    if let Ok(num_value) = value.parse::<f64>() {
+                        if let Ok(div_value) = arg.parse::<f64>() {
+                            if div_value != 0.0 {
+                                return (num_value / div_value).to_string();
+                            }
+                        }
+                    }
+                }
+                value.to_string()
+            },
+            "percentage" => {
+                format!("{}%", value)
+            },
+            "round" => {
+                if let Some(arg) = args.first() {
+                    if let Ok(num_value) = value.parse::<f64>() {
+                        if let Ok(decimals) = arg.parse::<usize>() {
+                            let factor = 10_f64.powi(decimals as i32);
+                            let rounded = (num_value * factor).round() / factor;
+                            return format!("{:.1$}", rounded, decimals);
+                        }
+                    }
+                }
+                // Default rounding to 2 decimal places
+                if let Ok(num_value) = value.parse::<f64>() {
+                    format!("{:.2}", num_value)
+                } else {
+                    value.to_string()
+                }
+            },
+            _ => {
+                // Check for custom filters
+                if let Some(custom_filter) = self.custom_filters.get(filter_name) {
+                    match custom_filter(value, &args) {
+                        Ok(result) => result,
+                        Err(_) => value.to_string(), // Fallback on error
+                    }
+                } else {
+                    value.to_string() // Unknown filter, return original value
+                }
+            }
         }
     }
 
@@ -1407,5 +1498,64 @@ impl TemplateEngine {
         }
         
         Ok(results)
+    }
+
+    /// Process translation directives {{t "key"}}
+    fn process_translations(&mut self, template: &str, context: &TemplateContext) -> TemplateResult<String> {
+        let mut result = template.to_string();
+        
+        while let Some(start) = result.find("{{t ") {
+            let end = result[start..].find("}}")
+                .ok_or_else(|| TemplateError::Parse("Unclosed translation directive".to_string()))?;
+            
+            let directive = &result[start + 4..start + end];
+            let translation_key = directive.trim().trim_matches('"').trim_matches('\'');
+            
+            let translation = self.get_translation(translation_key);
+            
+            // Process the translation string as a template (for variable substitution)
+            let processed_translation = self.render_string(&translation, context)?;
+            
+            result.replace_range(start..start + end + 2, &processed_translation);
+        }
+        
+        Ok(result)
+    }
+
+    /// Process pluralization directives {{plural count "singular" "plural"}}
+    fn process_pluralization(&self, template: &str, context: &TemplateContext) -> TemplateResult<String> {
+        let mut result = template.to_string();
+        
+        while let Some(start) = result.find("{{plural ") {
+            let end = result[start..].find("}}")
+                .ok_or_else(|| TemplateError::Parse("Unclosed pluralization directive".to_string()))?;
+            
+            let directive = result[start + 9..start + end].to_string();
+            let parts: Vec<&str> = directive.split_whitespace().collect();
+            
+            if parts.len() != 3 {
+                return Err(TemplateError::Parse("Invalid pluralization syntax. Use: {{plural count \"singular\" \"plural\"}}".to_string()));
+            }
+            
+            let count_var = parts[0];
+            let singular = parts[1].trim_matches('"').trim_matches('\'');
+            let plural = parts[2].trim_matches('"').trim_matches('\'');
+            
+            // Get the count value
+            let count = if let Some(value) = context.get(count_var) {
+                match value {
+                    TemplateValue::Number(n) => *n,
+                    _ => 0,
+                }
+            } else {
+                0
+            };
+            
+            let chosen_form = if count == 1 { singular } else { plural };
+            
+            result.replace_range(start..start + end + 2, chosen_form);
+        }
+        
+        Ok(result)
     }
 }

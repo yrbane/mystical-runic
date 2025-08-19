@@ -5,6 +5,60 @@ All notable changes to mystical-runic will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2025-08-19 - The Global Sorcery Edition
+
+### 🌐 Added - Internationalization (i18n) System
+- **Translation Support**: `{{t "key"}}` syntax for multi-language templates
+- **Locale Management**: `engine.set_locale("en")` for dynamic language switching  
+- **Translation Storage**: `engine.set_translations(locale, translations)` for organizing translations
+- **Variable Integration**: Translations can contain template variables (e.g., `"Hello {{name}}!"`)
+- **Fallback Handling**: Missing translations fallback to the key itself
+- **Context Processing**: Translation strings are processed as templates with full variable support
+
+### 📝 Added - Smart Pluralization System
+- **Plural Forms**: `{{plural count "item" "items"}}` for automatic singular/plural selection
+- **Zero Handling**: Proper handling of zero counts (uses plural form)
+- **Number Integration**: Works seamlessly with numeric template values
+- **Template Integration**: Can be combined with other template features
+
+### 🎨 Added - Custom Filter Registration API
+- **Filter Registration**: `engine.register_filter(name, closure)` for user-defined filters
+- **Argument Support**: Custom filters receive input string and argument array
+- **Error Handling**: Proper error propagation from custom filter functions
+- **Filter Chaining**: Custom filters integrate seamlessly with built-in filter chains
+- **Type Safety**: Rust closures ensure compile-time safety for custom filters
+
+### 🔢 Added - Advanced Math Filters
+- **Addition Filter**: `{{value|add:10}}` for numeric addition (existing, enhanced)
+- **Multiplication Filter**: `{{value|multiply:2}}` for numeric multiplication (existing, enhanced)
+- **Division Filter**: `{{value|divide:100}}` for numeric division with zero-check
+- **Percentage Filter**: `{{value|percentage}}` for appending % symbol
+- **Rounding Filter**: `{{value|round:2}}` for decimal precision control
+- **Math Chaining**: Complex calculations like `{{price|multiply:tax|divide:100|add:price|round:2}}`
+
+### 🧪 Added - Comprehensive Testing
+- **135+ Tests Total**: Expanded from 130 to 135+ tests across all modules
+- **v0.3.0 Feature Tests**: Complete test coverage for i18n, pluralization, custom filters, and math
+- **TDD Implementation**: All features developed using strict Test-Driven Development methodology
+- **Integration Testing**: Real-world scenarios for internationalized applications
+
+### 🔧 Enhanced - Filter System
+- **Custom Filter Integration**: Seamless integration of user-defined filters with built-in ones
+- **Enhanced Error Handling**: Better error messages for filter failures
+- **Performance Optimization**: Efficient filter lookup and execution
+
+### 📚 Enhanced - Documentation
+- **i18n Guide**: Complete examples for internationalization implementation
+- **Custom Filters Tutorial**: Step-by-step guide for creating domain-specific filters
+- **Math Operations Reference**: Documentation for all mathematical filters
+- **Pluralization Guide**: Best practices for multilingual plural forms
+
+### 🌐 Technical
+- **Zero Dependencies**: Continues pure Rust implementation
+- **Thread Safety**: All new features are fully thread-safe
+- **Unicode Support**: Full Unicode compatibility across internationalization features
+- **Backwards Compatibility**: All existing v0.2.0 APIs remain unchanged
+
 ## [0.2.0] - 2024-08-18 - The Advanced Sorcery Edition
 
 ### 🏰 Added - Template Inheritance System
