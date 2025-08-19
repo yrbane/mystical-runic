@@ -58,6 +58,11 @@ pub struct TemplateEngine {
     file_mtimes: HashMap<String, SystemTime>,
     /// Template dependency tracking for hot reload
     template_dependencies: HashMap<String, Vec<String>>,
+    
+    // v0.5.0 Ecosystem Integration features
+    #[cfg(feature = "wasm")]
+    /// WASM console logging enabled
+    wasm_console_logging: bool,
 }
 
 impl TemplateEngine {
@@ -81,6 +86,10 @@ impl TemplateEngine {
             hot_reload_enabled: false,
             file_mtimes: HashMap::new(),
             template_dependencies: HashMap::new(),
+            
+            // v0.5.0 features
+            #[cfg(feature = "wasm")]
+            wasm_console_logging: false,
         }
     }
     
@@ -1690,6 +1699,37 @@ impl TemplateEngine {
     /// Check if debug mode is enabled
     pub fn is_debug_enabled(&self) -> bool {
         self.debug_enabled
+    }
+    
+    // v0.5.0 Ecosystem Integration methods
+    
+    /// Get the template directory (for async and other integrations)
+    pub fn get_template_dir(&self) -> &str {
+        &self.template_dir
+    }
+    
+    /// Get WASM console logging status
+    #[cfg(feature = "wasm")]
+    pub fn get_wasm_console_logging(&self) -> bool {
+        self.wasm_console_logging
+    }
+    
+    /// Set WASM console logging
+    #[cfg(feature = "wasm")]
+    pub fn set_wasm_console_logging(&mut self, enabled: bool) {
+        self.wasm_console_logging = enabled;
+    }
+    
+    /// Get cache size for WASM memory usage calculation
+    #[cfg(feature = "wasm")]
+    pub fn get_cache_size(&self) -> usize {
+        self.cache.len()
+    }
+    
+    /// Get macro count for WASM memory usage calculation
+    #[cfg(feature = "wasm")]
+    pub fn get_macro_count(&self) -> usize {
+        self.macros.len()
     }
     
     /// Enable hot reload functionality

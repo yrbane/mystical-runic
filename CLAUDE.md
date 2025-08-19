@@ -4,12 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Mystical-Runic is a zero-dependency templating engine for Rust that provides Mustache-inspired syntax with advanced features like deep dot notation, filters, macros, template inheritance, nested loops, recursive includes, enterprise-grade security, and comprehensive developer experience tools. The project follows strict Test-Driven Development (TDD) practices with 178+ comprehensive tests.
+Mystical-Runic is a zero-dependency templating engine for Rust that provides Mustache-inspired syntax with advanced features like deep dot notation, filters, macros, template inheritance, nested loops, recursive includes, enterprise-grade security, comprehensive developer experience tools, and ecosystem integration (async, web frameworks, WASM, CLI tools). The project follows strict Test-Driven Development (TDD) practices with 204+ comprehensive tests.
 
 ## Key Commands
 
 ### Development and Testing
-- `cargo test` - Run all tests (comprehensive test suite with 178+ tests)
+- `cargo test` - Run all tests (comprehensive test suite with 204+ tests)
 - `cargo test basic_v040_tests` - Run v0.4.0 developer experience tests
 - `cargo test integration_tests` - Run integration tests
 - `cargo test unit_tests` - Run unit tests  
@@ -17,6 +17,8 @@ Mystical-Runic is a zero-dependency templating engine for Rust that provides Mus
 - `cargo test performance_tests` - Run performance tests
 - `cargo test v0_2_0_features_tests` - Run tests for v0.2.0 features
 - `cargo test v0_3_0_features_tests` - Run tests for v0.3.0+ features (i18n, pluralization)
+- `cargo test v0_5_0_ecosystem_integration_tests` - Run tests for v0.5.0 ecosystem integration
+- `cargo test --features "async,web-frameworks,wasm,cli" v0_5_0_ecosystem_integration_tests` - Run v0.5.0 with all features
 - `cargo test -- --nocapture` - Run tests with output visible
 - `cargo check` - Fast compilation check without building binaries
 - `cargo build` - Build the project

@@ -14,7 +14,7 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 🔒 **Security First**: XSS-safe by default with comprehensive HTML escaping  
 ⚡ **High Performance**: Template caching, bytecode compilation, parallel processing  
 🎯 **Simple API**: Clean, intuitive interface for Rust developers  
-🧪 **Well Tested**: 188+ tests with extensive security, performance, IDE integration, and developer experience tests  
+🧪 **Well Tested**: 204+ tests with extensive security, performance, IDE integration, and ecosystem integration tests  
 🏗️ **Template Inheritance**: Advanced layout system with nested inheritance and `{{super}}`  
 🔧 **Powerful Filters**: Built-in filters like `upper`, `lower`, `currency`, `truncate` with chaining support  
 📦 **Reusable Macros**: Define and reuse template components with parameters  
@@ -30,7 +30,11 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 🐛 **Template Debugging**: Step-through debugging with variable tracking and execution insights (v0.4.0)  
 🔥 **Hot Reload**: Development-time template reloading for faster iteration cycles (v0.4.0)  
 💻 **IDE Integration**: Full Language Server Protocol support with auto-completion, syntax highlighting, error squiggles (v0.4.1)  
-🌐 **Zero Dependencies**: Pure Rust implementation with no external dependencies  
+🚀 **Async Support**: Non-blocking template rendering for high-performance web applications (v0.5.0)  
+🌐 **Web Framework Integration**: First-class support for Axum, Warp, and Actix-web (v0.5.0)  
+🕸️ **WASM Ready**: Browser-compatible template rendering with JavaScript bindings (v0.5.0)  
+🛠️ **CLI Tools**: Command-line template processing with watching and batch operations (v0.5.0)  
+📦 **Zero Dependencies**: Pure Rust implementation with no external dependencies  
 🦀 **Modern Rust**: Rust 2021 edition with 1.74.0+ MSRV, future Rust 2024 ready  
 
 ## ⚡ The Sacred Incantations
@@ -78,20 +82,71 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 
 ### IDE Integration (v0.4.1) - The Editor Edition
 - **Language Server Protocol**: `parse_for_lsp()` - Full LSP support for template editing
-- **Syntax Highlighting**: `tokenize_for_syntax_highlighting()` - Semantic token analysis
-- **Auto-completion**: `get_completions_at_position()` - Variables, filters, and directive completion
-- **Real-time Diagnostics**: `get_diagnostics_for_editor()` - Error squiggles and warnings
-- **Hover Information**: `get_hover_info_at_position()` - Variable type and value inspection
+- **Auto-completion**: Smart suggestions for variables, filters, and template syntax
+- **Syntax Highlighting**: Rich syntax highlighting with error detection
+- **Hover Information**: Contextual help and variable type information
+- **Go-to-Definition**: Navigate to template includes and macro definitions
+- **Real-time Diagnostics**: Live error checking with squiggly underlines
+
+### Ecosystem Integration (v0.5.0) - The Modern Web Edition
+- **Async Support**: `render_string_async()` - Non-blocking template rendering with tokio
+- **Concurrent Rendering**: Clone engines for parallel template processing
+- **Web Framework Integration**: 
+  - **Axum**: `engine.render_axum()` - Direct HTML responses
+  - **Warp**: `engine.render_warp()` - Reply trait integration  
+  - **Actix**: `engine.render_actix()` - HttpResponse integration
+- **WASM Compatibility**: `WasmRuneEngine` - Browser-ready template rendering
+- **JavaScript Bindings**: `engine.render_string(template, json)` for web apps
+- **CLI Tools**: Command-line template processing utilities
+  - `process_template()` - Direct string processing
+  - `process_files()` - File-based template rendering
+  - `batch_process()` - Multiple template processing
+  - `TemplateWatcher` - File system watching with hot reload
+- **Configuration Management**: TOML-based configuration loading
 - **Go to Definition**: `get_definition_at_position()` - Navigate to macro definitions
 
 ## 🚀 Quick Start
 
 ### Installation
 
+#### Basic Installation
 ```toml
 [dependencies]
-mystical-runic = "0.4.1"
+mystical-runic = "0.5.0"
 ```
+
+#### With Ecosystem Integration Features (v0.5.0)
+```toml
+[dependencies]
+# Async support for high-performance web apps
+mystical-runic = { version = "0.5.0", features = ["async"] }
+
+# Web framework integration
+mystical-runic = { version = "0.5.0", features = ["web-frameworks"] }
+# Or specific frameworks:
+# mystical-runic = { version = "0.5.0", features = ["axum-integration"] }
+# mystical-runic = { version = "0.5.0", features = ["warp-integration"] }
+# mystical-runic = { version = "0.5.0", features = ["actix-integration"] }
+
+# WASM browser compatibility
+mystical-runic = { version = "0.5.0", features = ["wasm"] }
+
+# CLI tools and utilities
+mystical-runic = { version = "0.5.0", features = ["cli"] }
+
+# All ecosystem features
+mystical-runic = { version = "0.5.0", features = ["full"] }
+```
+
+**Available Features:**
+- `async` - Async template rendering with tokio
+- `axum-integration` - Axum web framework support  
+- `warp-integration` - Warp web framework support
+- `actix-integration` - Actix-web framework support
+- `web-frameworks` - All web framework integrations
+- `wasm` - WebAssembly browser compatibility
+- `cli` - Command-line tools and utilities  
+- `full` - All ecosystem integration features
 
 ### Basic Usage - Choose Your Style! 🎭
 
@@ -319,9 +374,112 @@ if let Ok(definition) = engine.get_definition_at_position(template, macro_positi
 }
 ```
 
+### Ecosystem Integration Examples (v0.5.0)
+
+#### Async Template Rendering
+
+```rust
+use mystical_runic::{RuneEngine, RuneScroll, AsyncTemplateEngine};
+use tokio;
+
+#[tokio::main]
+async fn main() {
+    let mut engine = RuneEngine::new("templates");
+    let mut context = RuneScroll::new();
+    context.set_string("user", "Async Wizard");
+    
+    // Non-blocking template rendering
+    let result = engine.render_string_async(
+        "Hello {{user}}! Processing your request...", 
+        &context
+    ).await.unwrap();
+    
+    println!("{}", result);
+}
+```
+
+#### Web Framework Integration
+
+##### Axum Integration
+
+```rust
+use axum::{response::Html, routing::get, Router};
+use mystical_runic::{RuneEngine, RuneScroll, AxumTemplateEngine};
+
+async fn render_page(mut engine: RuneEngine) -> Result<Html<String>, String> {
+    let mut context = RuneScroll::new();
+    context.set_string("title", "My Axum App");
+    
+    engine.render_axum("<h1>{{title}}</h1>", &context)
+        .await
+        .map_err(|e| e.to_string())
+}
+
+#[tokio::main]
+async fn main() {
+    let app = Router::new()
+        .route("/", get(|| render_page(RuneEngine::new("templates"))));
+        
+    // Serve your app...
+}
+```
+
+##### WASM Browser Integration
+
+```rust
+use mystical_runic::WasmRuneEngine;
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen]
+pub fn render_in_browser() -> Result<String, JsValue> {
+    let mut engine = WasmRuneEngine::new();
+    engine.enable_console_logging(true);
+    
+    let template = r#"
+        <div class="user-card">
+            <h2>{{user.name}}</h2>
+            <p>Level: {{user.level}}</p>
+        </div>
+    "#;
+    
+    let context_json = r#"{"user": {"name": "Web Wizard", "level": 42}}"#;
+    
+    engine.render_string(template, context_json)
+}
+```
+
+#### CLI Tools Integration
+
+```rust
+use mystical_runic::{process_template, process_files, batch_process};
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Direct template processing
+    let template = "Hello {{name}}!";
+    let data = r#"{"name": "CLI User"}"#;
+    let result = process_template(template, data)?;
+    println!("{}", result);
+    
+    // File-based processing
+    let output = process_files("template.html", "data.json")?;
+    println!("File result: {}", output);
+    
+    // Batch processing
+    let templates = vec!["template1.html", "template2.html"];
+    let context_json = r#"{"theme": "dark", "version": "v0.5.0"}"#;
+    let results = batch_process(templates, context_json)?;
+    
+    for (i, result) in results.iter().enumerate() {
+        println!("Template {}: {}", i + 1, result);
+    }
+    
+    Ok(())
+}
+```
+
 ## 🎮 Complete Real-World Demo Application
 
-Experience **ALL** features of Mystical-Runic v0.3.4 with our comprehensive demonstration application!
+Experience **ALL** features of Mystical-Runic v0.5.0 with our comprehensive demonstration application!
 
 ```bash
 # Run the complete feature showcase

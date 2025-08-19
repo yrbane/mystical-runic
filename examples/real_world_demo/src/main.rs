@@ -2,7 +2,7 @@ use mystical_runic::{TemplateEngine, TemplateContext, TemplateValue};
 use std::collections::HashMap;
 
 fn main() {
-    println!("🔮 MYSTICAL-RUNIC v0.3.4 - DÉMONSTRATION COMPLÈTE!");
+    println!("🔮 MYSTICAL-RUNIC v0.5.0 - DÉMONSTRATION COMPLÈTE AVEC INTÉGRATION ÉCOSYSTÈME!");
     println!("================================================");
     
     // Initialisation du moteur avec templates (chemin relatif depuis le répertoire de l'exemple)
@@ -47,7 +47,10 @@ fn main() {
     generate_html_output(&mut engine, &context);
     
     println!("\n✅ TOUS LES TESTS RÉUSSIS!");
-    println!("🎉 Mystical-Runic v0.3.4 fonctionne parfaitement!");
+    println!("🎉 Mystical-Runic v0.5.0 avec intégration écosystème fonctionne parfaitement!");
+    
+    // 🚀 NEW v0.5.0: Démonstration des fonctionnalités d'intégration écosystème
+    test_ecosystem_features(&mut engine, &context);
 }
 
 fn setup_translations(engine: &mut TemplateEngine) {
@@ -554,5 +557,98 @@ fn generate_html_output(engine: &mut TemplateEngine, context: &TemplateContext) 
         Err(e) => {
             println!("❌ Error generating HTML: {:?}", e);
         }
+    }
+}
+
+// 🚀 NEW v0.5.0: Ecosystem Integration Features Demonstration
+fn test_ecosystem_features(engine: &mut TemplateEngine, context: &TemplateContext) {
+    println!("\n🚀 NOUVELLES FONCTIONNALITÉS v0.5.0 - INTÉGRATION ÉCOSYSTÈME");
+    println!("=============================================================");
+    
+    // Test ecosystem compatibility
+    test_ecosystem_compatibility(engine);
+    
+    // Test CLI tools functionality
+    test_cli_integration(engine, context);
+    
+    println!("\n🎉 Toutes les fonctionnalités d'intégration écosystème v0.5.0 fonctionnent!");
+}
+
+fn test_ecosystem_compatibility(engine: &TemplateEngine) {
+    println!("\n🔍 Testing ecosystem compatibility detection...");
+    
+    {
+        use mystical_runic::EcosystemTemplateEngine;
+        
+        match engine.check_ecosystem_compatibility() {
+            Ok(compatibility) => {
+                println!("✅ Ecosystem compatibility check successful!");
+                println!("   🔄 Async supported: {}", compatibility.async_supported);
+                println!("   🌐 Web frameworks: {:?}", compatibility.web_frameworks);
+                println!("   🕸️  WASM compatible: {}", compatibility.wasm_compatible);
+                println!("   🛠️  CLI tools available: {}", compatibility.cli_tools_available);
+            }
+            Err(e) => {
+                println!("❌ Ecosystem compatibility error: {:?}", e);
+            }
+        }
+    }
+}
+
+fn test_cli_integration(engine: &mut TemplateEngine, context: &TemplateContext) {
+    println!("\n🛠️ Testing CLI integration capabilities...");
+    
+    #[cfg(feature = "cli")]
+    {
+        use mystical_runic::{process_template, batch_process};
+        
+        // Test direct template processing
+        let template = "🔮 {{t \"welcome_message\" name=user.profile.name}} - CLI intégration v0.5.0!";
+        
+        // Create JSON representation of context for CLI processing
+        let context_json = r#"{
+            "user": {
+                "profile": {
+                    "name": "CLI Wizard"
+                }
+            }
+        }"#;
+        
+        match process_template(template, context_json) {
+            Ok(result) => {
+                println!("✅ CLI template processing successful!");
+                println!("   📄 Result: {}", result.trim());
+            }
+            Err(e) => {
+                println!("❌ CLI processing error: {:?}", e);
+            }
+        }
+        
+        // Test batch processing
+        let templates = vec![
+            "Template 1: {{count}} éléments",
+            "Template 2: Version {{version}}",
+            "Template 3: Utilisateur {{name}}"
+        ];
+        
+        let batch_context = r#"{"count": 42, "version": "v0.5.0", "name": "Batch User"}"#;
+        
+        match batch_process(templates, batch_context) {
+            Ok(results) => {
+                println!("✅ CLI batch processing successful!");
+                for (i, result) in results.iter().enumerate() {
+                    println!("   📄 Batch {} - {}", i + 1, result.trim());
+                }
+            }
+            Err(e) => {
+                println!("❌ Batch processing error: {:?}", e);
+            }
+        }
+    }
+    
+    #[cfg(not(feature = "cli"))]
+    {
+        println!("ℹ️  CLI integration features not enabled");
+        println!("   Enable with: cargo run --features \"cli\"");
     }
 }

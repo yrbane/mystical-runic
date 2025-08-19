@@ -81,6 +81,11 @@ mod layouts;
 mod debug;
 mod suggestions;
 mod lsp;
+mod async_engine;
+mod web_frameworks;
+mod wasm_support;
+mod cli;
+mod ecosystem;
 
 // 🏢 Conventional names for professional development environments
 pub use error::{TemplateError, TemplateResult};
@@ -92,6 +97,27 @@ pub use engine::HelperFunction;
 pub use debug::{DebugInfo, DebugRenderResult, ExecutionStep, PerformanceMetrics};
 pub use lsp::{LspParseResult, TemplateBlock, CompletionItem, SyntaxToken, Diagnostic, HoverInfo, DefinitionInfo};
 
+// 🚀 v0.5.0 Ecosystem Integration exports
+#[cfg(feature = "async")]
+pub use async_engine::AsyncTemplateEngine;
+
+#[cfg(feature = "axum-integration")]
+pub use web_frameworks::axum_integration::{AxumTemplateEngine, TemplateResponseError};
+
+#[cfg(feature = "warp-integration")]  
+pub use web_frameworks::warp_integration::WarpTemplateEngine;
+
+#[cfg(feature = "actix-integration")]
+pub use web_frameworks::actix_integration::ActixTemplateEngine;
+
+#[cfg(feature = "wasm")]
+pub use wasm_support::{WasmTemplateEngine, WasmRuneEngine};
+
+#[cfg(feature = "cli")]
+pub use cli::{Cli, Commands, CliConfig, TemplateWatcher, process_template, process_files, batch_process, load_config};
+
+pub use ecosystem::{EcosystemCompatibility, EcosystemTemplateEngine};
+
 // 🔮 Mystical aliases for the enlightened practitioners of ancient coding arts
 pub use error::{TemplateError as RuneError, TemplateResult as RuneResult};
 pub use engine::TemplateEngine as RuneEngine;
@@ -101,3 +127,24 @@ pub use engine::FilterFunction as MysticFilter;
 pub use engine::HelperFunction as AncientHelper;
 pub use debug::{DebugInfo as RuneTrace, DebugRenderResult as RuneDivination, ExecutionStep as RuneStep, PerformanceMetrics as RuneMetrics};
 pub use lsp::{LspParseResult as RunicLore, TemplateBlock as RunicBlock, CompletionItem as RunicCompletion, SyntaxToken as RunicToken, Diagnostic as RunicDiagnostic, HoverInfo as RunicWisdom, DefinitionInfo as RunicOrigin};
+
+// 🔮 v0.5.0 Mystical ecosystem aliases
+#[cfg(feature = "async")]
+pub use async_engine::AsyncTemplateEngine as AsyncRuneEngine;
+
+#[cfg(feature = "axum-integration")]
+pub use web_frameworks::axum_integration::{AxumTemplateEngine as AxumRuneEngine, TemplateResponseError as RuneResponseError};
+
+#[cfg(feature = "warp-integration")]
+pub use web_frameworks::warp_integration::WarpTemplateEngine as WarpRuneEngine;
+
+#[cfg(feature = "actix-integration")]
+pub use web_frameworks::actix_integration::ActixTemplateEngine as ActixRuneEngine;
+
+#[cfg(feature = "wasm")]
+pub use wasm_support::{WasmTemplateEngine as WasmRuneEngineTrait, WasmRuneEngine as BrowserRuneEngine};
+
+#[cfg(feature = "cli")]
+pub use cli::{Cli as RunicCli, Commands as RunicCommands, CliConfig as RunicConfig, TemplateWatcher as RuneWatcher};
+
+pub use ecosystem::{EcosystemCompatibility as RunicCompatibility, EcosystemTemplateEngine as EcosystemRuneEngine};
