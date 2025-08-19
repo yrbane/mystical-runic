@@ -727,7 +727,45 @@ Mystical-Runic follows strict **Test-Driven Development** practices. When contri
 
 ## 📜 Changelog
 
-### v0.2.0 (Latest Release) - The Advanced Sorcery Edition
+### v0.3.4 (Latest Release) - The Advanced Features Edition
+
+- 🔄 **NEW: Nested Loops**: Complete support for nested loops with stack-based parsing (`{{for category in shops}}{{for item in category.items}}`)
+- 🔄 **NEW: Recursive Includes**: Unlimited depth recursive template includes (templates including templates)
+- 🛡️ **NEW: Path Traversal Protection**: Enterprise-grade security preventing `../../../etc/passwd` and `C:\Windows\System32` attacks
+- 🎮 **Complete Real-World Demo**: Full-featured e-commerce/blog application showcasing ALL features (`examples/real_world_demo/`)
+- 📚 **Enhanced Documentation**: Complete README overhaul with comprehensive examples and demo application
+- 🧪 **173+ Tests**: Expanded test suite including all v0.3.4 features with comprehensive security testing
+- 🚀 **Production Ready**: All tests passing, zero warnings, full feature demonstration
+
+### v0.3.3 - The Warning-Free Edition
+
+- 🧹 **Zero Warnings**: Complete cleanup of all compiler warnings for production readiness
+- 🔧 **Code Quality**: Enhanced code quality and maintainability improvements
+- ✅ **Stability**: All existing functionality maintained with improved reliability
+
+### v0.3.2 - The Enhancement Edition  
+
+- 🌐 **Enhanced i18n**: Improved internationalization with better variable interpolation
+- 📝 **Smart Pluralization**: Advanced plural form handling with locale-aware rules
+- 🔢 **Math Filter Improvements**: Enhanced mathematical operations with better precision
+- 🎨 **Custom Filter API**: Improved API for registering custom filters
+
+### v0.3.1 - The Stability Edition
+
+- 🔧 **Bug Fixes**: Critical fixes for edge cases in template processing
+- ⚡ **Performance**: Optimized parsing and rendering pipeline
+- 🧪 **Testing**: Enhanced test coverage for reliability improvements
+
+### v0.3.0 - The Global Sorcery Edition
+
+- 🌐 **Internationalization (i18n)**: Full multi-language support with `{{t "key"}}` syntax
+- 📝 **Smart Pluralization**: Automatic plural forms with `{{plural count "item" "items"}}`
+- 🔢 **Advanced Math Filters**: Mathematical operations (`add`, `multiply`, `divide`, `percentage`, `round`)
+- 🎨 **Custom Filter API**: Register your own filters with `engine.register_filter()`
+- 🎭 **Dual Naming System**: Choose between professional (`TemplateEngine`) or mystical (`RuneEngine`) styles
+- 🧪 **150+ Tests**: Comprehensive test suite covering all new features
+
+### v0.2.0 - The Advanced Sorcery Edition
 
 - 🏰 **Template Inheritance**: Advanced layout system with nested inheritance support
 - 🔧 **Powerful Filters**: Built-in filters (`upper`, `lower`, `currency`, `truncate`, `date`) with chaining
