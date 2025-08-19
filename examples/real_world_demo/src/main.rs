@@ -2,7 +2,7 @@ use mystical_runic::{TemplateEngine, TemplateContext, TemplateValue};
 use std::collections::HashMap;
 
 fn main() {
-    println!("🔮 MYSTICAL-RUNIC v0.5.1 - PROFESSIONAL ENTERPRISE TEMPLATE ENGINE!");
+    println!("🔮 MYSTICAL-RUNIC v0.5.2 - HIGH-PERFORMANCE TEMPLATE ENGINE!");
     println!("================================================");
     
     // Initialisation du moteur avec templates (chemin relatif depuis le répertoire de l'exemple)
@@ -47,9 +47,9 @@ fn main() {
     generate_html_output(&mut engine, &context);
     
     println!("\n✅ TOUS LES TESTS RÉUSSIS!");
-    println!("🎉 Mystical-Runic v0.5.1 Professional Enterprise Template Engine!");
+    println!("🎉 Mystical-Runic v0.5.2 High-Performance Template Engine!");
     
-    // 🚀 NEW v0.5.1: Professional performance monitoring and security features
+    // 🚀 NEW v0.5.2: Advanced performance monitoring and security features
     test_ecosystem_features(&mut engine, &context);
 }
 
@@ -166,7 +166,7 @@ fn setup_translations(engine: &mut TemplateEngine) {
     fr_translations.insert("active".to_string(), "Actif".to_string());
     
     // Styles de nommage
-    fr_translations.insert("professional_style".to_string(), "Style Professionnel".to_string());
+    fr_translations.insert("clean_style".to_string(), "Style Épuré".to_string());
     fr_translations.insert("mystical_style".to_string(), "Style Mystique".to_string());
     
     engine.set_translations("fr", fr_translations);
@@ -560,9 +560,9 @@ fn generate_html_output(engine: &mut TemplateEngine, context: &TemplateContext) 
     }
 }
 
-// 🚀 NEW v0.5.1: Professional Features Demonstration
+// 🚀 NEW v0.5.2: Advanced Features Demonstration
 fn test_ecosystem_features(engine: &mut TemplateEngine, context: &TemplateContext) {
-    println!("\n🚀 PROFESSIONAL FEATURES v0.5.1 - PERFORMANCE & SECURITY");
+    println!("\n🚀 ADVANCED FEATURES v0.5.2 - PERFORMANCE & SECURITY");
     println!("=============================================================");
     
     // Test performance monitoring
@@ -574,11 +574,11 @@ fn test_ecosystem_features(engine: &mut TemplateEngine, context: &TemplateContex
     // Test CLI tools functionality
     test_cli_integration(engine, context);
     
-    println!("\n🎉 All professional v0.5.1 features working perfectly!");
+    println!("\n🎉 All advanced v0.5.2 features working perfectly!");
 }
 
 fn test_performance_monitoring(engine: &mut TemplateEngine, context: &TemplateContext) {
-    println!("\n📈 Testing professional performance monitoring...");
+    println!("\n📈 Testing advanced performance monitoring...");
     
     // Enable performance monitoring
     engine.enable_performance_monitoring();
@@ -614,7 +614,7 @@ fn test_performance_monitoring(engine: &mut TemplateEngine, context: &TemplateCo
         }
     }
     
-    println!("  ✓ Professional performance monitoring working!");
+    println!("  ✓ Advanced performance monitoring working!");
 }
 
 fn test_ecosystem_compatibility(engine: &TemplateEngine) {
@@ -646,7 +646,7 @@ fn test_cli_integration(_engine: &mut TemplateEngine, _context: &TemplateContext
         use mystical_runic::{process_template, batch_process};
         
         // Test direct template processing
-        let template = "🔮 {{t \"welcome_message\" name=user.profile.name}} - Professional CLI v0.5.1!";
+        let template = "🔮 {{t \"welcome_message\" name=user.profile.name}} - Advanced CLI v0.5.2!";
         
         // Create JSON representation of context for CLI processing
         let context_json = r#"{
@@ -674,7 +674,7 @@ fn test_cli_integration(_engine: &mut TemplateEngine, _context: &TemplateContext
             "Template 3: Utilisateur {{name}}"
         ];
         
-        let batch_context = r#"{"count": 42, "version": "v0.5.1", "name": "Professional User"}"#;
+        let batch_context = r#"{"count": 42, "version": "v0.5.2", "name": "Advanced User"}"#;
         
         match batch_process(templates, batch_context) {
             Ok(results) => {
