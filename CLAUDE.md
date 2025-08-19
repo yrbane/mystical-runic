@@ -4,12 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Mystical-Runic is a zero-dependency templating engine for Rust that provides Mustache-inspired syntax with advanced features like deep dot notation, filters, macros, template inheritance, nested loops, recursive includes, and enterprise-grade security. The project follows strict Test-Driven Development (TDD) practices with 173+ comprehensive tests.
+Mystical-Runic is a zero-dependency templating engine for Rust that provides Mustache-inspired syntax with advanced features like deep dot notation, filters, macros, template inheritance, nested loops, recursive includes, enterprise-grade security, and comprehensive developer experience tools. The project follows strict Test-Driven Development (TDD) practices with 178+ comprehensive tests.
 
 ## Key Commands
 
 ### Development and Testing
-- `cargo test` - Run all tests (comprehensive test suite with 173+ tests)
+- `cargo test` - Run all tests (comprehensive test suite with 178+ tests)
+- `cargo test basic_v040_tests` - Run v0.4.0 developer experience tests
 - `cargo test integration_tests` - Run integration tests
 - `cargo test unit_tests` - Run unit tests  
 - `cargo test security_tests` - Run security-focused tests (includes path traversal protection)
@@ -43,7 +44,15 @@ The templating engine is built around four main components:
 
 ### Advanced Features
 
-#### v0.3.4 NEW Features
+#### v0.4.0 NEW Developer Experience Features
+- **Enhanced Error Messages**: Precise line/column error reporting with `ParseWithLocation`
+- **Template Debugging**: Complete debugging system with variable tracking via `render_string_with_debug()`
+- **Hot Reload**: Development-time automatic template reloading with `enable_hot_reload()`
+- **Debug Mode**: Variable access tracking and execution step analysis
+- **Performance Metrics**: Built-in performance tracking with execution time measurement
+- **Intelligent Suggestions**: Smart template and variable name suggestions for common typos
+
+#### v0.3.4 Advanced Security Features
 - **Nested Loops**: Complete support for nested `{{for}}` directives with stack-based parsing
 - **Recursive Includes**: Templates can include other templates recursively (unlimited depth)
 - **Path Traversal Protection**: Enterprise-grade security preventing `../` and absolute path attacks

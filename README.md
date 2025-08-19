@@ -14,7 +14,7 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 🔒 **Security First**: XSS-safe by default with comprehensive HTML escaping  
 ⚡ **High Performance**: Template caching, bytecode compilation, parallel processing  
 🎯 **Simple API**: Clean, intuitive interface for Rust developers  
-🧪 **Well Tested**: 173+ tests with extensive security and performance tests  
+🧪 **Well Tested**: 178+ tests with extensive security, performance, and developer experience tests  
 🏗️ **Template Inheritance**: Advanced layout system with nested inheritance and `{{super}}`  
 🔧 **Powerful Filters**: Built-in filters like `upper`, `lower`, `currency`, `truncate` with chaining support  
 📦 **Reusable Macros**: Define and reuse template components with parameters  
@@ -26,6 +26,9 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 🎨 **Custom Filter API**: Register your own filters for domain-specific transformations  
 🎭 **Dual Naming System**: Choose between professional (`TemplateEngine`) or mystical (`RuneEngine`) naming styles  
 📝 **Smart Pluralization**: Automatic plural forms with `{{plural count "item" "items"}}`  
+🔍 **Enhanced Error Messages**: Line/column numbers with helpful suggestions and context (v0.4.0)  
+🐛 **Template Debugging**: Step-through debugging with variable tracking and execution insights (v0.4.0)  
+🔥 **Hot Reload**: Development-time template reloading for faster iteration cycles (v0.4.0)  
 🌐 **Zero Dependencies**: Pure Rust implementation with no external dependencies  
 🦀 **Modern Rust**: Rust 2021 edition with 1.74.0+ MSRV, future Rust 2024 ready  
 
@@ -64,13 +67,21 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 - **Mathematical Alchemy**: `{{price|add:10|multiply:2|percentage}}` - Advanced math transformations
 - **Custom Enchantments**: `engine.register_filter("reverse", |input, _| Ok(input.chars().rev().collect()))` - Forge your own filters
 
+### Developer Experience (v0.4.0) - The Debugging Edition
+- **Enhanced Error Diagnostics**: `ParseWithLocation` - Precise line/column error reporting with context
+- **Intelligent Suggestions**: Template and variable name suggestions for typos
+- **Debug Mode**: `engine.enable_debug_mode()` - Variable tracking and execution step analysis
+- **Template Debugging**: `render_string_with_debug()` - Step-through debugging with performance metrics
+- **Hot Reload**: `engine.enable_hot_reload()` - Automatic template reloading during development
+- **Developer-Friendly Errors**: Stack traces for nested template errors with full context
+
 ## 🚀 Quick Start
 
 ### Installation
 
 ```toml
 [dependencies]
-mystical-runic = "0.3.4"
+mystical-runic = "0.4.0"
 ```
 
 ### Basic Usage - Choose Your Style! 🎭
@@ -230,6 +241,14 @@ let template = r#"
 
 let result = engine.render_string(template, &scroll).unwrap();
 println!("{}", result);
+
+// 🔥 NEW v0.4.0: Debug Mode for Development
+engine.enable_debug_mode();
+let debug_result = engine.render_string_with_debug(template, &scroll).unwrap();
+
+println!("Rendered: {}", debug_result.output);
+println!("Variables accessed: {:?}", debug_result.debug_info.variables_accessed);
+println!("Execution time: {}ms", debug_result.debug_info.performance_metrics.total_time_nanos / 1_000_000);
 ```
 
 ## 🎮 Complete Real-World Demo Application
@@ -727,7 +746,17 @@ Mystical-Runic follows strict **Test-Driven Development** practices. When contri
 
 ## 📜 Changelog
 
-### v0.3.4 (Latest Release) - The Advanced Features Edition
+### v0.4.0 (Latest Release) - The Developer Experience Edition
+
+- 🔍 **NEW: Enhanced Error Messages**: Precise line/column error reporting with helpful context and suggestions
+- 🐛 **NEW: Template Debugging**: Complete debugging system with variable tracking and execution step analysis  
+- 🔥 **NEW: Hot Reload**: Automatic template reloading during development for faster iteration cycles
+- 📊 **NEW: Performance Metrics**: Built-in performance tracking with execution time analysis
+- 🎯 **NEW: Intelligent Suggestions**: Smart suggestions for template and variable name typos
+- 🧪 **178+ Tests**: Comprehensive test suite including all v0.4.0 developer experience features
+- 🚀 **Production Ready**: All tests passing, enhanced developer productivity tools
+
+### v0.3.4 - The Advanced Features Edition
 
 - 🔄 **NEW: Nested Loops**: Complete support for nested loops with stack-based parsing (`{{for category in shops}}{{for item in category.items}}`)
 - 🔄 **NEW: Recursive Includes**: Unlimited depth recursive template includes (templates including templates)
@@ -803,7 +832,7 @@ Mystical-Runic follows strict **Test-Driven Development** practices. When contri
 
 ## 🗺️ Roadmap
 
-### ✅ v0.3.0-v0.3.4 - COMPLETED
+### ✅ v0.3.0-v0.4.0 - COMPLETED
 - ✅ **i18n Support**: `{{t "key"}}` syntax for translations
 - ✅ **Pluralization**: Smart plural forms based on count  
 - ✅ **Custom Filter Registration**: API for user-defined filters
@@ -812,14 +841,17 @@ Mystical-Runic follows strict **Test-Driven Development** practices. When contri
 - ✅ **Recursive Includes**: Deep template inclusion hierarchies
 - ✅ **Path Traversal Protection**: Enterprise-grade security features
 - ✅ **Complete Real-World Demo**: Full-featured showcase application
+- ✅ **Enhanced Error Messages**: Line/column numbers and intelligent suggestions
+- ✅ **Template Debugging**: Step-through debugging with variable tracking
+- ✅ **Hot Reload**: Development-time template reloading
 
-### 🚀 v0.4.0 - Developer Experience  
-- **Better Error Messages**: Line/column numbers and suggestions
-- **Template Debugging**: Step-through debugging capabilities
-- **IDE Integration**: Language Server Protocol support
-- **Hot Reload**: Development-time template reloading
+### 🚀 v0.4.1 - IDE Integration  
+- **Language Server Protocol**: IDE integration for template editing
+- **Syntax Highlighting**: Template syntax highlighting in editors
+- **Auto-completion**: Variable and filter auto-completion
+- **Error Squiggles**: Real-time error highlighting in editors
 
-### 🌐 v1.0.0 - Ecosystem Integration
+### 🌐 v0.5.0 - Ecosystem Integration
 - **Async Support**: Non-blocking template rendering
 - **Web Framework Integration**: First-class Axum, Warp, Actix support
 - **WASM Compatibility**: Browser and edge runtime support

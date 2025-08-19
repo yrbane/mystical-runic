@@ -75,6 +75,8 @@ mod value;
 mod utils;
 mod bytecode;
 mod layouts;
+mod debug;
+mod suggestions;
 
 // 🏢 Conventional names for professional development environments
 pub use error::{TemplateError, TemplateResult};
@@ -83,6 +85,7 @@ pub use context::TemplateContext;
 pub use value::TemplateValue;
 pub use engine::FilterFunction;
 pub use engine::HelperFunction;
+pub use debug::{DebugInfo, DebugRenderResult, ExecutionStep, PerformanceMetrics};
 
 // 🔮 Mystical aliases for the enlightened practitioners of ancient coding arts
 pub use error::{TemplateError as RuneError, TemplateResult as RuneResult};
@@ -91,3 +94,4 @@ pub use context::TemplateContext as RuneScroll;
 pub use value::TemplateValue as RuneSymbol;
 pub use engine::FilterFunction as MysticFilter;
 pub use engine::HelperFunction as AncientHelper;
+pub use debug::{DebugInfo as RuneTrace, DebugRenderResult as RuneDivination, ExecutionStep as RuneStep, PerformanceMetrics as RuneMetrics};
