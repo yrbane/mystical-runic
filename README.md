@@ -801,6 +801,30 @@ Mystical-Runic follows strict **Test-Driven Development** practices. When contri
 - 🧪 Comprehensive test suite with high coverage
 - 📚 Complete documentation and examples
 
+## 🗺️ Roadmap
+
+### ✅ v0.3.0-v0.3.4 - COMPLETED
+- ✅ **i18n Support**: `{{t "key"}}` syntax for translations
+- ✅ **Pluralization**: Smart plural forms based on count  
+- ✅ **Custom Filter Registration**: API for user-defined filters
+- ✅ **Advanced Math Filters**: Mathematical operations and formatting
+- ✅ **Nested Loops**: Stack-based parsing for complex nested structures
+- ✅ **Recursive Includes**: Deep template inclusion hierarchies
+- ✅ **Path Traversal Protection**: Enterprise-grade security features
+- ✅ **Complete Real-World Demo**: Full-featured showcase application
+
+### 🚀 v0.4.0 - Developer Experience  
+- **Better Error Messages**: Line/column numbers and suggestions
+- **Template Debugging**: Step-through debugging capabilities
+- **IDE Integration**: Language Server Protocol support
+- **Hot Reload**: Development-time template reloading
+
+### 🌐 v1.0.0 - Ecosystem Integration
+- **Async Support**: Non-blocking template rendering
+- **Web Framework Integration**: First-class Axum, Warp, Actix support
+- **WASM Compatibility**: Browser and edge runtime support
+- **CLI Tools**: Command-line template processing utilities
+
 ## 🌟 Why "Mystical-Runic"?
 
 Because templating is basically ancient magic:
