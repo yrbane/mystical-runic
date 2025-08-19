@@ -1,0 +1,20 @@
+<div>
+    <p>{{t "blog_intro"}}</p>
+    
+    <!-- Nested loops dans le blog section! -->
+    {{for post in blog.recent_posts}}
+        <div style="border: 1px solid #e1e8ed; padding: 15px; margin: 10px 0; border-radius: 5px;">
+            <h4>📝 {{post.title|truncate:50}}</h4>
+            <p><small>{{t "by"}} {{post.author}} - {{post.date|date:"Y-m-d"}} - {{plural post.comments.length "commentaire" "commentaires"}}</small></p>
+            <p>{{post.excerpt|truncate:100}}</p>
+            
+            <!-- Nested include pour les commentaires récents -->
+            {{if post.comments.length}}
+                <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 3px;">
+                    <h6>💬 {{t "recent_comments"}}</h6>
+                    {{include "components/recent_comments.html"}}
+                </div>
+            {{/if}}
+        </div>
+    {{/for}}
+</div>

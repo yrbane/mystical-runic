@@ -4,21 +4,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Mystical-Runic is a zero-dependency templating engine for Rust that provides Mustache-inspired syntax with advanced features like deep dot notation, filters, macros, and template inheritance. The project follows strict Test-Driven Development (TDD) practices.
+Mystical-Runic is a zero-dependency templating engine for Rust that provides Mustache-inspired syntax with advanced features like deep dot notation, filters, macros, template inheritance, nested loops, recursive includes, and enterprise-grade security. The project follows strict Test-Driven Development (TDD) practices with 173+ comprehensive tests.
 
 ## Key Commands
 
 ### Development and Testing
-- `cargo test` - Run all tests (comprehensive test suite with 85+ tests)
+- `cargo test` - Run all tests (comprehensive test suite with 173+ tests)
 - `cargo test integration_tests` - Run integration tests
 - `cargo test unit_tests` - Run unit tests  
-- `cargo test security_tests` - Run security-focused tests
+- `cargo test security_tests` - Run security-focused tests (includes path traversal protection)
 - `cargo test performance_tests` - Run performance tests
 - `cargo test v0_2_0_features_tests` - Run tests for v0.2.0 features
+- `cargo test v0_3_0_features_tests` - Run tests for v0.3.0+ features (i18n, pluralization)
 - `cargo test -- --nocapture` - Run tests with output visible
 - `cargo check` - Fast compilation check without building binaries
 - `cargo build` - Build the project
 - `cargo run --bin performance_demo` - Run performance benchmarks
+
+### Real-World Demo Application
+- `cd examples/real_world_demo && ./run_demo.sh` - Run complete feature demonstration
+- `cd examples/real_world_demo && cargo run` - Manual demo execution
+- Generates `output_demo.html` - Complete working website (10KB+) showcasing all features
 
 ### Single Test Execution
 - `cargo test test_basic_rendering -- --nocapture` - Run specific test with output
@@ -37,12 +43,23 @@ The templating engine is built around four main components:
 
 ### Advanced Features
 
+#### v0.3.4 NEW Features
+- **Nested Loops**: Complete support for nested `{{for}}` directives with stack-based parsing
+- **Recursive Includes**: Templates can include other templates recursively (unlimited depth)
+- **Path Traversal Protection**: Enterprise-grade security preventing `../` and absolute path attacks
+- **Security Error Type**: New `TemplateError::Security` for clear security violation reporting
+
+#### Core Features  
 - **Deep Dot Notation**: Unlimited depth object traversal (e.g., `{{game.character.stats.level}}`)
 - **Template Inheritance**: Layout system with `{{extend}}` and `{{block}}` directives
 - **Macro System**: Reusable template components with parameters and context resolution
-- **Filter System**: Built-in filters like `upper`, `lower`, `truncate`, `currency`, `markdown`, `highlight`
-- **Security**: XSS-safe HTML escaping by default, path traversal protection
+- **Filter System**: Built-in filters like `upper`, `lower`, `truncate`, `currency`, `markdown`, plus custom filter registration
+- **Internationalization**: Multi-language support with `{{t "key"}}` and variable interpolation
+- **Smart Pluralization**: Automatic plural forms with `{{plural count "item" "items"}}`
+- **Math Filters**: Advanced mathematical operations with chaining (`add`, `multiply`, `divide`, `round`, `percentage`)
+- **XSS Security**: HTML escaping by default with raw output option `{{& safe_html}}`
 - **Performance**: Template caching, bytecode compilation, parallel processing, memory mapping
+- **Dual Naming**: Professional (`TemplateEngine`) or mystical (`RuneEngine`) API styles
 
 ### Module Structure
 
@@ -61,12 +78,16 @@ The templating engine is built around four main components:
 ### Control Flow
 - `{{if condition}}...{{/if}}` - Conditionals with comparison operators
 - `{{for item in items}}...{{/for}}` - Loops over arrays
+- `{{for category in categories}}{{for product in category.items}}...{{/for}}{{/for}}` - **NEW v0.3.4**: Nested loops
 
 ### Advanced Features
-- `{{include "template.html"}}` - Template includes
+- `{{include "template.html"}}` - Template includes (recursive support in v0.3.4)
 - `{{name|upper|truncate:10}}` - Filter chains
+- `{{price|multiply:1.2|add:tax|currency}}` - **NEW**: Advanced math filter chaining  
 - `{{macro button(text, class)}}...{{/macro}}` - Macro definitions
 - `{{button("Click", "btn-primary")}}` - Macro calls
+- `{{t "welcome" name=user.name}}` - **NEW**: Internationalization with variables
+- `{{plural count "item" "items"}}` - **NEW**: Smart pluralization
 
 ## Testing Philosophy
 
@@ -95,7 +116,13 @@ The engine includes several performance optimizations:
 
 ## Security Considerations
 
-- All variable output is HTML-escaped by default
-- Path traversal protection for template includes
-- Template injection prevention
-- Comprehensive security test suite validates XSS protection
+- **XSS Protection**: All variable output is HTML-escaped by default
+- **Path Traversal Protection**: NEW v0.3.4 - Enterprise-grade protection against:
+  - `../` and `..\` path traversal attempts
+  - Absolute paths like `/etc/passwd` and `C:\Windows\System32`
+  - Drive letter paths on Windows
+  - Multi-layer validation with canonicalization
+- **Template Sandboxing**: Templates restricted to designated template directory
+- **Security Error Type**: `TemplateError::Security` for clear security violation reporting
+- **Template Injection Prevention**: Comprehensive input validation
+- **Comprehensive Security Tests**: Full test suite validates all protection mechanisms

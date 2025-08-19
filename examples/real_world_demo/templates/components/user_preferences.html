@@ -1,0 +1,6 @@
+<div style="background: #f1f2f6; padding: 10px; border-radius: 3px;">
+    <p><strong>🎨 {{t "theme"}}:</strong> {{user.profile.settings.theme|upper}}</p>
+    <p><strong>🌐 {{t "language"}}:</strong> {{user.profile.settings.language|upper}}</p>
+    <p><strong>📧 {{t "notifications"}}:</strong> {{if user.profile.settings.notifications}}✅ {{t "enabled"}}{{else}}❌ {{t "disabled"}}{{/if}}</p>
+    <p><strong>🔒 {{t "privacy_level"}}:</strong> {{user.profile.settings.privacy|upper}}</p>
+</div>

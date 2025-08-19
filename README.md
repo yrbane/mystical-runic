@@ -48,6 +48,15 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 - **Reusable Spells (Macros)**: `{{macro spell(power)}}...{{/macro}}` - Create reusable incantations
 - **Spell Invocation**: `{{spell("lightning")}}` - Call upon your defined macros
 
+### Master Sorcery (v0.3.4) - The Advanced Features
+- **Nested Loop Mastery**: `{{for category in shops}}{{for item in category.items}}...{{/for}}{{/for}}` - Complex nested iterations with stack-based parsing
+- **Recursive Includes**: Templates can include other templates that include more templates - unlimited depth!
+- **Path Traversal Wards**: Enterprise-grade protection against `../../../etc/passwd` and `C:\Windows\System32` attacks
+- **Multilingual Magic**: `{{t "welcome" name=user}}` - Full i18n with variable interpolation
+- **Smart Plurals**: `{{plural count "item" "items"}}` - Automatic singular/plural forms
+- **Mathematical Alchemy**: `{{price|multiply:1.2|add:shipping|round:2|currency}}` - Complex calculations with filter chaining
+- **Custom Enchantments**: Register your own filters with `engine.register_filter()`
+
 ### Global Sorcery (v0.3.0)
 - **Universal Translation**: `{{t "welcome"}}` - Speak all tongues with i18n support
 - **Locale Switching**: Switch between languages with `engine.set_locale("en")`
@@ -61,7 +70,7 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 
 ```toml
 [dependencies]
-mystical-runic = "0.3.3"
+mystical-runic = "0.3.4"
 ```
 
 ### Basic Usage - Choose Your Style! 🎭
@@ -222,6 +231,63 @@ let template = r#"
 let result = engine.render_string(template, &scroll).unwrap();
 println!("{}", result);
 ```
+
+## 🎮 Complete Real-World Demo Application
+
+Experience **ALL** features of Mystical-Runic v0.3.4 with our comprehensive demonstration application!
+
+```bash
+# Run the complete feature showcase
+cd examples/real_world_demo
+./run_demo.sh
+
+# OR manually
+cargo run
+```
+
+### 🌟 What the Demo Showcases
+
+Our demo application is a **full-featured e-commerce/blog site** that demonstrates every single feature:
+
+- **🔄 NEW v0.3.4**: Nested loops with complex data structures (categories → products)
+- **🔄 NEW v0.3.4**: Recursive includes with 4 levels deep (profile → stats → preferences → comments)
+- **🛡️ NEW v0.3.4**: Path traversal protection blocking `../../../etc/passwd` attacks
+- **🏗️ Template inheritance** with `base.html` → `shop.html` 
+- **🌐 Full i18n** with French/English translations
+- **📝 Smart pluralization** throughout the interface
+- **🔢 Advanced math filters** for pricing, taxes, discounts
+- **🎨 Custom filters** for encryption, markdown, dates
+- **📦 Reusable macros** for product cards
+- **🌊 Deep dot notation** accessing `user.profile.settings.theme`
+- **🔒 XSS protection** with real attack demonstrations
+- **⚡ Performance features** with benchmarking
+
+### 📊 Demo Results
+
+```
+🔮 MYSTICAL-RUNIC v0.3.4 - DÉMONSTRATION COMPLÈTE!
+✅ Main template rendered successfully! (10KB+ HTML)
+✅ Nested loops work perfectly!
+✅ Nested includes work perfectly! 
+✅ All path traversal attempts blocked!
+✅ XSS protection working
+✅ Rendered 100 times in 1-2ms
+✅ HTML file generated: output_demo.html
+
+🎉 All 173+ tests pass! Production ready!
+```
+
+### 🎯 Generated Output
+
+The demo creates `output_demo.html` - a complete working website showcasing:
+- Professional styling with responsive design
+- Real e-commerce functionality simulation  
+- Complex nested data visualization
+- Multi-language interface
+- Security feature demonstrations
+- Performance metrics display
+
+**📁 Location**: `examples/real_world_demo/` - Complete application with 7+ templates, realistic data, and full documentation.
 
 ## 🏰 Template Inheritance (v0.2.0)
 
@@ -595,10 +661,15 @@ let result = engine.render_string(template, &context).unwrap();
 
 ## 🔮 Examples
 
-Check out the [`examples/`](examples/) directory for more magical demonstrations:
+Check out the [`examples/`](examples/) directory for magical demonstrations:
 
+- **[`real_world_demo/`](examples/real_world_demo/)** - **⭐ COMPLETE DEMO APPLICATION** - Full-featured e-commerce/blog showcasing ALL v0.3.4 features
+  - 🎮 Run with: `cd examples/real_world_demo && ./run_demo.sh`
+  - 📄 Generates complete HTML website (10KB+)
+  - 🔄 NEW: Nested loops, recursive includes, path traversal protection
+  - 🌐 Multi-language (FR/EN), math filters, custom filters, macros, inheritance
 - [`spell_casting.rs`](examples/spell_casting.rs) - Fantasy RPG character sheet generator
-- More examples coming soon!
+- More examples coming with each release!
 
 ## 🦀 Rust Compatibility
 

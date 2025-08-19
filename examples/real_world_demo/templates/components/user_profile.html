@@ -1,0 +1,18 @@
+<div style="border-left: 4px solid #3498db; padding-left: 15px;">
+    <h4>👤 {{user.profile.personal.full_name}}</h4>
+    <p><strong>{{t "role"}}:</strong> {{user.role|upper}}</p>
+    <p><strong>{{t "member_since"}}:</strong> {{user.join_date|date:"Y-m-d"}}</p>
+    <p><strong>{{t "location"}}:</strong> {{user.profile.location.city}}, {{user.profile.location.country}}</p>
+    
+    <!-- Nested include dans user_profile! -->
+    <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 3px;">
+        <h5>🎮 {{t "gaming_stats"}}</h5>
+        {{include "components/gaming_stats.html"}}
+    </div>
+    
+    <!-- Encore un nested include! -->
+    <div style="margin-top: 10px;">
+        <h5>⚙️ {{t "user_preferences"}}</h5>
+        {{include "components/user_preferences.html"}}
+    </div>
+</div>

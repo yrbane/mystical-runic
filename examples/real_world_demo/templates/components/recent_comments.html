@@ -1,0 +1,8 @@
+<div style="max-height: 150px; overflow-y: auto;">
+    {{for comment in post.comments}}
+        <div style="padding: 5px; margin: 3px 0; background: #fff; border-radius: 2px; border-left: 3px solid #3498db;">
+            <strong>{{comment.author}}:</strong> {{comment.text|truncate:80}}<br>
+            <small style="color: #666;">{{comment.date|date:"Y-m-d H:i"}}</small>
+        </div>
+    {{/for}}
+</div>

@@ -1,0 +1,23 @@
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center;">
+    <div style="background: #fff; padding: 10px; border-radius: 3px; border: 1px solid #ddd;">
+        <strong>{{user.gaming.stats.level}}</strong><br>
+        <small>{{t "level"}}</small>
+    </div>
+    <div style="background: #fff; padding: 10px; border-radius: 3px; border: 1px solid #ddd;">
+        <strong>{{user.gaming.stats.xp}}</strong><br>
+        <small>{{t "experience"}}</small>
+    </div>
+    <div style="background: #fff; padding: 10px; border-radius: 3px; border: 1px solid #ddd;">
+        <strong>{{user.gaming.achievements.length}}</strong><br>
+        <small>{{plural user.gaming.achievements.length "succès" "succès"}}</small>
+    </div>
+</div>
+
+<div style="margin-top: 10px;">
+    <h6>🏆 {{t "recent_achievements"}}</h6>
+    <ul style="margin: 0; padding-left: 20px;">
+        {{for achievement in user.gaming.achievements}}
+            <li>{{achievement.name}} - {{achievement.date|date:"Y-m-d"}}</li>
+        {{/for}}
+    </ul>
+</div>

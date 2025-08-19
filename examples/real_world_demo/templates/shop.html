@@ -1,0 +1,215 @@
+{{extends "base.html"}}
+
+{{block title}}{{t "shop_title"}} - {{super}}{{/block}}
+
+{{block content}}
+<!-- 🔮 TOUTES LES FONCTIONNALITÉS DE MYSTICAL-RUNIC EN ACTION! -->
+
+<!-- 🌐 INTERNATIONALIZATION (i18n) -->
+<section id="i18n">
+    <h2>🌐 {{t "section.internationalization"}}</h2>
+    <p>{{t "current_locale_info"}}: <strong>{{locale}}</strong></p>
+    <p>{{t "user_greeting" name=user.name role=user.role}}</p>
+    <p>{{t "site_description" site_name=site.name}}</p>
+</section>
+
+<!-- 📝 PLURALIZATION SYSTÈME -->
+<section id="pluralization">
+    <h2>📝 {{t "section.pluralization"}}</h2>
+    <div class="stats">
+        <div class="stat">
+            <h3>{{cart.total_items}}</h3>
+            <p>{{plural cart.total_items "article" "articles"}} {{t "in_cart"}}</p>
+        </div>
+        <div class="stat">
+            <h3>{{stats.total_products}}</h3>
+            <p>{{plural stats.total_products "produit" "produits"}} {{t "available"}}</p>
+        </div>
+        <div class="stat">
+            <h3>{{stats.total_users}}</h3>
+            <p>{{plural stats.total_users "utilisateur" "utilisateurs"}} {{t "registered"}}</p>
+        </div>
+    </div>
+</section>
+
+<!-- 🔢 ADVANCED MATH FILTERS -->
+<section id="math-filters" class="filter-demo">
+    <h2>🔢 {{t "section.math_filters"}}</h2>
+    <p><strong>{{t "cart_subtotal"}}:</strong> {{cart.subtotal|currency}}</p>
+    <p><strong>{{t "tax_rate"}}:</strong> {{tax.rate|multiply:100|round:1}}%</p>
+    <p><strong>{{t "tax_amount"}}:</strong> {{cart.subtotal|multiply:tax.rate|currency}}</p>
+    <p><strong>{{t "total_amount"}}:</strong> {{cart.subtotal|add:cart.subtotal|multiply:tax.rate|currency}}</p>
+    <p><strong>{{t "discount_percent"}}:</strong> {{user.discount|multiply:100|percentage}}</p>
+    <p><strong>{{t "savings"}}:</strong> {{cart.subtotal|multiply:user.discount|currency}}</p>
+</section>
+
+<!-- 🎨 CUSTOM FILTERS & CHAINING -->
+<section id="custom-filters" class="filter-demo">
+    <h2>🎨 {{t "section.custom_filters"}}</h2>
+    <p><strong>{{t "username"}}:</strong> {{user.name|upper|truncate:10}}</p>
+    <p><strong>{{t "bio"}}:</strong> {{user.bio|markdown|truncate:50}}</p>
+    <p><strong>{{t "join_date"}}:</strong> {{user.join_date|date:"Y-m-d"}}</p>
+    <p><strong>{{t "encrypted_id"}}:</strong> {{user.id|encrypt}}</p>
+</section>
+
+<!-- 🏗️ TEMPLATE INHERITANCE & SUPER -->
+<section id="inheritance">
+    <h2>🏗️ {{t "section.template_inheritance"}}</h2>
+    <p>{{t "inheritance_explanation"}}</p>
+    <div class="card">
+        <h3>{{t "base_template_features"}}</h3>
+        <ul>
+            <li>{{t "feature.header"}}</li>
+            <li>{{t "feature.navigation"}}</li>  
+            <li>{{t "feature.footer"}}</li>
+            <li>{{t "feature.styling"}}</li>
+        </ul>
+    </div>
+</section>
+
+<!-- 📦 REUSABLE MACROS SYSTEM -->
+{{macro product_card(name, price, sale_price, rating, stock)}}
+<div class="card macro-demo">
+    <h4>🔮 {{name|upper}}</h4>
+    <div class="price">
+        {{if sale_price}}
+            <span class="sale">{{t "sale"}}!</span>
+            <del>{{price|currency}}</del> 
+            <strong>{{sale_price|currency}}</strong>
+            <small>({{price|divide:sale_price|multiply:100|round:0}}% {{t "off"}})</small>
+        {{else}}
+            <strong>{{price|currency}}</strong>
+        {{/if}}
+    </div>
+    <p>⭐ {{rating}}/5 | 📦 {{plural stock "en stock" "en stock"}}</p>
+</div>
+{{/macro}}
+
+<section id="macros">
+    <h2>📦 {{t "section.reusable_macros"}}</h2>
+    <p>{{t "macro_explanation"}}</p>
+    
+    <!-- Utilisation des macros avec différents paramètres -->
+    {{product_card("Grimoire Magique", 29.99, 19.99, 4.8, 12)}}
+    {{product_card("Potion de Code", 15.50, "", 4.2, 7)}}
+    {{product_card("Rune USB 3.0", 45.00, 35.00, 4.9, 3)}}
+</section>
+
+<!-- 🔄 NESTED LOOPS (NOUVELLEMENT IMPLÉMENTÉ!) -->
+<section id="nested-loops" class="nested-demo">
+    <h2>🔄 {{t "section.nested_loops"}}</h2>
+    <p>{{t "nested_loops_explanation"}}</p>
+    
+    <h3>{{t "product_categories"}}</h3>
+    {{for category in categories}}
+        <div class="card">
+            <h4>📁 {{category.name}} ({{plural category.products.length "produit" "produits"}})</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                {{for product in category.products}}
+                    <div style="border: 1px solid #ccc; padding: 10px; border-radius: 3px;">
+                        <strong>{{product.name}}</strong><br>
+                        <span class="price">{{product.price|currency}}</span><br>
+                        <small>⭐ {{product.rating}}/5</small>
+                    </div>
+                {{/for}}
+            </div>
+        </div>
+    {{/for}}
+</section>
+
+<!-- 🔄 NESTED INCLUDES (NOUVELLEMENT IMPLÉMENTÉ!) -->
+<section id="nested-includes" class="nested-demo">
+    <h2>🔄 {{t "section.nested_includes"}}</h2>
+    <p>{{t "nested_includes_explanation"}}</p>
+    
+    <div class="card">
+        <h3>{{t "user_profile_card"}}</h3>
+        {{include "components/user_profile.html"}}
+    </div>
+    
+    <div class="card">
+        <h3>{{t "blog_posts"}}</h3>
+        {{include "components/blog_section.html"}}
+    </div>
+</section>
+
+<!-- 🛡️ SECURITY FEATURES (PATH TRAVERSAL PROTECTION) -->
+<section id="security" class="security-demo">
+    <h2>🛡️ {{t "section.security_features"}}</h2>
+    <p>{{t "security_explanation"}}</p>
+    
+    <div class="card">
+        <h4>✅ {{t "security.xss_protection"}}</h4>
+        <p>{{t "user_input"}}: {{user_input}}</p>
+        <p>{{t "raw_input"}}: {{& user_input_safe}}</p>
+    </div>
+    
+    <div class="card">
+        <h4>✅ {{t "security.path_traversal_protection"}}</h4>
+        <p>{{t "security.path_explanation"}}</p>
+        <ul>
+            <li>✅ {{t "security.blocked_patterns"}}: <code>../</code>, <code>..\</code></li>
+            <li>✅ {{t "security.blocked_absolute"}}: <code>/etc/passwd</code></li>
+            <li>✅ {{t "security.blocked_drive"}}: <code>C:\Windows</code></li>
+        </ul>
+    </div>
+</section>
+
+<!-- 🌊 DEEP DOT NOTATION -->
+<section id="deep-dot">
+    <h2>🌊 {{t "section.deep_dot_notation"}}</h2>
+    <div class="card">
+        <h4>{{t "user_deep_profile"}}</h4>
+        <p><strong>{{t "name"}}:</strong> {{user.profile.personal.full_name}}</p>
+        <p><strong>{{t "location"}}:</strong> {{user.profile.location.city}}, {{user.profile.location.country}}</p>
+        <p><strong>{{t "preferences"}}:</strong> {{user.profile.settings.theme}} {{t "theme"}}, {{user.profile.settings.language}} {{t "language"}}</p>
+        <p><strong>{{t "level"}}:</strong> {{user.gaming.stats.level}} ({{user.gaming.stats.xp}} XP)</p>
+        <p><strong>{{t "achievements"}}:</strong> {{user.gaming.achievements.0.name}}, {{user.gaming.achievements.1.name}}</p>
+    </div>
+</section>
+
+<!-- ⚡ PERFORMANCE FEATURES -->
+<section id="performance">
+    <h2>⚡ {{t "section.performance_features"}}</h2>
+    <div class="stats">
+        <div class="stat">
+            <h3>📊 {{t "template_caching"}}</h3>
+            <p>{{t "cache_status"}}: ✅ {{t "enabled"}}</p>
+        </div>
+        <div class="stat">
+            <h3>🚀 {{t "bytecode_compilation"}}</h3>
+            <p>{{t "bytecode_status"}}: ✅ {{t "active"}}</p>
+        </div>
+        <div class="stat">
+            <h3>🔄 {{t "parallel_processing"}}</h3>
+            <p>{{t "parallel_status"}}: ✅ {{t "available"}}</p>
+        </div>
+    </div>
+</section>
+
+<!-- 🎭 DUAL NAMING SYSTEM -->
+<section id="naming">
+    <h2>🎭 {{t "section.dual_naming"}}</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="card">
+            <h4>🏢 {{t "professional_style"}}</h4>
+            <ul>
+                <li><code>TemplateEngine</code></li>
+                <li><code>TemplateContext</code></li>
+                <li><code>TemplateValue</code></li>
+                <li><code>FilterFunction</code></li>
+            </ul>
+        </div>
+        <div class="card">
+            <h4>🔮 {{t "mystical_style"}}</h4>
+            <ul>
+                <li><code>RuneEngine</code></li>
+                <li><code>RuneScroll</code></li>
+                <li><code>RuneSymbol</code></li>
+                <li><code>MysticFilter</code></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+{{/block}}

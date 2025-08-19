@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="{{locale}}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{block title}}{{site.name}}{{/block}} - {{t "tagline"}}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .header { background: #2c3e50; color: white; padding: 20px; margin: -20px -20px 20px; }
+        .nav { margin: 20px 0; }
+        .nav a { margin-right: 20px; text-decoration: none; color: #3498db; }
+        .card { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .price { font-weight: bold; color: #e74c3c; }
+        .sale { background: #e74c3c; color: white; padding: 2px 8px; border-radius: 3px; }
+        .stats { display: flex; gap: 20px; margin: 20px 0; }
+        .stat { text-align: center; padding: 15px; background: #ecf0f1; border-radius: 5px; }
+        .security-demo { background: #ffe6e6; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .nested-demo { background: #e6f3ff; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .filter-demo { background: #f0fff0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .macro-demo { background: #fff5ee; padding: 10px; margin: 10px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🔮 {{site.name}} - {{t "demo_title"}}</h1>
+        <p>{{t "welcome_message" name=user.name}}</p>
+        <nav class="nav">
+            <a href="#products">{{t "nav.products"}}</a>
+            <a href="#blog">{{t "nav.blog"}}</a>
+            <a href="#stats">{{t "nav.statistics"}}</a>
+            <a href="#security">{{t "nav.security"}}</a>
+        </nav>
+    </header>
+
+    <main>
+        {{block content}}
+        <!-- Default content -->
+        {{/block}}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 {{site.name}} - {{t "powered_by"}} 🔮 Mystical-Runic v0.3.4</p>
+        <p>{{t "current_locale"}}: {{locale}} | {{t "test_count"}}: 173+</p>
+    </footer>
+</body>
+</html>
