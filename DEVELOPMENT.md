@@ -1,6 +1,6 @@
-# CLAUDE.md
+# DEVELOPMENT.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Development documentation and guidelines for working with the Mystical-Runic templating engine.
 
 ## Project Overview
 

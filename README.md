@@ -1,20 +1,20 @@
-# 🔮 Mystical-Runic - Ancient Symbols for Modern Web Magic
+# 🔮 Mystical-Runic - Professional Template Engine
 
-*"In the beginning was the Word, and the Word was `{{mustache}}`..."*
+**Zero-dependency, high-performance templating engine for Rust with enterprise-grade features**
 
 [![Crates.io](https://img.shields.io/crates/v/mystical-runic.svg)](https://crates.io/crates/mystical-runic)
 [![Documentation](https://docs.rs/mystical-runic/badge.svg)](https://docs.rs/mystical-runic)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://github.com/yrbane/mystical-runic/workflows/CI/badge.svg)](https://github.com/yrbane/mystical-runic/actions)
 
-Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where ancient Nordic symbols meet modern HTML templating in a beautiful dance of curly braces and digital sorcery!
+**Mystical-Runic** is a professional-grade templating engine that combines the simplicity of Mustache syntax with powerful enterprise features. Built for production use with zero external dependencies, comprehensive security, and exceptional performance.
 
 ## ✨ Features
 
 🔒 **Security First**: XSS-safe by default with comprehensive HTML escaping  
 ⚡ **High Performance**: Template caching, bytecode compilation, parallel processing  
 🎯 **Simple API**: Clean, intuitive interface for Rust developers  
-🧪 **Well Tested**: 204+ tests with extensive security, performance, IDE integration, and ecosystem integration tests  
+🧪 **Well Tested**: 204+ tests with comprehensive coverage following strict TDD methodology  
 🏗️ **Template Inheritance**: Advanced layout system with nested inheritance and `{{super}}`  
 🔧 **Powerful Filters**: Built-in filters like `upper`, `lower`, `currency`, `truncate` with chaining support  
 📦 **Reusable Macros**: Define and reuse template components with parameters  
@@ -32,21 +32,23 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 💻 **IDE Integration**: Full Language Server Protocol support with auto-completion, syntax highlighting, error squiggles (v0.4.1)  
 🚀 **Async Support**: Non-blocking template rendering for high-performance web applications (v0.5.0)  
 🌐 **Web Framework Integration**: First-class support for Axum, Warp, and Actix-web (v0.5.0)  
-🕸️ **WASM Ready**: Browser-compatible template rendering with JavaScript bindings (v0.5.0)  
-🛠️ **CLI Tools**: Command-line template processing with watching and batch operations (v0.5.0)  
+🕸️ **WASM Ready**: Browser-compatible template rendering with JavaScript bindings  
+🛠️ **CLI Tools**: Command-line template processing with watching and batch operations  
+📈 **Performance Monitoring**: Advanced metrics collection and optimization (v0.5.1)  
+🔒 **Enterprise Security**: Threat classification and audit logging (v0.5.1)  
 📦 **Zero Dependencies**: Pure Rust implementation with no external dependencies  
 🦀 **Modern Rust**: Rust 2021 edition with 1.74.0+ MSRV, future Rust 2024 ready  
 
-## ⚡ The Sacred Incantations
+## 📝 Template Syntax
 
-### Core Magic
-- **Whisper Variables**: `{{name}}` - Speak a name and it shall manifest (safely escaped from evil XSS spirits)
-- **Summon Raw Power**: `{{& html}}` - Unleash unescaped HTML with great responsibility and greater danger
-- **Divine Conditionals**: `{{if chosen_one}}...{{/if}}` - The HTML appears only for the worthy
-- **Mystical Loops**: `{{for spell in grimoire}}...{{/for}}` - Repeat incantations until magic happens
-- **Ancient Includes**: `{{include "scrolls/wisdom.html"}}` - Import wisdom from other sacred texts
-- **Silent Whispers**: `{{! This is but a comment, invisible to mortals }}` - Notes for future wizards
-- **Deep Path Traversal**: `{{user.profile.stats.level}}` - Navigate through nested object realms with unlimited depth
+### Core Features
+- **Variables**: `{{name}}` - HTML-escaped variable output for XSS protection
+- **Raw HTML**: `{{& html}}` - Unescaped HTML output (use with caution)
+- **Conditionals**: `{{if condition}}...{{/if}}` - Conditional rendering with comparison operators
+- **Loops**: `{{for item in items}}...{{/for}}` - Iterate over arrays and objects
+- **Includes**: `{{include "template.html"}}` - Template composition and reuse
+- **Comments**: `{{! comment }}` - Template comments (not rendered)
+- **Deep Access**: `{{user.profile.stats.level}}` - Unlimited depth object property access
 
 ### Advanced Sorcery (v0.2.0)
 - **Sacred Inheritance**: `{{extends "base.html"}}` - Inherit the power of ancestral templates

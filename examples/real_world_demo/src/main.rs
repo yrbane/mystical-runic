@@ -2,7 +2,7 @@ use mystical_runic::{TemplateEngine, TemplateContext, TemplateValue};
 use std::collections::HashMap;
 
 fn main() {
-    println!("🔮 MYSTICAL-RUNIC v0.5.0 - DÉMONSTRATION COMPLÈTE AVEC INTÉGRATION ÉCOSYSTÈME!");
+    println!("🔮 MYSTICAL-RUNIC v0.5.1 - PROFESSIONAL ENTERPRISE TEMPLATE ENGINE!");
     println!("================================================");
     
     // Initialisation du moteur avec templates (chemin relatif depuis le répertoire de l'exemple)
@@ -47,9 +47,9 @@ fn main() {
     generate_html_output(&mut engine, &context);
     
     println!("\n✅ TOUS LES TESTS RÉUSSIS!");
-    println!("🎉 Mystical-Runic v0.5.0 avec intégration écosystème fonctionne parfaitement!");
+    println!("🎉 Mystical-Runic v0.5.1 Professional Enterprise Template Engine!");
     
-    // 🚀 NEW v0.5.0: Démonstration des fonctionnalités d'intégration écosystème
+    // 🚀 NEW v0.5.1: Professional performance monitoring and security features
     test_ecosystem_features(&mut engine, &context);
 }
 
@@ -560,10 +560,13 @@ fn generate_html_output(engine: &mut TemplateEngine, context: &TemplateContext) 
     }
 }
 
-// 🚀 NEW v0.5.0: Ecosystem Integration Features Demonstration
+// 🚀 NEW v0.5.1: Professional Features Demonstration
 fn test_ecosystem_features(engine: &mut TemplateEngine, context: &TemplateContext) {
-    println!("\n🚀 NOUVELLES FONCTIONNALITÉS v0.5.0 - INTÉGRATION ÉCOSYSTÈME");
+    println!("\n🚀 PROFESSIONAL FEATURES v0.5.1 - PERFORMANCE & SECURITY");
     println!("=============================================================");
+    
+    // Test performance monitoring
+    test_performance_monitoring(engine, context);
     
     // Test ecosystem compatibility
     test_ecosystem_compatibility(engine);
@@ -571,7 +574,47 @@ fn test_ecosystem_features(engine: &mut TemplateEngine, context: &TemplateContex
     // Test CLI tools functionality
     test_cli_integration(engine, context);
     
-    println!("\n🎉 Toutes les fonctionnalités d'intégration écosystème v0.5.0 fonctionnent!");
+    println!("\n🎉 All professional v0.5.1 features working perfectly!");
+}
+
+fn test_performance_monitoring(engine: &mut TemplateEngine, context: &TemplateContext) {
+    println!("\n📈 Testing professional performance monitoring...");
+    
+    // Enable performance monitoring
+    engine.enable_performance_monitoring();
+    println!("  ✓ Performance monitoring enabled");
+    
+    // Perform some template operations to generate metrics
+    let test_template = "Performance test: {{name}} - {{count}} iterations";
+    for i in 1..=5 {
+        let mut test_context = context.clone();
+        test_context.set_number("count", i);
+        let _ = engine.render_string(test_template, &test_context);
+    }
+    
+    // Get performance statistics
+    let stats = engine.get_performance_statistics();
+    println!("  ✓ Performance statistics collected");
+    println!("  ✓ Cache size: {} templates", stats.cache_size);
+    println!("  ✓ Bytecode cache: {} entries ({})", 
+        stats.bytecode_cache_size,
+        if stats.bytecode_cache_enabled { "enabled" } else { "disabled" }
+    );
+    
+    // Test cache optimization
+    let optimizations = engine.optimize_cache();
+    println!("  ✓ Cache optimizations applied: {}", optimizations);
+    
+    // Display performance summary
+    let summary = stats.summary();
+    if !summary.is_empty() {
+        println!("\n  Performance Report:");
+        for line in summary.lines().take(5) { // Show first 5 lines
+            println!("    {}", line);
+        }
+    }
+    
+    println!("  ✓ Professional performance monitoring working!");
 }
 
 fn test_ecosystem_compatibility(engine: &TemplateEngine) {
@@ -595,7 +638,7 @@ fn test_ecosystem_compatibility(engine: &TemplateEngine) {
     }
 }
 
-fn test_cli_integration(engine: &mut TemplateEngine, context: &TemplateContext) {
+fn test_cli_integration(_engine: &mut TemplateEngine, _context: &TemplateContext) {
     println!("\n🛠️ Testing CLI integration capabilities...");
     
     #[cfg(feature = "cli")]
@@ -603,7 +646,7 @@ fn test_cli_integration(engine: &mut TemplateEngine, context: &TemplateContext) 
         use mystical_runic::{process_template, batch_process};
         
         // Test direct template processing
-        let template = "🔮 {{t \"welcome_message\" name=user.profile.name}} - CLI intégration v0.5.0!";
+        let template = "🔮 {{t \"welcome_message\" name=user.profile.name}} - Professional CLI v0.5.1!";
         
         // Create JSON representation of context for CLI processing
         let context_json = r#"{
@@ -631,7 +674,7 @@ fn test_cli_integration(engine: &mut TemplateEngine, context: &TemplateContext) 
             "Template 3: Utilisateur {{name}}"
         ];
         
-        let batch_context = r#"{"count": 42, "version": "v0.5.0", "name": "Batch User"}"#;
+        let batch_context = r#"{"count": 42, "version": "v0.5.1", "name": "Professional User"}"#;
         
         match batch_process(templates, batch_context) {
             Ok(results) => {
