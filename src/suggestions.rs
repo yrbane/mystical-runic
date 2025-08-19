@@ -2,7 +2,6 @@
 //! 
 //! Provides smart suggestions for common mistakes and typos
 
-use std::collections::HashMap;
 
 /// Calculate Levenshtein distance between two strings
 pub fn levenshtein_distance(a: &str, b: &str) -> usize {
@@ -61,6 +60,7 @@ pub fn suggest_templates(target: &str, available: &[String], max_suggestions: us
 }
 
 /// Generate suggestions for a misspelled variable name
+#[allow(dead_code)]
 pub fn suggest_variables(target: &str, available: &[String], max_suggestions: usize) -> Vec<String> {
     let mut suggestions_with_score: Vec<(String, f64)> = available
         .iter()

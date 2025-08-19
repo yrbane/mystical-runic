@@ -6,14 +6,15 @@ use crate::value::TemplateValue;
 use crate::utils::html_escape;
 use crate::bytecode::{CompiledTemplate, TemplateCompiler, BytecodeExecutor};
 use crate::layouts::LayoutProcessor;
-use crate::debug::{DebugInfo, DebugRenderResult, ExecutionStep, PerformanceMetrics};
-use crate::suggestions::{suggest_templates, suggest_variables, extract_context_lines, find_line_column};
+use crate::debug::{DebugInfo, DebugRenderResult, ExecutionStep};
+use crate::suggestions::{suggest_templates, extract_context_lines, find_line_column};
+use crate::lsp::{LspParseResult, TemplateBlock, CompletionItem, SyntaxToken, Diagnostic, HoverInfo, DefinitionInfo};
 use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 use std::sync::Arc;
 use std::thread;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::SystemTime;
 
 /// Macro definition for reusable template components
 #[derive(Debug, Clone)]
@@ -1937,5 +1938,460 @@ impl TemplateEngine {
         }
         
         Ok(result)
+    }
+    
+    // ====================
+    // v0.4.1 IDE Integration Methods  
+    // ====================
+    
+    /// Parse template for Language Server Protocol analysis
+    pub fn parse_for_lsp(&mut self, template_content: &str, _file_path: &str) -> TemplateResult<LspParseResult> {
+        let mut result = LspParseResult::new();
+        
+        // Scan template for all variables, blocks, and filters
+        let mut current_pos = 0;
+        let _line = 1;
+        let _column = 1;
+        
+        while let Some(start) = template_content[current_pos..].find("{{") {
+            let abs_start = current_pos + start;
+            if let Some(end) = template_content[abs_start..].find("}}") {
+                let directive_content = &template_content[abs_start + 2..abs_start + end];
+                let (current_line, current_column) = self.calculate_line_column(template_content, abs_start);
+                
+                // Parse different types of directives
+                if directive_content.trim().starts_with("if ") {
+                    let condition = directive_content.trim()[3..].trim();
+                    result.add_block(TemplateBlock::new("if", current_line, current_column, condition));
+                    result.add_variable(condition);
+                } else if directive_content.trim().starts_with("for ") {
+                    let for_expr = directive_content.trim()[4..].trim();
+                    result.add_block(TemplateBlock::new("for", current_line, current_column, for_expr));
+                    if let Some(in_pos) = for_expr.find(" in ") {
+                        let array_var = &for_expr[in_pos + 4..];
+                        result.add_variable(array_var.trim());
+                    }
+                } else if directive_content.trim().starts_with("macro ") {
+                    let macro_def = directive_content.trim()[6..].trim();
+                    let macro_name = macro_def.split('(').next().unwrap_or(macro_def);
+                    result.macros.push(macro_name.to_string());
+                } else if !directive_content.starts_with("/") && !directive_content.starts_with("!") {
+                    // Regular variable or filter chain
+                    let parts: Vec<&str> = directive_content.split('|').collect();
+                    let var_name = parts[0].trim();
+                    if !var_name.is_empty() {
+                        result.add_variable(var_name);
+                    }
+                    
+                    // Add filters
+                    for filter in parts.iter().skip(1) {
+                        let filter_name = filter.split(':').next().unwrap_or(filter).trim();
+                        result.add_filter(filter_name);
+                    }
+                }
+                
+                current_pos = abs_start + end + 2;
+            } else {
+                break;
+            }
+        }
+        
+        Ok(result)
+    }
+    
+    /// Get auto-completions at a specific position in the template
+    pub fn get_completions_at_position(&mut self, template: &str, position: usize, context: &TemplateContext) -> TemplateResult<Vec<CompletionItem>> {
+        let mut completions = Vec::new();
+        
+        // Find the current token being typed
+        let (current_token, token_type) = self.get_token_at_position(template, position);
+        
+        match token_type.as_str() {
+            "variable" => {
+                // Complete variable names
+                for (var_name, var_value) in &context.variables {
+                    if var_name.starts_with(&current_token) {
+                        let detail = match var_value {
+                            TemplateValue::String(s) => format!("String: {}", s),
+                            TemplateValue::Number(n) => format!("Number: {}", n),
+                            TemplateValue::Bool(b) => format!("Boolean: {}", b),
+                            TemplateValue::Array(_) => "Array".to_string(),
+                            TemplateValue::Object(_) => "Object".to_string(),
+                        };
+                        completions.push(CompletionItem::new(var_name, "variable", &detail));
+                    }
+                }
+            },
+            "filter" => {
+                // Complete filter names
+                let built_in_filters = vec![
+                    ("upper", "Convert text to uppercase"),
+                    ("lower", "Convert text to lowercase"),
+                    ("currency", "Format as currency"),
+                    ("truncate", "Truncate text with ellipsis"),
+                    ("round", "Round numbers to specified decimals"),
+                ];
+                
+                for (filter_name, description) in built_in_filters {
+                    if filter_name.starts_with(&current_token) {
+                        completions.push(CompletionItem::new(filter_name, "filter", description));
+                    }
+                }
+            },
+            "directive" => {
+                // Complete template directives
+                let directives = vec![
+                    ("if", "Conditional rendering"),
+                    ("for", "Loop over arrays"),
+                    ("include", "Include another template"),
+                    ("macro", "Define reusable component"),
+                ];
+                
+                for (directive_name, description) in directives {
+                    if directive_name.starts_with(&current_token) {
+                        completions.push(CompletionItem::new(directive_name, "directive", description));
+                    }
+                }
+            },
+            _ => {}
+        }
+        
+        Ok(completions)
+    }
+    
+    /// Tokenize template for syntax highlighting
+    pub fn tokenize_for_syntax_highlighting(&mut self, template: &str) -> TemplateResult<Vec<SyntaxToken>> {
+        let mut tokens = Vec::new();
+        let mut current_pos = 0;
+        
+        while current_pos < template.len() {
+            // Look for template directives
+            if let Some(start) = template[current_pos..].find("{{") {
+                let abs_start = current_pos + start;
+                
+                // Add HTML content before directive as html_content token
+                if start > 0 {
+                    let html_content = &template[current_pos..abs_start];
+                    let (line, column) = self.calculate_line_column(template, current_pos);
+                    
+                    // Look for HTML tags
+                    if let Some(tag_start) = html_content.find('<') {
+                        if let Some(tag_end) = html_content[tag_start..].find('>') {
+                            let tag = &html_content[tag_start..tag_start + tag_end + 1];
+                            tokens.push(SyntaxToken::new(tag, "html_tag", current_pos + tag_start, line, column));
+                        }
+                    }
+                }
+                
+                if let Some(end) = template[abs_start..].find("}}") {
+                    let directive_content = &template[abs_start + 2..abs_start + end];
+                    let (line, column) = self.calculate_line_column(template, abs_start);
+                    
+                    // Parse directive content
+                    if directive_content.contains('|') {
+                        // Variable with filters
+                        let parts: Vec<&str> = directive_content.split('|').collect();
+                        let var_name = parts[0].trim();
+                        tokens.push(SyntaxToken::new(var_name, "template_variable", abs_start + 2, line, column + 2));
+                        
+                        for filter in parts.iter().skip(1) {
+                            let filter_name = filter.split(':').next().unwrap_or(filter).trim();
+                            tokens.push(SyntaxToken::new(filter_name, "template_filter", abs_start + 2, line, column + 2));
+                        }
+                    } else if directive_content.trim().starts_with("if") || 
+                              directive_content.trim().starts_with("for") ||
+                              directive_content.trim().starts_with("/if") ||
+                              directive_content.trim().starts_with("/for") {
+                        tokens.push(SyntaxToken::new(directive_content.trim(), "template_directive", abs_start + 2, line, column + 2));
+                    } else {
+                        // Regular variable
+                        tokens.push(SyntaxToken::new(directive_content.trim(), "template_variable", abs_start + 2, line, column + 2));
+                    }
+                    
+                    current_pos = abs_start + end + 2;
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+        
+        Ok(tokens)
+    }
+    
+    /// Get syntax theme information for editors
+    pub fn get_syntax_theme_info(&self) -> TemplateResult<HashMap<String, String>> {
+        let mut theme = HashMap::new();
+        
+        // Define semantic colors for different token types
+        theme.insert("template_variable".to_string(), "#569cd6".to_string()); // Blue
+        theme.insert("template_filter".to_string(), "#4ec9b0".to_string());   // Cyan
+        theme.insert("template_directive".to_string(), "#c586c0".to_string()); // Purple
+        theme.insert("html_tag".to_string(), "#ce9178".to_string());          // Orange
+        theme.insert("html_content".to_string(), "#d4d4d4".to_string());      // Light gray
+        theme.insert("comment".to_string(), "#6a9955".to_string());           // Green
+        
+        Ok(theme)
+    }
+    
+    /// Get real-time diagnostics for error squiggles
+    pub fn get_diagnostics_for_editor(&mut self, template: &str, context: &TemplateContext) -> TemplateResult<Vec<Diagnostic>> {
+        let mut diagnostics = Vec::new();
+        
+        // Check for unclosed directives
+        let mut directive_stack = Vec::new();
+        let mut current_pos = 0;
+        
+        while let Some(start) = template[current_pos..].find("{{") {
+            let abs_start = current_pos + start;
+            if let Some(end) = template[abs_start..].find("}}") {
+                let directive_content = &template[abs_start + 2..abs_start + end].trim();
+                let (line, column) = self.calculate_line_column(template, abs_start);
+                
+                if directive_content.starts_with("if ") {
+                    directive_stack.push(("if", line, column));
+                } else if directive_content.starts_with("for ") {
+                    directive_stack.push(("for", line, column));
+                } else if directive_content.starts_with("/if") {
+                    if let Some((directive_type, _, _)) = directive_stack.pop() {
+                        if directive_type != "if" {
+                            diagnostics.push(Diagnostic::new(
+                                "Mismatched closing directive",
+                                "error",
+                                line,
+                                column
+                            ));
+                        }
+                    } else {
+                        diagnostics.push(Diagnostic::new(
+                            "Unexpected closing directive",
+                            "error",
+                            line,
+                            column
+                        ));
+                    }
+                } else if directive_content.starts_with("/for") {
+                    if let Some((directive_type, _, _)) = directive_stack.pop() {
+                        if directive_type != "for" {
+                            diagnostics.push(Diagnostic::new(
+                                "Mismatched closing directive",
+                                "error",
+                                line,
+                                column
+                            ));
+                        }
+                    }
+                } else if !directive_content.starts_with("/") && !directive_content.starts_with("!") {
+                    // Check for unknown variables
+                    let parts: Vec<&str> = directive_content.split('|').collect();
+                    let var_name = parts[0].trim();
+                    if !var_name.is_empty() && !context.variables.contains_key(var_name) {
+                        diagnostics.push(Diagnostic::new(
+                            &format!("Unknown variable: {}", var_name),
+                            "warning",
+                            line,
+                            column
+                        ));
+                    }
+                    
+                    // Check for unknown filters
+                    for filter_part in parts.iter().skip(1) {
+                        let filter_name = filter_part.split(':').next().unwrap_or(filter_part).trim();
+                        if !self.is_known_filter(filter_name) {
+                            diagnostics.push(Diagnostic::new(
+                                &format!("Unknown filter: {}", filter_name),
+                                "error",
+                                line,
+                                column
+                            ));
+                        }
+                    }
+                }
+                
+                current_pos = abs_start + end + 2;
+            } else {
+                break;
+            }
+        }
+        
+        // Check for unclosed directives
+        for (directive_type, line, column) in directive_stack {
+            diagnostics.push(Diagnostic::new(
+                &format!("Unclosed {} directive", directive_type),
+                "error",
+                line,
+                column
+            ));
+        }
+        
+        Ok(diagnostics)
+    }
+    
+    /// Get hover information at a specific position
+    pub fn get_hover_info_at_position(&mut self, template: &str, position: usize, context: &TemplateContext) -> TemplateResult<HoverInfo> {
+        let token = self.get_full_token_at_position(template, position);
+        
+        if let Some(value) = context.variables.get(&token) {
+            let (var_type, current_value) = match value {
+                TemplateValue::String(s) => ("String", s.clone()),
+                TemplateValue::Number(n) => ("Number", n.to_string()),
+                TemplateValue::Bool(b) => ("Boolean", b.to_string()),
+                TemplateValue::Array(arr) => ("Array", format!("[{} items]", arr.len())),
+                TemplateValue::Object(obj) => ("Object", format!("{{{}  keys}}", obj.len())),
+            };
+            
+            Ok(HoverInfo {
+                variable_name: token.clone(),
+                variable_type: var_type.to_string(),
+                current_value,
+                description: format!("Template variable of type {}", var_type),
+            })
+        } else {
+            Err(TemplateError::Runtime(format!("No information available for '{}'", token)))
+        }
+    }
+    
+    /// Get the full token at position (for hover information)
+    fn get_full_token_at_position(&self, template: &str, position: usize) -> String {
+        let mut current_pos = 0;
+        
+        while let Some(start) = template[current_pos..].find("{{") {
+            let abs_start = current_pos + start;
+            if let Some(end) = template[abs_start..].find("}}") {
+                let abs_end = abs_start + end + 2;
+                
+                if position >= abs_start && position <= abs_end {
+                    let directive_content = &template[abs_start + 2..abs_start + end];
+                    
+                    // Extract the full variable name, not partial
+                    if directive_content.contains('|') {
+                        let parts: Vec<&str> = directive_content.split('|').collect();
+                        return parts[0].trim().to_string();
+                    } else {
+                        return directive_content.trim().to_string();
+                    }
+                }
+                
+                current_pos = abs_end;
+            } else {
+                break;
+            }
+        }
+        
+        "".to_string()
+    }
+    
+    /// Get definition location at a specific position
+    pub fn get_definition_at_position(&mut self, template: &str, position: usize) -> TemplateResult<DefinitionInfo> {
+        let token = self.get_full_token_at_position(template, position);
+        
+        // Check if it's a macro call by looking for function call syntax
+        if token.contains('(') {
+            let macro_name = token.split('(').next().unwrap_or(&token).trim();
+            
+            // Find macro definition
+            let mut current_pos = 0;
+            while let Some(start) = template[current_pos..].find("{{macro ") {
+                let abs_start = current_pos + start;
+                if let Some(end) = template[abs_start..].find("}}") {
+                    let macro_content = &template[abs_start + 8..abs_start + end].trim();
+                    let defined_macro_name = macro_content.split('(').next().unwrap_or(macro_content);
+                    
+                    if defined_macro_name.trim() == macro_name {
+                        let (line, column) = self.calculate_line_column(template, abs_start);
+                        return Ok(DefinitionInfo {
+                            definition_type: "macro".to_string(),
+                            name: macro_name.to_string(),
+                            line,
+                            column: column + 8, // After "{{macro "
+                            file_path: None,
+                        });
+                    }
+                    
+                    current_pos = abs_start + end + 2;
+                } else {
+                    break;
+                }
+            }
+        }
+        
+        Err(TemplateError::Runtime(format!("No definition found for '{}'", token)))
+    }
+    
+    // Helper methods for LSP functionality
+    
+    /// Calculate line and column from position
+    fn calculate_line_column(&self, content: &str, position: usize) -> (usize, usize) {
+        find_line_column(content, position)
+    }
+    
+    /// Get token at specific position
+    fn get_token_at_position(&self, template: &str, position: usize) -> (String, String) {
+        // Find the template directive containing this position
+        let mut current_pos = 0;
+        
+        while let Some(start) = template[current_pos..].find("{{") {
+            let abs_start = current_pos + start;
+            if let Some(end) = template[abs_start..].find("}}") {
+                let abs_end = abs_start + end + 2;
+                
+                if position >= abs_start && position <= abs_end {
+                    let directive_content = &template[abs_start + 2..abs_start + end];
+                    let rel_pos = position - (abs_start + 2);
+                    
+                    // Determine token type and extract current token at cursor position
+                    if directive_content.contains('|') {
+                        let parts: Vec<&str> = directive_content.split('|').collect();
+                        let mut current_char_pos = 0;
+                        
+                        for (i, part) in parts.iter().enumerate() {
+                            if rel_pos >= current_char_pos && rel_pos <= current_char_pos + part.len() {
+                                if i == 0 {
+                                    // Extract partial variable name up to cursor
+                                    let partial_var = &part.trim()[..std::cmp::min(rel_pos.saturating_sub(current_char_pos), part.trim().len())];
+                                    return (partial_var.to_string(), "variable".to_string());
+                                } else {
+                                    // Extract partial filter name up to cursor  
+                                    let filter_start = current_char_pos;
+                                    let partial_filter = &part.trim()[..std::cmp::min(rel_pos - filter_start, part.trim().len())];
+                                    return (partial_filter.to_string(), "filter".to_string());
+                                }
+                            }
+                            current_char_pos += part.len() + 1; // +1 for the '|' separator
+                        }
+                    } else {
+                        // Check if it's a potential directive (single words that could be directives)
+                        let partial_content = &directive_content[..std::cmp::min(rel_pos, directive_content.len())].trim();
+                        
+                        // If the partial content looks like it could be a directive
+                        let directive_keywords = vec!["if", "for", "include", "macro"];
+                        let is_potential_directive = directive_keywords.iter().any(|&kw| kw.starts_with(partial_content) || partial_content.is_empty());
+                        
+                        if is_potential_directive && !partial_content.contains(' ') {
+                            return (partial_content.to_string(), "directive".to_string());
+                        } else {
+                            return (partial_content.to_string(), "variable".to_string());
+                        }
+                    }
+                }
+                
+                current_pos = abs_end;
+            } else {
+                break;
+            }
+        }
+        
+        ("".to_string(), "unknown".to_string())
+    }
+    
+    /// Check if a filter is known/built-in
+    fn is_known_filter(&self, filter_name: &str) -> bool {
+        let known_filters = vec![
+            "upper", "lower", "currency", "truncate", "round", 
+            "add", "multiply", "divide", "percentage"
+        ];
+        
+        known_filters.contains(&filter_name) || self.custom_filters.contains_key(filter_name)
     }
 }

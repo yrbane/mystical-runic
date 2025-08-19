@@ -51,6 +51,27 @@ impl TemplateContext {
             _ => String::new(),
         })
     }
+    
+    /// Set a nested object structure (for IDE integration testing)
+    pub fn set_nested_object(&mut self, name: &str, structure: Vec<(&str, Vec<(&str, &str)>)>) {
+        let mut root_object = HashMap::new();
+        
+        for (key, nested_items) in structure {
+            if nested_items.len() == 1 && nested_items[0].1.parse::<i64>().is_err() {
+                // Simple string value
+                root_object.insert(key.to_string(), TemplateValue::String(nested_items[0].1.to_string()));
+            } else {
+                // Nested object
+                let mut nested_object = HashMap::new();
+                for (nested_key, nested_value) in nested_items {
+                    nested_object.insert(nested_key.to_string(), TemplateValue::String(nested_value.to_string()));
+                }
+                root_object.insert(key.to_string(), TemplateValue::Object(nested_object));
+            }
+        }
+        
+        self.set(name, TemplateValue::Object(root_object));
+    }
 }
 
 impl Default for TemplateContext {

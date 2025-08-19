@@ -8,6 +8,9 @@
 //! Welcome, brave developer, to the mystical realm of **Runic** - where ancient Nordic symbols
 //! meet modern HTML templating in a beautiful dance of curly braces and digital sorcery!
 //!
+//! **NEW in v0.4.1**: Full IDE Integration with Language Server Protocol support, auto-completion,
+//! syntax highlighting, real-time diagnostics, hover information, and go-to-definition features!
+//!
 //! ## ⚡ The Sacred Incantations
 //!
 //! - **Whisper Variables**: `{{name}}` - Speak a name and it shall manifest (safely escaped from evil XSS spirits)
@@ -77,6 +80,7 @@ mod bytecode;
 mod layouts;
 mod debug;
 mod suggestions;
+mod lsp;
 
 // 🏢 Conventional names for professional development environments
 pub use error::{TemplateError, TemplateResult};
@@ -86,6 +90,7 @@ pub use value::TemplateValue;
 pub use engine::FilterFunction;
 pub use engine::HelperFunction;
 pub use debug::{DebugInfo, DebugRenderResult, ExecutionStep, PerformanceMetrics};
+pub use lsp::{LspParseResult, TemplateBlock, CompletionItem, SyntaxToken, Diagnostic, HoverInfo, DefinitionInfo};
 
 // 🔮 Mystical aliases for the enlightened practitioners of ancient coding arts
 pub use error::{TemplateError as RuneError, TemplateResult as RuneResult};
@@ -95,3 +100,4 @@ pub use value::TemplateValue as RuneSymbol;
 pub use engine::FilterFunction as MysticFilter;
 pub use engine::HelperFunction as AncientHelper;
 pub use debug::{DebugInfo as RuneTrace, DebugRenderResult as RuneDivination, ExecutionStep as RuneStep, PerformanceMetrics as RuneMetrics};
+pub use lsp::{LspParseResult as RunicLore, TemplateBlock as RunicBlock, CompletionItem as RunicCompletion, SyntaxToken as RunicToken, Diagnostic as RunicDiagnostic, HoverInfo as RunicWisdom, DefinitionInfo as RunicOrigin};
