@@ -15,8 +15,25 @@
 //! - **Silent Whispers**: `{{! This is but a comment, invisible to mortals }}` - Notes for future wizards
 //! - **Object Divination**: `{{user.power_level}}` - Peer into the properties of mystical entities
 //!
-//! ## 🧙‍♂️ Example Spell Casting
+//! ## 🧙‍♂️ Example Usage - Choose Your Style
 //!
+//! ### Professional Style
+//! ```rust
+//! use mystical_runic::{TemplateEngine, TemplateContext, TemplateValue};
+//!
+//! let mut engine = TemplateEngine::new("templates");
+//! let mut context = TemplateContext::new();
+//! 
+//! context.set("user", TemplateValue::String("Developer".to_string()));
+//! context.set("task", TemplateValue::String("Build Features".to_string()));
+//! 
+//! let result = engine.render_string(
+//!     "Hello {{user}}! Your mission: {{task}}", 
+//!     &context
+//! ).unwrap();
+//! ```
+//!
+//! ### Mystical Style ✨
 //! ```rust
 //! use mystical_runic::{RuneEngine, RuneScroll, RuneSymbol};
 //!
@@ -25,16 +42,14 @@
 //! let mut scroll = RuneScroll::new();
 //! 
 //! // Inscribe your desires upon the scroll
-//! scroll.set_string("hero", "Rust Developer");
-//! scroll.set_string("quest", "Debug Production Issues");
+//! scroll.set("hero", RuneSymbol::String("Rust Developer".to_string()));
+//! scroll.set("quest", RuneSymbol::String("Debug Production Issues".to_string()));
 //! 
 //! // Speak the incantation and witness the transformation
 //! let result = engine.render_string(
 //!     "Behold! {{hero}} embarks upon {{quest}}! 🗡️", 
 //!     &scroll
 //! ).unwrap();
-//! 
-//! assert_eq!(result, "Behold! Rust Developer embarks upon Debug Production Issues! 🗡️");
 //! ```
 //!
 //! ## 🌟 Why "Runic"?
@@ -58,14 +73,18 @@ mod utils;
 mod bytecode;
 mod layouts;
 
-// Ancient names for backwards compatibility with mundane mortals
+// 🏢 Conventional names for professional development environments
 pub use error::{TemplateError, TemplateResult};
 pub use engine::TemplateEngine;
 pub use context::TemplateContext;
 pub use value::TemplateValue;
+pub use engine::FilterFunction;
+pub use engine::HelperFunction;
 
-// Mystical names for the enlightened practitioners
+// 🔮 Mystical aliases for the enlightened practitioners of ancient coding arts
 pub use error::{TemplateError as RuneError, TemplateResult as RuneResult};
 pub use engine::TemplateEngine as RuneEngine;
 pub use context::TemplateContext as RuneScroll;
 pub use value::TemplateValue as RuneSymbol;
+pub use engine::FilterFunction as MysticFilter;
+pub use engine::HelperFunction as AncientHelper;

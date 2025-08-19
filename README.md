@@ -14,7 +14,7 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 🔒 **Security First**: XSS-safe by default with comprehensive HTML escaping  
 ⚡ **High Performance**: Template caching, bytecode compilation, parallel processing  
 🎯 **Simple API**: Clean, intuitive interface for Rust developers  
-🧪 **Well Tested**: 135+ tests with extensive security and performance tests  
+🧪 **Well Tested**: 152+ tests with extensive security and performance tests  
 🏗️ **Template Inheritance**: Advanced layout system with nested inheritance and `{{super}}`  
 🔧 **Powerful Filters**: Built-in filters like `upper`, `lower`, `currency`, `truncate` with chaining support  
 📦 **Reusable Macros**: Define and reuse template components with parameters  
@@ -22,6 +22,7 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 🌐 **Internationalization (i18n)**: Multi-language support with `{{t "key"}}` syntax and locale switching  
 🔢 **Advanced Math Filters**: Mathematical operations with `add`, `multiply`, `divide`, `percentage`, `round`  
 🎨 **Custom Filter API**: Register your own filters for domain-specific transformations  
+🎭 **Dual Naming System**: Choose between professional (`TemplateEngine`) or mystical (`RuneEngine`) naming styles  
 📝 **Smart Pluralization**: Automatic plural forms with `{{plural count "item" "items"}}`  
 🌐 **Zero Dependencies**: Pure Rust implementation with no external dependencies  
 
@@ -60,29 +61,51 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 mystical-runic = "0.3.0"
 ```
 
-### Basic Usage
+### Basic Usage - Choose Your Style! 🎭
+
+#### 🏢 Professional Style (Conventional)
+Perfect for corporate environments, team projects, and those who prefer explicit naming:
+
+```rust
+use mystical_runic::{TemplateEngine, TemplateContext, TemplateValue};
+
+let mut engine = TemplateEngine::new("templates");
+let mut context = TemplateContext::new();
+
+// Set variables in your template context
+context.set("hero", TemplateValue::String("Professional Developer".to_string()));
+context.set("level", TemplateValue::Number(99));
+context.set("has_coffee", TemplateValue::Bool(true));
+
+let result = engine.render_string(
+    "Hello {{hero}} of level {{level}}! {{if has_coffee}}☕ Ready to work!{{/if}}", 
+    &context
+).unwrap();
+```
+
+#### 🔮 Mystical Style (Themed)
+For the adventurous, creative projects, and those who enjoy a touch of magic:
 
 ```rust
 use mystical_runic::{RuneEngine, RuneScroll, RuneSymbol};
 
 // Summon the ancient engine from the template realm
-let mut engine = RuneEngine::new("templates");
+let mut engine = RuneEngine::new("sacred_scrolls");
 let mut scroll = RuneScroll::new();
 
 // Inscribe your desires upon the scroll
-scroll.set_string("hero", "Rust Developer");
-scroll.set_string("quest", "Debug Production Issues");
-scroll.set_number("level", 99);
-scroll.set_bool("has_coffee", true);
+scroll.set("hero", RuneSymbol::String("Mystical Sorcerer".to_string()));
+scroll.set("level", RuneSymbol::Number(99));
+scroll.set("has_coffee", RuneSymbol::Bool(true));
 
 // Speak the incantation and witness the transformation
 let result = engine.render_string(
-    "Behold! {{hero}} of level {{level}} embarks upon {{quest}}! {{if has_coffee}}☕{{/if}}", 
+    "Behold! {{hero}} of level {{level}} embarks upon their quest! {{if has_coffee}}☕{{/if}}", 
     &scroll
 ).unwrap();
-
-assert_eq!(result, "Behold! Rust Developer of level 99 embarks upon Debug Production Issues! ☕");
 ```
+
+> **💡 Pro Tip**: Both styles are completely interchangeable! Use whichever feels right for your project. You can even mix them in the same codebase - they're just aliases for the same underlying types.
 
 ### Advanced Example: Character Sheet Generator
 

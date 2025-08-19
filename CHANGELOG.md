@@ -36,8 +36,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Rounding Filter**: `{{value|round:2}}` for decimal precision control
 - **Math Chaining**: Complex calculations like `{{price|multiply:tax|divide:100|add:price|round:2}}`
 
+### 🎭 Added - Dual Naming System
+- **Professional Style**: Conventional naming (`TemplateEngine`, `TemplateContext`, `TemplateValue`)
+- **Mystical Style**: Themed aliases (`RuneEngine`, `RuneScroll`, `RuneSymbol`)
+- **Complete Interoperability**: Both styles are 100% compatible and interchangeable
+- **Developer Choice**: Use the naming style that fits your project's personality
+- **Type Aliases**: `FilterFunction`/`MysticFilter`, `HelperFunction`/`AncientHelper`
+
 ### 🧪 Added - Comprehensive Testing
-- **135+ Tests Total**: Expanded from 130 to 135+ tests across all modules
+- **152+ Tests Total**: Expanded from 135 to 152+ tests across all modules
+- **Dual Style Tests**: Complete test coverage for both naming conventions
 - **v0.3.0 Feature Tests**: Complete test coverage for i18n, pluralization, custom filters, and math
 - **TDD Implementation**: All features developed using strict Test-Driven Development methodology
 - **Integration Testing**: Real-world scenarios for internationalized applications
