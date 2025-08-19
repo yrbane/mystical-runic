@@ -5,6 +5,25 @@ All notable changes to mystical-runic will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] - 2025-08-19 - Dual Style Edition
+
+### 🎭 Added - Dual Naming System
+- **Professional Style**: Conventional naming (`TemplateEngine`, `TemplateContext`, `TemplateValue`)
+- **Mystical Style**: Themed aliases (`RuneEngine`, `RuneScroll`, `RuneSymbol`)
+- **Complete Interoperability**: Both styles are 100% compatible and interchangeable
+- **Developer Choice**: Use the naming style that fits your project's personality
+- **Type Aliases**: `FilterFunction`/`MysticFilter`, `HelperFunction`/`AncientHelper`
+
+### 🧪 Enhanced - Testing Coverage
+- **152+ Tests Total**: Added 8 new interoperability tests for dual naming system
+- **Style Compatibility**: Complete test coverage for both naming conventions
+- **Zero Breaking Changes**: All existing code works unchanged
+
+### 📚 Enhanced - Documentation
+- **Dual Style Examples**: README now showcases both professional and mystical styles
+- **Enhanced lib.rs**: Complete documentation with both naming conventions
+- **Usage Flexibility**: Developers can choose or mix naming styles freely
+
 ## [0.3.0] - 2025-08-19 - The Global Sorcery Edition
 
 ### 🌐 Added - Internationalization (i18n) System
@@ -36,16 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Rounding Filter**: `{{value|round:2}}` for decimal precision control
 - **Math Chaining**: Complex calculations like `{{price|multiply:tax|divide:100|add:price|round:2}}`
 
-### 🎭 Added - Dual Naming System
-- **Professional Style**: Conventional naming (`TemplateEngine`, `TemplateContext`, `TemplateValue`)
-- **Mystical Style**: Themed aliases (`RuneEngine`, `RuneScroll`, `RuneSymbol`)
-- **Complete Interoperability**: Both styles are 100% compatible and interchangeable
-- **Developer Choice**: Use the naming style that fits your project's personality
-- **Type Aliases**: `FilterFunction`/`MysticFilter`, `HelperFunction`/`AncientHelper`
-
 ### 🧪 Added - Comprehensive Testing
-- **152+ Tests Total**: Expanded from 135 to 152+ tests across all modules
-- **Dual Style Tests**: Complete test coverage for both naming conventions
+- **135+ Tests Total**: Expanded from 130 to 135+ tests across all modules
 - **v0.3.0 Feature Tests**: Complete test coverage for i18n, pluralization, custom filters, and math
 - **TDD Implementation**: All features developed using strict Test-Driven Development methodology
 - **Integration Testing**: Real-world scenarios for internationalized applications
