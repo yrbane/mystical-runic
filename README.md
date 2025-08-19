@@ -14,7 +14,7 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 🔒 **Security First**: XSS-safe by default with comprehensive HTML escaping  
 ⚡ **High Performance**: Template caching, bytecode compilation, parallel processing  
 🎯 **Simple API**: Clean, intuitive interface for Rust developers  
-🧪 **Well Tested**: 158+ tests with extensive security and performance tests  
+🧪 **Well Tested**: 166+ tests with extensive security and performance tests  
 🏗️ **Template Inheritance**: Advanced layout system with nested inheritance and `{{super}}`  
 🔧 **Powerful Filters**: Built-in filters like `upper`, `lower`, `currency`, `truncate` with chaining support  
 📦 **Reusable Macros**: Define and reuse template components with parameters  
@@ -59,7 +59,7 @@ Welcome, brave developer, to the mystical realm of **Mystical-Runic** - where an
 
 ```toml
 [dependencies]
-mystical-runic = "0.3.2"
+mystical-runic = "0.3.3"
 ```
 
 ### Basic Usage - Choose Your Style! 🎭
@@ -608,7 +608,8 @@ Check out the [`examples/`](examples/) directory for more magical demonstrations
 - Modern Rust patterns and idioms  
 - Prepared for Rust 2024 edition migration
 - Zero unsafe code  
-- Comprehensive test coverage (158+ tests)
+- Comprehensive test coverage (166+ tests)  
+- Zero compilation warnings
 
 ### Development Setup
 

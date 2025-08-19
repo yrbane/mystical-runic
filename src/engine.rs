@@ -15,6 +15,7 @@ use std::thread;
 /// Macro definition for reusable template components
 #[derive(Debug, Clone)]
 pub struct MacroDefinition {
+    #[allow(dead_code)]
     pub name: String,
     pub parameters: Vec<String>,
     pub body: String,
@@ -742,6 +743,7 @@ impl TemplateEngine {
     }
 
     /// Process macro definitions and macro calls (old method for backwards compatibility)
+    #[allow(dead_code)]
     fn process_macros(&mut self, template: &str) -> TemplateResult<String> {
         let mut result = template.to_string();
         
@@ -863,12 +865,14 @@ impl TemplateEngine {
     }
 
     /// Process macro calls in template (old method for backwards compatibility)
+    #[allow(dead_code)]
     fn process_macro_calls(&mut self, template: &str) -> TemplateResult<String> {
         let empty_context = TemplateContext::new();
         self.process_macro_calls_with_context(template, &empty_context)
     }
     
     /// Parse macro call arguments
+    #[allow(dead_code)]
     fn parse_macro_call_args(&self, call_content: &str) -> TemplateResult<HashMap<String, String>> {
         // Parse: macro_name(arg1, arg2="value", param="value")
         if let Some(paren_start) = call_content.find('(') {
@@ -1058,6 +1062,7 @@ impl TemplateEngine {
     }
     
     /// Expand macro with given arguments - handles both String and TemplateValue args
+    #[allow(dead_code)]
     fn expand_macro(&mut self, macro_def: &MacroDefinition, args: &HashMap<String, String>) -> TemplateResult<String> {
         let macro_body = macro_def.body.clone();
         

@@ -187,12 +187,12 @@ fn test_bytecode_cache_management() {
     // 🔴 This should fail initially - bytecode caching not implemented yet
     
     // First compilation should create cache
-    let compiled1 = engine.compile_to_bytecode("cached.html").unwrap();
+    let _compiled1 = engine.compile_to_bytecode("cached.html").unwrap();
     assert!(!engine.is_bytecode_cached("cached.html"), "Should not be cached initially");
     
     // Enable caching
     engine.enable_bytecode_cache(true);
-    let compiled2 = engine.compile_to_bytecode("cached.html").unwrap();
+    let _compiled2 = engine.compile_to_bytecode("cached.html").unwrap();
     assert!(engine.is_bytecode_cached("cached.html"), "Should be cached after enabling");
     
     // Cache hit should be faster

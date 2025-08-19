@@ -6,8 +6,10 @@ use std::collections::HashMap;
 /// Block definition for template inheritance
 #[derive(Debug, Clone)]
 pub struct Block {
+    #[allow(dead_code)]
     pub name: String,
     pub content: String,
+    #[allow(dead_code)]
     pub parent_content: Option<String>, // For {{super}} functionality
 }
 

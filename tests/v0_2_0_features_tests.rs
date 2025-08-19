@@ -5,8 +5,8 @@ use mystical_runic::{TemplateEngine, TemplateContext, TemplateValue};
 use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
-use std::time::Duration;
 
+#[allow(unused_macros)]
 macro_rules! hashmap {
     ($($key:expr => $value:expr),* $(,)?) => {
         {
